@@ -1,4 +1,4 @@
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("SqliteTests")]
-[assembly: InternalsVisibleTo("API")]
+[assembly: InternalsVisibleTo("tests")]
+[assembly: InternalsVisibleTo("Store.API")]
