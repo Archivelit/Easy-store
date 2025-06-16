@@ -68,7 +68,7 @@ nunit-*.xml
 /dataSources/
 /dataSources.local.xml
 
-#Rider Idea
+# Rider Idea
 .idea/
 bin/
 obj/

@@ -68,9 +68,8 @@ internal class CustomerAuthentication : CustomersDb, ICustomerRepository
             
             if (await reader.ReadAsync())
             {
-                var foundEmail = reader.GetString(0); // Email
                 var passwordHash = reader.GetString(1); // PasswordHash
-                return (foundEmail, passwordHash);
+                return (email, passwordHash);
             }
 
             throw new CustomerNotFoundException("Customer with specified email not found.");
@@ -100,9 +99,8 @@ internal class CustomerAuthentication : CustomersDb, ICustomerRepository
                 var foundId = reader.GetGuid(0);
                 var foundName = reader.GetString(1);
                 var foundSubscriptionType = reader.GetString(2);
-                var foundEmail = reader.GetString(3);
 
-                return new(foundId, foundName, foundEmail, Enum.Parse<Subscription>(foundSubscriptionType));
+                return new(foundId, foundName, email, Enum.Parse<Subscription>(foundSubscriptionType));
             }
             
             throw new CustomerNotFoundException("Customer with specified email not found.");
