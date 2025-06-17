@@ -8,6 +8,8 @@ services:
     volumes:
     - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     - ${CERTIFICATES}/haproxy:/usr/local/etc/haproxy
+    networks:
+    - vault_net
     
   ha_storage:
     image: hashicorp/consul

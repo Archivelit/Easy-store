@@ -1,5 +1,5 @@
 api_addr      = "https://vault.localhost:443"
-cluster_name  = "vault-third-cluster"
+cluster_name  = "vault-third-node"
 disable_mlock = true
 ui            = true
 
