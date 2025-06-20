@@ -79,3 +79,6 @@ riderModule.iml
 /secret.key
 *.db
 .env
+
+vault/data
+consul/data

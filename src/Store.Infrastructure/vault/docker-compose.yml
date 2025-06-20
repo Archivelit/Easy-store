@@ -17,9 +17,13 @@ services:
       - "8500:8500"
     networks:
     - vault_net
+    volumes:
+    - ./consul/data:/consul/data
+    command: "consul agent -dev -config-dir=/consul/config"
 
   vault-node1:
     image: hashicorp/vault
+    container_name: vault-node-1
     volumes:
       - ./vault/config/node_1.hcl:/vault/config/node_1.hcl
       - ./vault/data:/vault/data
@@ -35,6 +39,7 @@ services:
 
   vault-node2:
     image: hashicorp/vault
+    container_name: vault-node-2
     volumes:
       - ./vault/config/node_2.hcl:/vault/config/node_2.hcl
       - ./vault/data:/vault/data
@@ -50,6 +55,7 @@ services:
 
   vault-node3:
     image: hashicorp/vault
+    container_name: vault-node-3
     volumes:
       - ./vault/config/node_3.hcl:/vault/config/node_3.hcl
       - ./vault/data:/vault/data
