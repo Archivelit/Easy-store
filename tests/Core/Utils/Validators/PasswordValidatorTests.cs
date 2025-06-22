@@ -13,7 +13,7 @@ public class PasswordValidatorTests
     {
         string? password = null;
         
-        Assert.Throws<InvalidPasswordException>(() => _passwordValidator.ValidatePassword(password));
+        Assert.Throws<InvalidPassword>(() => _passwordValidator.ValidatePassword(password));
     }
 
     [Fact]
@@ -21,7 +21,7 @@ public class PasswordValidatorTests
     {
         string password = "";
         
-        Assert.Throws<InvalidPasswordException>(() => _passwordValidator.ValidatePassword(password));
+        Assert.Throws<InvalidPassword>(() => _passwordValidator.ValidatePassword(password));
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class PasswordValidatorTests
     {
         string password = new(' ', 10);
         
-        Assert.Throws<InvalidPasswordException>(() => _passwordValidator.ValidatePassword(password));
+        Assert.Throws<InvalidPassword>(() => _passwordValidator.ValidatePassword(password));
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class PasswordValidatorTests
     {
         string password = "1234567890*";
         
-        Assert.Throws<InvalidPasswordException>(() => _passwordValidator.ValidatePassword(password));
+        Assert.Throws<InvalidPassword>(() => _passwordValidator.ValidatePassword(password));
     }
 
     [Fact]
@@ -55,7 +55,7 @@ public class PasswordValidatorTests
     {
         string password = "ABCDEFgh*";
         
-        Assert.Throws<InvalidPasswordException>(() => _passwordValidator.ValidatePassword(password));
+        Assert.Throws<InvalidPassword>(() => _passwordValidator.ValidatePassword(password));
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class PasswordValidatorTests
     {
         string password = "ABCD1234";
         
-        Assert.Throws<InvalidPasswordException>(() => _passwordValidator.ValidatePassword(password));
+        Assert.Throws<InvalidPassword>(() => _passwordValidator.ValidatePassword(password));
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class PasswordValidatorTests
     {
         string password = "abcd1234*";
         
-        Assert.Throws<InvalidPasswordException>(() => _passwordValidator.ValidatePassword(password));
+        Assert.Throws<InvalidPassword>(() => _passwordValidator.ValidatePassword(password));
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class PasswordValidatorTests
     {
         string password = "ABCD1234*";
 
-        Assert.Throws<InvalidPasswordException>(() => _passwordValidator.ValidatePassword(password));
+        Assert.Throws<InvalidPassword>(() => _passwordValidator.ValidatePassword(password));
     }
 
     [Fact]
@@ -87,7 +87,7 @@ public class PasswordValidatorTests
     {
         string password = "12Ab*";
         
-        Assert.Throws<InvalidPasswordException>(() => _passwordValidator.ValidatePassword(password));
+        Assert.Throws<InvalidPassword>(() => _passwordValidator.ValidatePassword(password));
     }
 
     [Fact]

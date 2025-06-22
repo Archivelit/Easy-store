@@ -12,27 +12,27 @@ internal static class EmailValidator
     public static bool IsEmailValid(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
-            throw new InvalidEmailException("Email cannot be null or empty.");
+            throw new InvalidEmail("Email cannot be null or empty.");
 
         var localPartLength = email.IndexOf("@", StringComparison.Ordinal);
         
         switch (localPartLength)
         {
             case -1:
-                throw new InvalidEmailException("Invalid email format.");
+                throw new InvalidEmail("Invalid email format.");
                 
             case > 64:  // 64 - Max local length
-                throw new InvalidEmailException("Max local length exceeded. It has to be 64 characters.");
+                throw new InvalidEmail("Max local length exceeded. It has to be 64 characters.");
         }
 
         if (email.Length - localPartLength - 1 > MaxDomainLength)
-            throw new InvalidEmailException("Max domain length exceeded. It has to be 189 characters.");
+            throw new InvalidEmail("Max domain length exceeded. It has to be 189 characters.");
         
         if (email.Length > MaxEmailLength)
-            throw new InvalidEmailException("Email is too long.");
+            throw new InvalidEmail("Email is too long.");
         
         if (!_emailRegex.IsMatch(email)) 
-            throw new InvalidEmailException("Invalid email.");
+            throw new InvalidEmail("Invalid email.");
 
         return true;
     }

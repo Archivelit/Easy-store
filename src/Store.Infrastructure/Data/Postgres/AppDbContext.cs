@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Store.Core.Models;
+using Store.Infrastructure.Entities;
 
 namespace Store.Infrastructure.Data.Postgres;
 

@@ -30,7 +30,7 @@ public class SubscriptionValidatorTests
     [InlineData(" ")]
     public void SubscriptionValidatorTests_InvalidTests(string subscription)
     {
-        Assert.Throws<InvalidSubscriptionException>(() => _subscriptionValidator.ValidateSubscription(subscription));
+        Assert.Throws<InvalidSubscription>(() => _subscriptionValidator.ValidateSubscription(subscription));
     }
     private void ValidateSubscription(string subscription)
     {

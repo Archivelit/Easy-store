@@ -23,7 +23,7 @@ public class EmailValidatorTests
     {
         string email = "invalidEmailExample.com";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class EmailValidatorTests
     {
         string email = "invalid@Email@Expample.com";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class EmailValidatorTests
     {
         string email = " ";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class EmailValidatorTests
     {
         string? email = null;
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -55,7 +55,7 @@ public class EmailValidatorTests
     {
         string email = "";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class EmailValidatorTests
     {
         string email = "invalid Email@Expample.com";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public class EmailValidatorTests
         
         var email = sb.ToString();
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public class EmailValidatorTests
     {
         string email = "a@b.";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -108,7 +108,7 @@ public class EmailValidatorTests
     {
         string email = "@example.com";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -116,7 +116,7 @@ public class EmailValidatorTests
     {
         string email = "invalid!email@example.com";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
     
     [Fact]
@@ -134,7 +134,7 @@ public class EmailValidatorTests
     {
         string email = "invalid_email@example_domain.com";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
     
     [Fact]
@@ -194,7 +194,7 @@ public class EmailValidatorTests
     {
         string email = ".email@example.com";
         
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -202,7 +202,7 @@ public class EmailValidatorTests
     {
         string email = "email.@example.com";
         
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 
     [Fact]
@@ -210,6 +210,6 @@ public class EmailValidatorTests
     {
         string email = "example..email@example.com";
 
-        Assert.Throws<InvalidEmailException>(() => _emailValidator.ValidateEmail(email));
+        Assert.Throws<InvalidEmail>(() => _emailValidator.ValidateEmail(email));
     }
 }

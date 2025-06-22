@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.API.DTO;
 using Store.Core.Contracts.Customers;
-using Store.Core.Models;
+using Store.Infrastructure.Entities;
 
 namespace Store.API.Controllers.Customers;
 
@@ -17,6 +17,11 @@ public class AuthController : ControllerBase
     }
     
     // POST: api/customers/register
+    // Registers customer and returns nothing
+    // Params:
+    //  Name - customer name
+    //  Email - customer email
+    //  Password - customer password
     [HttpPost("register")]
     public async Task<ActionResult<CustomerEntity>> RegisterAsync(RegisterCustomerRequest model)
     {
@@ -26,6 +31,12 @@ public class AuthController : ControllerBase
     }
     
     // POST: api/customers/authenticate
+    // Authenticates customer and returns a JWT token if successful
+    // Params:
+    //  Name - customer name
+    //  Password - customer password
+    // Return:
+    //  Jwt token
     [HttpPost("authenticate")]
     public async Task<ActionResult<string>> AuthenticateAsync(AuthenticateCustomerRequest request) =>
         Ok(await _customerManager.AuthenticateAsync(request.Email, request.Password));

@@ -28,7 +28,7 @@ public class CustomersManager : ICustomerManager
         _validationService.ValidateAndThrow(name, email, password);
         
         if(await _customerRepository.IsEmailClaimed(email))
-            throw new InvalidEmailException("Email is already registered");
+            throw new InvalidEmail("Email is already registered");
         
         var passwordHash = _passwordHasher.HashPassword(password);
         
@@ -53,7 +53,7 @@ public class CustomersManager : ICustomerManager
     public async Task DeleteAsync(Guid id)
     {
         if (id == Guid.Empty)
-            throw new InvalidIdException("Id cannot be empty");
+            throw new InvalidId("Id cannot be empty");
         
         await _customerRepository.DeleteAsync(id);
     }

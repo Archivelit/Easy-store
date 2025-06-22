@@ -9,9 +9,9 @@ public class SubscriptionValidator : ISubscriptionValidator
     public void ValidateSubscription(string subscription)
     {
         if (string.IsNullOrEmpty(subscription))
-            throw new InvalidSubscriptionException("Subscription is null or empty.");
+            throw new InvalidSubscription("Subscription is null or empty.");
         
         if (!Enum.TryParse(subscription, true, out Subscription subscriptionValidationResult)) 
-            throw new InvalidSubscriptionException("Subscription is invalid.");
+            throw new InvalidSubscription("Subscription is invalid.");
     }
 }

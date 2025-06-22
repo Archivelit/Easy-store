@@ -1,4 +1,5 @@
 using Store.Core.Models;
+using Store.Infrastructure.Entities;
 
 namespace Store.Infrastructure.Mappers;
 

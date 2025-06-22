@@ -35,7 +35,7 @@ public class CustomerNameValidatorTests
     {
         string name = "aa";
         
-        Assert.Throws<InvalidNameException>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
     }
     
     [Fact]
@@ -43,7 +43,7 @@ public class CustomerNameValidatorTests
     {
         string name = new string('a', 101);
         
-        Assert.Throws<InvalidNameException>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class CustomerNameValidatorTests
     {
         string name = "123";
         
-        Assert.Throws<InvalidNameException>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class CustomerNameValidatorTests
     {
         string name = null;
 
-        Assert.Throws<InvalidNameException>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public class CustomerNameValidatorTests
     {
         string name = "";
         
-        Assert.Throws<InvalidNameException>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
     }
 
     [Fact]
@@ -85,6 +85,6 @@ public class CustomerNameValidatorTests
     {
         string name = "   ";
         
-        Assert.Throws<InvalidNameException>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
     }
 }
