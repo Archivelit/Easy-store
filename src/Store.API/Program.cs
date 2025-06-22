@@ -1,45 +1,33 @@
-using API.Requests;
-using API.Middleware.Logging;
-using Store.Core.Contracts.Customers;
-using Store.Infrastructure.Data.Sqlite.CustomersData;
+using Store.API.Middleware.Logging;
+using Microsoft.EntityFrameworkCore;
+using Store.Infrastructure.Data.Postgres;
 
-namespace API;
+namespace Store.API;
 
 public class Program
 {
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+     
+        DotNetEnv.Env.Load(Path.Combine(Environment.CurrentDirectory, "..", "..", ".env"));
+        var conStr = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING");
+        
+        Console.WriteLine($"[DEBUG] Connection string: {conStr}");
+        
+        builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(conStr));
         
         builder.Services.AddServices();
+        
+        builder.Services.AddControllers();
 
         var app = builder.Build();
 
         app.UseLogging();
+        app.UseRouting();
         
-        new CustomerAuthentication().InitializeDatabaseAsync();
+        app.MapControllers();
 
-        app.MapPost("/RegisterCustomer", async (ICustomerManager customerManager, 
-                                                        RegisterCustomerRequest request) 
-                                                        =>
-                                                        {
-                                                            await customerManager.RegisterAsync(
-                                                                request.Name,
-                                                                request.Email,
-                                                                request.Password);
-                                                            return Results.Ok();
-                                                        });
-
-        app.MapPost("/AuthenticateCustomer", async (ICustomerManager customerManager,
-                                                            AuthenticateCustomerRequest request)
-                                                            =>
-                                                            {
-                                                                var token = await customerManager.AuthenticateAsync(
-                                                                    request.Email,
-                                                                    request.Password);
-                                                                return Results.Ok( new { token } );
-                                                            });
-        
         app.Run();
     }
 }

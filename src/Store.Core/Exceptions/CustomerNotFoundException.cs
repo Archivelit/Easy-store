@@ -1,4 +1,4 @@
-namespace Exceptions;
+namespace Store.Core.Exceptions;
 
 public class CustomerNotFoundException : Exception
 {

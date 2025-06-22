@@ -61,7 +61,7 @@ public class JwtHandler : IJwtManager
         
     private SigningCredentials GetSigningCredentials()
     {
-        var keyText = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "secret.key"));
+        var keyText = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "secret.key"));
         var securityKey = new SymmetricSecurityKey(Convert.FromBase64String(keyText));
         return new (securityKey, SecurityAlgorithms.HmacSha256);
     }

@@ -28,6 +28,9 @@ internal static class EmailValidator
         if (email.Length - localPartLength - 1 > MaxDomainLength)
             throw new InvalidEmailException("Max domain length exceeded. It has to be 189 characters.");
         
+        if (email.Length > MaxEmailLength)
+            throw new InvalidEmailException("Email is too long.");
+        
         if (!_emailRegex.IsMatch(email)) 
             throw new InvalidEmailException("Invalid email.");
 

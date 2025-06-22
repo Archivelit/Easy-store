@@ -1,4 +1,4 @@
-using Exceptions;
+using Store.Core.Exceptions;
 using Microsoft.Data.Sqlite;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Enums.Subscriptions;
@@ -54,7 +54,7 @@ internal class CustomerAuthentication : CustomersDb, ICustomerRepository
         }
     }
 
-    public async Task<(string email, string passwordHash)> GetCustomerPasswordHashByEmail(string email)
+    public async Task<string> GetPasswordHashByEmail(string email)
     {
         try
         {
@@ -67,10 +67,7 @@ internal class CustomerAuthentication : CustomersDb, ICustomerRepository
             await using var reader = await command.ExecuteReaderAsync();
             
             if (await reader.ReadAsync())
-            {
-                var passwordHash = reader.GetString(1); // PasswordHash
-                return (email, passwordHash);
-            }
+                return reader.GetString(1); // PasswordHash
 
             throw new CustomerNotFoundException("Customer with specified email not found.");
         }
@@ -104,6 +101,25 @@ internal class CustomerAuthentication : CustomersDb, ICustomerRepository
             }
             
             throw new CustomerNotFoundException("Customer with specified email not found.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
+    }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        try
+        {
+            await using var db = await OpenConnection();
+        
+            await using var command = new SqliteCommand("DELETE FROM Customers WHERE Id = @id", db);
+        
+            command.Parameters.AddWithValue("@id", id);
+        
+            await command.ExecuteNonQueryAsync();
         }
         catch (Exception ex)
         {

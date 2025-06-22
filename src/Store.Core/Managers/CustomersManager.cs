@@ -40,13 +40,21 @@ public class CustomersManager : ICustomerManager
         _validationService.ValidateEmail(email);
         _validationService.ValidatePassword(password);
         
-        var customerData = await _customerRepository.GetCustomerPasswordHashByEmail(email);
+        var passwordHashFromDb = await _customerRepository.GetPasswordHashByEmail(email);
         
         var passwordHash = _passwordHasher.HashPassword(password);
         
-        if (customerData.passwordHash != passwordHash)
+        if (passwordHashFromDb != passwordHash)
             throw new AuthenticationException("The password doesn't match");
         
         return _jwtManager.GenerateToken( await _customerRepository.GetCustomerByEmail(email));
+    }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        if (id == Guid.Empty)
+            throw new InvalidIdException("Id cannot be empty");
+        
+        await _customerRepository.DeleteAsync(id);
     }
 }

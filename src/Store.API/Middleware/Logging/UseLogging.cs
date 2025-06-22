@@ -1,4 +1,4 @@
-namespace API.Middleware.Logging;
+namespace Store.API.Middleware.Logging;
 
 public static class LoggingExtensions
 {

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
+namespace Store.API.DTO;
 
-namespace API.Requests;
 public record RegisterCustomerRequest(string Name, string Email, string Password);

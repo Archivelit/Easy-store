@@ -4,12 +4,10 @@ namespace Store.Core.Models;
 
 public class Customer
 {
-    public Guid Id { get; internal set; }
-    public string Name { get; internal set; }
-    public string Email { get; internal set; }
-    public Subscription SubscriptionType { get; internal set; } 
-    
-    internal Customer(){}
+    public Guid Id { get; init; }
+    public string Name { get; init; }
+    public string Email { get; init; }
+    public Subscription SubscriptionType { get; init; }
     
     public Customer(string name, string email)
     {
