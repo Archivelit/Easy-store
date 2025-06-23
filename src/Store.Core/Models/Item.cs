@@ -14,26 +14,26 @@ public class Item
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
     
-    public Item(string title, decimal price, int quantityInStock, Guid customerId, string? description = null)
+    internal Item(string title, decimal price, int quantityInStock, Guid customerId, string? description = null)
     {
         Id = Guid.NewGuid();
-        UpdateTitle(title);
-        UpdatePrice(price);
-        SetQuantity(quantityInStock);
+        Title = title;
+        Price = price;
+        QuantityInStock = quantityInStock;
         CustomerId = customerId;
-        UpdateDescription(description);
+        Description = description;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = null;
     }
     
-    public Item(Guid id, string title, decimal price, int quantityInStock, Guid customerId, string? description, DateTime createdAt, DateTime? updatedAt)
+    internal Item(Guid id, string title, decimal price, int quantityInStock, Guid customerId, string? description, DateTime createdAt, DateTime? updatedAt)
     {
         Id = id;
-        UpdateTitle(title);
-        UpdatePrice(price);
-        SetQuantity(quantityInStock);
+        Title = title;
+        Price = price;
+        QuantityInStock = quantityInStock;
         CustomerId = customerId;
-        UpdateDescription(description);
+        Description = description;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }
@@ -58,7 +58,7 @@ public class Item
         MarkUpdated();
     }
 
-    public void SetQuantity(int quantity)
+    public void UpdateQuantity(int quantity)
     {
         if (quantity < 0)
             throw new InvalidItemQuantity("Quantity cannot be negative");

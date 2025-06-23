@@ -1,6 +1,6 @@
 using Store.Core.Contracts.Validation;
 using Store.Core.Exceptions.InvalidData;
-using Store.Core.Utils.Validators;
+using Store.Core.Utils.Validators.Customer;
 
 namespace Store.Tests.Core.Utils.Validators;
 

@@ -13,8 +13,6 @@ public class Program
         DotNetEnv.Env.Load(Path.Combine(Environment.CurrentDirectory, "..", "..", ".env"));
         var conStr = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING");
         
-        Console.WriteLine($"[DEBUG] Connection string: {conStr}");
-        
         builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(conStr));
         
         builder.Services.AddServices();

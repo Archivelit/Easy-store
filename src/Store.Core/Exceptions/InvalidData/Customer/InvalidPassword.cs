@@ -1,6 +1,7 @@
 namespace Store.Core.Exceptions.InvalidData;
 
-public class InvalidPassword : InvalidUserData
+public class 
+    InvalidPassword : InvalidUserData
 {
     public InvalidPassword(string message)
         : base(message)

@@ -6,22 +6,22 @@ namespace Store.Infrastructure.Entities;
 public class CustomerEntity
 {
     [Key]
-    public Guid Id { get; internal set; }
+    public Guid Id { get; private set; }
 
     [Required]
     [MaxLength(100)] 
-    public string Name { get; internal set; }
+    public string Name { get; private set; }
 
     [Required]
     [MaxLength(255)]
     [EmailAddress]
-    public string Email { get; internal set; } 
+    public string Email { get; private set; } 
 
     [Required]
-    public Subscription SubscriptionType { get; internal set; }
+    public Subscription SubscriptionType { get; private set; }
 
     [Required]
-    public string PasswordHash { get; internal set; }
+    public string PasswordHash { get; private set; }
     
     public CustomerEntity(Guid id, string name, string email, Subscription subscriptionType, string passwordHash)
     {
@@ -32,5 +32,5 @@ public class CustomerEntity
         PasswordHash = passwordHash;
     }
     
-    internal CustomerEntity() { }
+    private CustomerEntity() { }
 }

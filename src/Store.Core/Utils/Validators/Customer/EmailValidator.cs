@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using Store.Core.Exceptions.InvalidData;
 
-namespace Store.Core.Utils.Validators;
+namespace Store.Core.Utils.Validators.Customer;
 
 internal static class EmailValidator
 {

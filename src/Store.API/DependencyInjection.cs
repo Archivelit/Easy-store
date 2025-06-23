@@ -7,7 +7,7 @@ using Store.Core.Contracts.Validation;
 using Store.Core.Providers.Validators;
 using Store.Core.Contracts.Security;
 using Store.Core.Utils.Hashers;
-using Store.Core.Utils.Validators;
+using Store.Core.Utils.Validators.Customer;
 using Store.Infrastructure.Data.Postgres;
 
 namespace Store.API;

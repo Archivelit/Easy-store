@@ -2,7 +2,7 @@ using Store.Core.Contracts.Validation;
 using Store.Core.Enums.Subscriptions;
 using Store.Core.Exceptions.InvalidData;
 
-namespace Store.Core.Utils.Validators;
+namespace Store.Core.Utils.Validators.Customer;
 
 public class SubscriptionValidator : ISubscriptionValidator
 {
