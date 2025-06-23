@@ -1,8 +1,9 @@
+using Store.Core.Contracts.Items;
 using Store.Core.Exceptions.InvalidData.Item;
 
 namespace Store.Core.Models;
 
-public class Item
+public class Item : IItem
 {
     public Guid Id { get; private set; }
     public string Title { get; private set; }

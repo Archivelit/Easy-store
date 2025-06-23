@@ -1,6 +1,6 @@
 using Store.Core.Builders;
-using Store.Infrastructure.Entities;
 using Store.Core.Models;
+using Store.Infrastructure.Entities;
 
 namespace Store.Infrastructure.Mappers;
 
@@ -10,17 +10,17 @@ public static class ItemMapper
     {
         var builder = new ItemBuilder();
 
-        return builder.WithTitle(item.Title)
+        return builder.WithId(item.Id)
+            .WithTitle(item.Title)
             .WithDescription(item.Description)
-            .WithId(item.Id)
-            .WithPrice(item.Price)
-            .WithCustomerId(item.CustomerId)
-            .WithQuantityInStock(item.QuantityInStock)
             .WithCreatedAt(item.CreatedAt)
             .WithUpdatedAt(item.UpdatedAt)
+            .WithPrice(item.Price)
+            .WithQuantityInStock(item.QuantityInStock)
+            .WithCustomerId(item.CustomerId)
             .Build();
     }
 
-    public static ItemEntity ToEntity(Item item) => new(item.Id, item.Title, item.Price, item.QuantityInStock,
-        item.CustomerId, item.Description, item.CreatedAt, item.UpdatedAt);
+    public static ItemEntity ToEntity(Item item) =>
+        new(item.Id, item.Title, item.Price, item.QuantityInStock, item.CustomerId, item.Description, item.CreatedAt, item.UpdatedAt);
 }

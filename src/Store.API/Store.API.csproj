@@ -23,4 +23,9 @@
     <ProjectReference Include="../Store.Infrastructure/Store.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+    <Folder Include="Controllers\Items\" />
+  </ItemGroup>
+
 </Project>
