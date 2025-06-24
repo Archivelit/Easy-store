@@ -1,22 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Store.Core.Factories;
+using Store.Infrastructure.Factories;
 using Store.Core.Contracts.Items;
 using Store.Core.Models.DTO.Items;
 using Store.Infrastructure.Data.Postgres;
-using Store.Infrastructure.Mappers;
 
 namespace Store.API.Controllers.Items;
 
 [Route("api/items")]
 [ApiController]
-public class RegistrationController : ControllerBase
+public class ItemController : ControllerBase
 {
     private readonly AppDbContext _context;
     private readonly IItemDtoValidator _itemDtoValidator;
-    private readonly ItemFactory _itemFactory;
+    private readonly IItemFactory _itemFactory;
 
-    public RegistrationController(AppDbContext context, IItemDtoValidator itemDtoValidator, ItemFactory itemFactory)
+    public ItemController(AppDbContext context, IItemDtoValidator itemDtoValidator, IItemFactory itemFactory)
     {
         _context = context;
         _itemDtoValidator = itemDtoValidator;
@@ -43,7 +42,7 @@ public class RegistrationController : ControllerBase
         
         _itemDtoValidator.ValidateAndThrow(itemDto);
         
-        var itemEntity = ItemMapper.ToEntity(_itemFactory.Create(itemDto));
+        var itemEntity = _itemFactory.Create(itemDto);
         
         _context.Entry(itemEntity).State = EntityState.Modified;
         
@@ -51,5 +50,14 @@ public class RegistrationController : ControllerBase
         
         return NoContent();
     }
-    
+
+    [HttpDelete("delete/{id}")]
+    public async Task<IActionResult> DeleteItemEntity(Guid id)
+    {
+        _context.Remove(await _context.Items.FirstOrDefaultAsync(i => i.Id == id));
+        
+        await _context.SaveChangesAsync();
+        
+        return NoContent();
+    }
 }

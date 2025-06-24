@@ -11,10 +11,8 @@ public class AppDbContext : DbContext
     public DbSet<CustomerEntity> Customers { get; set; }
     public DbSet<ItemEntity> Items { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    protected override void OnModelCreating(ModelBuilder modelBuilder) =>
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-    }
 }
 
 public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>

@@ -1,7 +1,7 @@
 using Store.Core.Contracts.Validation;
 using Store.Core.Exceptions.InvalidData;
 
-namespace Store.API.Utils.Validators.Customer;
+namespace Store.Core.Utils.Validators.Customer;
 
 public class CustomerNameValidator : ICustomerNameValidator
 {

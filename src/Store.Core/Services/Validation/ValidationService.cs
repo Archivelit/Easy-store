@@ -32,23 +32,15 @@ public class ValidationService : ICustomerValidator
         ValidateSubscription(subscription);
     }
 
-    public void ValidateCustomerName(string customerName)
-    {
+    public void ValidateCustomerName(string customerName) =>
         _customerNameValidator.ValidateCustomerName(customerName);
-    }
 
-    public void ValidateEmail(string email)
-    {
+    public void ValidateEmail(string email) =>
         _emailValidator.ValidateEmail(email);
-    }
 
-    public void ValidatePassword(string password)
-    {
+    public void ValidatePassword(string password) =>
         _passwordValidator.ValidatePassword(password);
-    }
-
-    public void ValidateSubscription(string subscription)
-    {
+    
+    public void ValidateSubscription(string subscription) =>
         _subscriptionValidator.ValidateSubscription(subscription);
-    }
 }

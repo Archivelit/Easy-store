@@ -11,12 +11,10 @@ public class AuthController : ControllerBase
 {
     private readonly ICustomerManager  _customerManager;
 
-    public AuthController(ICustomerManager customerManager)
-    {
+    public AuthController(ICustomerManager customerManager) =>
         _customerManager = customerManager;
-    }
     
-    // POST: api/customers/RegistrationController
+    // POST: api/customers/ItemController
     //
     // Registers customer and returns nothing
     //
@@ -24,7 +22,7 @@ public class AuthController : ControllerBase
     //  Name - customer name
     //  Email - customer email
     //  Password - customer password
-    [HttpPost("RegistrationController")]
+    [HttpPost("ItemController")]
     public async Task<ActionResult<CustomerEntity>> RegisterAsync(RegisterCustomerRequest model)
     {
         await _customerManager.RegisterAsync(model.Name, model.Email, model.Password);

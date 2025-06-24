@@ -1,7 +1,7 @@
 using Store.Core.Contracts.Validation;
 using Store.Core.Exceptions.InvalidData;
 
-namespace Store.API.Utils.Validators.Customer;
+namespace Store.Core.Utils.Validators.Customer;
 
 public class PasswordValidator : IPasswordValidator
 {
@@ -31,8 +31,6 @@ public class PasswordValidator : IPasswordValidator
         return true;
     }
 
-    private bool IsSymbol(char character)
-    {
-        return !(char.IsLetterOrDigit(character) && char.IsWhiteSpace(character));
-    }
+    private bool IsSymbol(char c) =>
+        !(char.IsLetterOrDigit(c) && char.IsWhiteSpace(c));
 }

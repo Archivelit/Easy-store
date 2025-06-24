@@ -1,6 +1,7 @@
 using Store.API.Middleware.Logging;
 using Microsoft.EntityFrameworkCore;
 using Store.Infrastructure.Data.Postgres;
+using Path = System.IO.Path;
 
 namespace Store.API;
 

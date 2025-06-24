@@ -10,10 +10,8 @@ public class ItemDtoValidator : IItemDtoValidator
 {
     private readonly AppDbContext _context;
     
-    public ItemDtoValidator(AppDbContext context)
-    {
+    public ItemDtoValidator(AppDbContext context) =>
         _context = context;
-    }
     
     public void ValidateAndThrow(ItemDto dto)
     {

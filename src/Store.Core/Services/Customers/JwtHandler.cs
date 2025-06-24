@@ -11,10 +11,8 @@ public class JwtHandler : IJwtManager
 {
     private readonly SigningCredentials _signingCredentials;
 
-    public JwtHandler()
-    {
+    public JwtHandler() =>
         _signingCredentials = GetSigningCredentials();
-    }
     
     public string GenerateToken(Customer customer)
     {
@@ -54,9 +52,7 @@ public class JwtHandler : IJwtManager
         var result = await tokenHandler.ValidateTokenAsync(token, validationParameters);
 
         if (!result.IsValid)
-        {
             throw new AuthenticationException("The token is invalid");
-        }
     }
         
     private SigningCredentials GetSigningCredentials()

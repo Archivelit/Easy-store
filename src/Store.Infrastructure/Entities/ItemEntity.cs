@@ -20,9 +20,6 @@ public class ItemEntity
     public decimal Price { get; private set; }
     public Guid CustomerId { get; private set; }
     public int QuantityInStock { get; private set; }
-    
-    [NotMapped]
-    public bool IsAvailable => QuantityInStock > 0;
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
     
@@ -84,8 +81,5 @@ public class ItemEntity
         MarkUpdated();
     }
 
-    private void MarkUpdated()
-    {
-        UpdatedAt = DateTime.UtcNow;
-    }
+    private void MarkUpdated() => UpdatedAt = DateTime.UtcNow;
 }

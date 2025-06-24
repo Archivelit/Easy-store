@@ -1,9 +1,10 @@
-using Store.Core.Models;
 using Store.Core.Contracts.Items;
+using Store.Infrastructure.Contracts;
+using Store.Infrastructure.Entities;
 
-namespace Store.Core.Builders;
+namespace Store.Infrastructure.Builders;
 
-public class ItemBuilder
+public class ItemEntityBuilder
 {
     private Guid Id { get; set; }
     private string Title { get; set; }
@@ -14,11 +15,11 @@ public class ItemBuilder
     private DateTime CreatedAt { get; set; }
     private DateTime? UpdatedAt { get; set; }
 
-    public ItemBuilder() => InitDefault();
+    public ItemEntityBuilder() => InitDefault();
 
-    public Item Build() => new(Id, Title, Price, QuantityInStock, CustomerId, Description, CreatedAt, UpdatedAt);
+    public ItemEntity Build() => new(Id, Title, Price, QuantityInStock, CustomerId, Description, CreatedAt, UpdatedAt);
 
-    public ItemBuilder From(IItem item) =>
+    public ItemEntityBuilder From(IItem item) =>
         WithId(item.Id)
         .WithTitle(item.Title)
         .WithDescription(item.Description)
@@ -28,61 +29,61 @@ public class ItemBuilder
         .WithCreatedAt(item.CreatedAt)
         .WithUpdatedAt(item.UpdatedAt);
     
-    public ItemBuilder Reset()
+    public ItemEntityBuilder Reset()
     {
         InitDefault();
         return this;
     }
     
-    public ItemBuilder WithTitle(string title)
+    public ItemEntityBuilder WithTitle(string title)
     {
         Title = title;
         return this;
     }
 
-    public ItemBuilder WithId(Guid id)
+    public ItemEntityBuilder WithId(Guid id)
     {
         Id = id;
         return this;
     }
     
-    public ItemBuilder WithDescription(string? description)
+    public ItemEntityBuilder WithDescription(string? description)
     {
         Description = description;
         return this;
     }
     
-    public ItemBuilder WithPrice(decimal price)
+    public ItemEntityBuilder WithPrice(decimal price)
     {
         Price = price;
         return this;
     }
 
-    public ItemBuilder WithCustomerId(Guid customerId)
+    public ItemEntityBuilder WithCustomerId(Guid customerId)
     {
         CustomerId = customerId;
         return this;
     }
 
-    public ItemBuilder WithQuantityInStock(int quantityInStock)
+    public ItemEntityBuilder WithQuantityInStock(int quantityInStock)
     {
         QuantityInStock = quantityInStock;
         return this;
     }
 
-    public ItemBuilder WithUpdatedAt(DateTime? updatedAt)
+    public ItemEntityBuilder WithUpdatedAt(DateTime? updatedAt)
     {
         UpdatedAt = updatedAt;
         return this;
     }
 
-    public ItemBuilder WithCreatedAt(DateTime createdAt)
+    public ItemEntityBuilder WithCreatedAt(DateTime createdAt)
     {
         CreatedAt = createdAt;
         return this;
     }
 
-    public ItemBuilder WithDefault()
+    public ItemEntityBuilder WithDefault()
     {
         Title = "Untitled";
         Price = 1m;

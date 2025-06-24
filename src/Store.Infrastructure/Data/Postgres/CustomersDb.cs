@@ -11,10 +11,7 @@ public class CustomersDb : ICustomerRepository
 {
     private readonly AppDbContext _db;
 
-    public CustomersDb(AppDbContext db)
-    {
-        _db = db;
-    }
+    public CustomersDb(AppDbContext db) => _db = db;
 
     public async Task RegisterAsync(Customer customer, string passwordHash)
     {

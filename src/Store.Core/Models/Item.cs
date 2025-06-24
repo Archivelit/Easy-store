@@ -11,7 +11,6 @@ public class Item : IItem
     public decimal Price { get; private set; }
     public Guid CustomerId { get; private set; }
     public int QuantityInStock { get; private set; }
-    public bool IsAvailable => QuantityInStock > 0;
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
     
@@ -41,10 +40,14 @@ public class Item : IItem
     
     public void UpdateTitle(string title)
     {
-        if (string.IsNullOrWhiteSpace(title)) 
+        title = title.Trim();
+        
+        if (string.IsNullOrEmpty(title)) 
             throw new InvalidItemTitle("Title cannot be empty");
         if (title.Length > 100)
             throw new InvalidItemTitle("Title length cannot exceed 100 characters");
+        if (title.Length < 1)
+            throw new InvalidItemTitle("Title cannot be empty");
 
         Title = title;
         MarkUpdated();
@@ -70,6 +73,8 @@ public class Item : IItem
 
     public void UpdateDescription(string? description)
     {
+        description = description?.Trim();
+        
         if (description != null && description.Length > 1000)
             throw new InvalidItemDescription("Description length cannot exceed 1000 characters");
 
@@ -77,8 +82,5 @@ public class Item : IItem
         MarkUpdated();
     }
 
-    private void MarkUpdated()
-    {
-        UpdatedAt = DateTime.UtcNow;
-    }
+    private void MarkUpdated() => UpdatedAt = DateTime.UtcNow;
 }

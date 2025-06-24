@@ -1,3 +1,4 @@
+using Store.API.Utils.Validators;
 using Store.Core.Contracts.Customers;
 using Store.Core.Managers;
 using Store.Core.Contracts.Repositories;
@@ -7,7 +8,8 @@ using Store.Core.Contracts.Validation;
 using Store.Core.Providers.Validators;
 using Store.Core.Contracts.Security;
 using Store.Core.Utils.Hashers;
-using Store.API.Utils.Validators.Customer;
+using Store.Core.Utils.Validators.Customer;
+using Store.Core.Contracts.Items;
 using Store.Infrastructure.Data.Postgres;
 
 namespace Store.API;
@@ -23,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<ICustomerNameValidator, CustomerNameValidator>();
         services.AddScoped<IPasswordValidator, PasswordValidator>();
         services.AddScoped<ISubscriptionValidator, SubscriptionValidator>();
+        services.AddScoped<IItemDtoValidator, ItemDtoValidator>();
         
         services.AddScoped<ICustomerRepository, CustomersDb>();
         
