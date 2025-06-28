@@ -1,19 +1,18 @@
-using Microsoft.EntityFrameworkCore;
-using Store.Infrastructure.Data.Postgres;
-using Store.Core.Contracts.Items;
-using Store.Core.Models.DTO.Items;
+using Store.Core.Contracts.Models;
+using Store.Core.Contracts.Repositories;
 using Store.Core.Exceptions.InvalidData.Item;
+using Store.Core.Contracts.Validation;
 
-namespace Store.API.Utils.Validators;
+namespace Store.Core.Utils.Validators.Items;
 
-public class ItemDtoValidator : IItemDtoValidator
+public class ItemValidator : IItemValidator
 {
-    private readonly AppDbContext _context;
+    private readonly ICustomerRepository _customerRepository;
     
-    public ItemDtoValidator(AppDbContext context) =>
-        _context = context;
+    public ItemValidator(ICustomerRepository repository) =>
+        _customerRepository = repository;
     
-    public void ValidateAndThrow(ItemDto dto)
+    public void ValidateAndThrow(IItem dto)
     {
         ValidateTitle(dto.Title);
         ValidateDescription(dto.Description);
@@ -56,7 +55,7 @@ public class ItemDtoValidator : IItemDtoValidator
         if (customerId == Guid.Empty)
             throw new InvalidCustomerId("Customer ID cannot be empty.");
         
-        if (! await _context.Customers.AnyAsync(x => x.Id == customerId))
+        if (! await _customerRepository.IsCustomerExistsAsync(customerId))
             throw new InvalidCustomerId("Customer with given ID was not found.");
     }
 

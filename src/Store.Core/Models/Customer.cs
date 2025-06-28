@@ -1,8 +1,9 @@
+using Store.Core.Contracts.Models;
 using Store.Core.Enums.Subscriptions;
 
 namespace Store.Core.Models;
 
-public class Customer
+public class Customer : ICustomer
 {
     public Guid Id { get; init; }
     public string Name { get; init; }

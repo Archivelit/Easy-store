@@ -1,4 +1,4 @@
-using Store.Core.Contracts.Items;
+using Store.Core.Contracts.Models;
 using Store.Core.Exceptions.InvalidData.Item;
 
 namespace Store.Core.Models;

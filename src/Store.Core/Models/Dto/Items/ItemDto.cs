@@ -1,11 +1,12 @@
-using Store.Core.Contracts.Items;
+using System.ComponentModel.DataAnnotations;
+using Store.Core.Contracts.Models;
 
-namespace Store.Core.Models.DTO.Items;
+namespace Store.Core.Models.Dto.Items;
 
 public record ItemDto : IItem
 {
     public Guid Id { get; init; }
-    public string Title { get; init; }
+    [Required] public string Title { get; init; }
     public string? Description { get; init; }
     public decimal Price { get; init; }
     public Guid CustomerId { get; init; }
@@ -23,5 +24,17 @@ public record ItemDto : IItem
         QuantityInStock = quantityInStock;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
+    }
+
+    public ItemDto(IItem item)
+    {
+        Id = item.Id;
+        Title = item.Title;
+        Description = item.Description;
+        Price = item.Price;
+        CustomerId = item.CustomerId;
+        QuantityInStock = item.QuantityInStock;
+        CreatedAt = item.CreatedAt;
+        UpdatedAt = item.UpdatedAt;
     }
 }

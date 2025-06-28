@@ -1,5 +1,5 @@
 using Store.Core.Models;
-using Store.Core.Contracts.Items;
+using Store.Core.Contracts.Models;
 
 namespace Store.Core.Builders;
 

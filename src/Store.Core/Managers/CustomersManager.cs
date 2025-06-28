@@ -4,6 +4,7 @@ using Store.Core.Contracts.Repositories;
 using Store.Core.Contracts.Security;
 using Store.Core.Contracts.Validation;
 using Store.Core.Exceptions.InvalidData;
+using Store.Core.Models;
 
 namespace Store.Core.Managers;
 
@@ -23,7 +24,7 @@ public class CustomersManager : ICustomerManager
         _jwtManager = jwtManager;
     }
 
-    public async Task RegisterAsync(string name, string email, string password)
+    public async Task<Customer> RegisterAsync(string name, string email, string password)
     {
         _validationService.ValidateAndThrow(name, email, password);
         
@@ -31,8 +32,12 @@ public class CustomersManager : ICustomerManager
             throw new InvalidEmail("Email is already registered");
         
         var passwordHash = _passwordHasher.HashPassword(password);
+
+        var customer = new Customer(name, email);
         
-        await _customerRepository.RegisterAsync(new (name, email), passwordHash);
+        await _customerRepository.RegisterAsync(customer, passwordHash);
+
+        return customer;
     }
 
     public async Task<string> AuthenticateAsync(string email, string password)
@@ -40,14 +45,16 @@ public class CustomersManager : ICustomerManager
         _validationService.ValidateEmail(email);
         _validationService.ValidatePassword(password);
         
-        var passwordHashFromDb = await _customerRepository.GetPasswordHashByEmail(email);
+        var customerData = await _customerRepository.GetCustomerDataByEmail(email);
+
+        var passwordHashFromDb = customerData.passwordHash;
         
         var passwordHash = _passwordHasher.HashPassword(password);
         
         if (passwordHashFromDb != passwordHash)
             throw new AuthenticationException("The password doesn't match");
         
-        return _jwtManager.GenerateToken( await _customerRepository.GetCustomerByEmail(email));
+        return _jwtManager.GenerateToken(customerData.customer);
     }
 
     public async Task DeleteAsync(Guid id)

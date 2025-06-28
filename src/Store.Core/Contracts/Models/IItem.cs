@@ -1,4 +1,4 @@
-namespace Store.Core.Contracts.Items;
+namespace Store.Core.Contracts.Models;
 
 public interface IItem
 {

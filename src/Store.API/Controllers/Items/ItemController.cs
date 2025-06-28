@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Store.Infrastructure.Factories;
-using Store.Core.Contracts.Items;
-using Store.Core.Models.DTO.Items;
-using Store.Infrastructure.Data.Postgres;
+using MediatR;
+using Store.Core.Contracts.CQRS.Items.Commands;
+using Store.Core.Contracts.CQRS.Items.Queries;
+using Store.Core.Models.Dto.Items;
 
 namespace Store.API.Controllers.Items;
 
@@ -11,18 +10,11 @@ namespace Store.API.Controllers.Items;
 [ApiController]
 public class ItemController : ControllerBase
 {
-    private readonly AppDbContext _context;
-    private readonly IItemDtoValidator _itemDtoValidator;
-    private readonly IItemFactory _itemFactory;
+    private readonly IMediator _mediator;
 
-    public ItemController(AppDbContext context, IItemDtoValidator itemDtoValidator, IItemFactory itemFactory)
-    {
-        _context = context;
-        _itemDtoValidator = itemDtoValidator;
-        _itemFactory = itemFactory;
-    }
+    public ItemController(IMediator mediator) => _mediator = mediator;
 
-    // PUT: api/items/register/
+    // POST: api/items/
     // Register item in db
     //
     // Params:
@@ -31,33 +23,44 @@ public class ItemController : ControllerBase
     //  Price - item price
     //  QuantityInStock - quantity of items in stock
     //  CreatedAt - creation date
-    //  <OPTIONAL>
+    //  OPTIONAL
     //  UpdatedAt - update date
     //  Description - item description
     // 
-    [HttpPut ("register")]
-    public async Task<IActionResult> PutItemEntity(ItemDto itemDto)
+    [HttpPut]
+    public async Task<ActionResult<ItemDto>> RegisterItem(CreateItemCommand command)
     {
-        itemDto = itemDto with { Title = itemDto.Title.Trim(),  Description = itemDto.Description?.Trim() };
+        var createdItem = await _mediator.Send(command);
+        return CreatedAtAction(nameof(GetItemById), new { id = createdItem.Id }, createdItem);
+    }
+    
+    // DELETE: api/items/{item id}
+    // Delete item in db with specified id
+    //
+    // Params:
+    //  Id - item id
+    //
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteItemEntity(Guid id)
+    {
         
-        _itemDtoValidator.ValidateAndThrow(itemDto);
-        
-        var itemEntity = _itemFactory.Create(itemDto);
-        
-        _context.Entry(itemEntity).State = EntityState.Modified;
-        
-        await _context.SaveChangesAsync();
-        
+        var command = new DeleteItemCommand(id);
+        await _mediator.Send(command);
         return NoContent();
     }
 
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> DeleteItemEntity(Guid id)
+    // GET: api/items/{item id}
+    // Returns item from db with specified id
+    //
+    // Params:
+    //  Id - item id
+    //
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ItemDto>> GetItemById(Guid id)
     {
-        _context.Remove(await _context.Items.FirstOrDefaultAsync(i => i.Id == id));
-        
-        await _context.SaveChangesAsync();
-        
-        return NoContent();
+        var item = await _mediator.Send(new GetItemByIdQuery(id));
+        return Ok(item);
     }
+    
+    // TODO: write endpoint for getting some random items
 }

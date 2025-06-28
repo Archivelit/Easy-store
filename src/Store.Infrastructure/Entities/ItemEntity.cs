@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Store.Core.Contracts.Models;
 using Store.Core.Exceptions.InvalidData.Item;
 
 namespace Store.Infrastructure.Entities;
 
-public class ItemEntity
+public class ItemEntity : IItem
 {
     [Key]
     public Guid Id { get; private set; } = Guid.NewGuid();

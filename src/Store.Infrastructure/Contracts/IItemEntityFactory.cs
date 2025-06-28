@@ -1,4 +1,4 @@
-using Store.Core.Contracts.Items;
+using Store.Core.Contracts.Models;
 using Store.Infrastructure.Entities;
 
 namespace Store.Infrastructure.Contracts;
