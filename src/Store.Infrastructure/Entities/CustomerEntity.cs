@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Store.Core.Contracts.Models;
+using Store.App.GraphQl.Models;
 using Store.Core.Enums.Subscriptions;
 
 namespace Store.Infrastructure.Entities;

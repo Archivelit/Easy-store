@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Store.Core.Contracts.Models;
+using Store.App.GraphQl.Models;
 using Store.Core.Exceptions.InvalidData.Item;
 
 namespace Store.Infrastructure.Entities;

@@ -1,5 +1,5 @@
 using Store.Core.Utils.Hashers;
-using Store.Core.Contracts.Security;
+using Store.App.GraphQl.Security;
 
 namespace Store.Tests.Core.Utils;
 public class PasswordHasherTests

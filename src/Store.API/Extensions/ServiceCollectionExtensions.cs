@@ -1,18 +1,16 @@
-using Store.App.Customers.Commands;
-using Store.App.Items.Commands;
-using Store.App.Items.Queries;
-using Store.Core.Contracts.CQRS.Customers.Commands;
-using Store.Core.Contracts.CQRS.Items.Commands;
-using Store.Core.Contracts.CQRS.Items.Queries;
-using Store.Core.Contracts.Customers;
-using Store.Core.Contracts.Items;
+using Store.App.CQRS.Customers.Commands.Update;
+using Store.App.CQRS.Customers.Commands.Update.UpdateChain;
+using Store.App.GraphQl;
+using Store.App.GraphQl.CQRS;
+using Store.App.GraphQl.Customers;
+using Store.App.GraphQl.Items;
 using Store.Core.Managers;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Services.Customers;
 using Store.Core.Services.Validation;
-using Store.Core.Contracts.Validation;
+using Store.App.GraphQl.Validation;
 using Store.Core.Providers.Validators;
-using Store.Core.Contracts.Security;
+using Store.App.GraphQl.Security;
 using Store.Core.Factories;
 using Store.Core.Utils.Hashers;
 using Store.Core.Utils.Validators.Customer;
@@ -29,40 +27,90 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IItemFactory, ItemFactory>();
         services.AddScoped<IItemEntityFactory, ItemEntityFactory>();
-        
+
         services.AddScoped<IPasswordHasher, PasswordHasher>();
-        
+
         services.AddScoped<IEmailValidator, EmailValidatorAdapter>();
-        services.AddScoped<ICustomerNameValidator, CustomerNameValidator>();
+        services.AddTransient<ICustomerNameValidator, CustomerNameValidator>();
         services.AddScoped<IPasswordValidator, PasswordValidator>();
         services.AddScoped<ISubscriptionValidator, SubscriptionValidator>();
-        
+
         services.AddScoped<IItemValidator, ItemValidator>();
         services.AddScoped<ICustomerValidator, ValidationService>();
-        
+
         services.AddScoped<ICustomerRepository, CustomersRepository>();
         services.AddScoped<IItemRepository, ItemRepository>();
-        
+
         services.AddScoped<IJwtManager, JwtHandler>();
-        
+
         services.AddScoped<ICustomerManager, CustomersManager>();
+
+        services.AddTransient<UpdateCustomerEmail>();
+        services.AddTransient<UpdateCustomerName>();
+        services.AddTransient<UpdateCustomerSubscription>();
         
+        services.AddTransient<CustomerUpdateChainFactory>();
+
         return services;
     }
 
-    public static void ConfigureMediatR(this IServiceCollection services)
+
+    public static IServiceCollection ConfigureGraphQl(this IServiceCollection services)
     {
-        services.AddMediatR(config => config.RegisterServicesFromAssemblies(
-            typeof(RegisterCustomerCommand).Assembly,
-            typeof(RegisterCustomerCommandHandler).Assembly,
-            typeof(AuthenticateCustomerCommand).Assembly,
-            typeof(AuthenticateCustomerCommandHandler).Assembly,
-            typeof(CreateItemCommand).Assembly,
-            typeof(CreateItemCommandHandler).Assembly,
-            typeof(DeleteItemCommand).Assembly,
-            typeof(DeleteItemCommandHandler).Assembly,
-            typeof(GetItemByIdQuery).Assembly,
-            typeof(GetItemByIdQueryHandler).Assembly
-        ));
+        services
+            .AddGraphQLServer()
+            .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
+            .AddQueryType<Query>()
+            .AddMutationType<Mutation>()
+            /*.AddSubscriptionType<Subscription>()*/;
+
+        services.AddGraphQlExtendTypes();
+        return services;
+    }
+
+    public static IServiceCollection RegisterHandlersFromApp(this IServiceCollection services)
+    {
+        var assembly = typeof(Query).Assembly;
+        var types = assembly.GetTypes();
+
+        var handlerInterfaces = new[]
+        {
+            typeof(IQueryHandler<,>),
+            typeof(ICommandHandler<>),
+            typeof(ICommandHandler<,>)
+        };
+
+        foreach (var type in types)
+        {
+            if (!type.IsClass || type.IsAbstract)
+                continue;
+
+            var interfaces = type.GetInterfaces()
+                .Where(i => i.IsGenericType &&
+                            handlerInterfaces.Any(h => h == i.GetGenericTypeDefinition()));
+            
+            foreach (var iface in interfaces)
+            {
+                services.AddScoped(iface, type);
+            }
+        }
+
+        return services;
+    }
+
+    private static IServiceCollection AddGraphQlExtendTypes(this IServiceCollection services)
+    {
+        var assembly = typeof(Query).Assembly;
+        var extenderInterface = typeof(IGraphQlExtender);
+        
+        var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && extenderInterface.IsAssignableFrom(t));
+
+
+        foreach (var type in types)
+        {
+            services.AddGraphQLServer().AddTypeExtension(type);
+        }
+        
+        return services;
     }
 }

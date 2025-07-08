@@ -1,6 +1,6 @@
 using Store.Core.Builders;
-using Store.Core.Contracts.Items;
-using Store.Core.Contracts.Models;
+using Store.App.GraphQl.Items;
+using Store.App.GraphQl.Models;
 using Store.Core.Models;
 
 namespace Store.Core.Factories;

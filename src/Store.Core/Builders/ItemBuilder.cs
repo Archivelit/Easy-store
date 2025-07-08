@@ -1,5 +1,5 @@
 using Store.Core.Models;
-using Store.Core.Contracts.Models;
+using Store.App.GraphQl.Models;
 
 namespace Store.Core.Builders;
 
@@ -79,6 +79,12 @@ public class ItemBuilder
     public ItemBuilder WithCreatedAt(DateTime createdAt)
     {
         CreatedAt = createdAt;
+        return this;
+    }
+
+    public ItemBuilder UpdatedNow()
+    {
+        UpdatedAt = DateTime.UtcNow;
         return this;
     }
 

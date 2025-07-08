@@ -1,4 +1,4 @@
-using Store.Core.Contracts.Models;
+using Store.App.GraphQl.Models;
 using Store.Core.Exceptions.InvalidData.Item;
 
 namespace Store.Core.Models;
@@ -37,50 +37,4 @@ public class Item : IItem
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }
-    
-    public void UpdateTitle(string title)
-    {
-        title = title.Trim();
-        
-        if (string.IsNullOrEmpty(title)) 
-            throw new InvalidItemTitle("Title cannot be empty");
-        if (title.Length > 100)
-            throw new InvalidItemTitle("Title length cannot exceed 100 characters");
-        if (title.Length < 1)
-            throw new InvalidItemTitle("Title cannot be empty");
-
-        Title = title;
-        MarkUpdated();
-    }
-
-    public void UpdatePrice(decimal price)
-    {
-        if (price < 0) 
-            throw new InvalidItemPrice("Price cannot be negative");
-
-        Price = price;
-        MarkUpdated();
-    }
-
-    public void UpdateQuantity(int quantity)
-    {
-        if (quantity < 0)
-            throw new InvalidItemQuantity("Quantity cannot be negative");
-
-        QuantityInStock = quantity;
-        MarkUpdated();
-    }
-
-    public void UpdateDescription(string? description)
-    {
-        description = description?.Trim();
-        
-        if (description != null && description.Length > 1000)
-            throw new InvalidItemDescription("Description length cannot exceed 1000 characters");
-
-        Description = description;
-        MarkUpdated();
-    }
-
-    private void MarkUpdated() => UpdatedAt = DateTime.UtcNow;
 }

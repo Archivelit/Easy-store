@@ -1,4 +1,4 @@
-using Store.Core.Contracts.Models;
+using Store.App.GraphQl.Models;
 using Store.Infrastructure.Entities;
 
 namespace Store.Infrastructure.Contracts;

@@ -1,11 +1,11 @@
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.Items.Commands;
-using Store.Core.Contracts.Items;
+using Store.App.GraphQl.CQRS;
+using Store.App.GraphQl.Items;
 using Store.Core.Contracts.Repositories;
-using Store.Core.Contracts.Validation;
+using Store.App.GraphQl.Validation;
+using Store.Core.Contracts.CQRS.Items.Commands;
 using Store.Core.Models.Dto.Items;
 
-namespace Store.App.Items.Commands;
+namespace Store.App.CQRS.Items.Commands;
 
 public class CreateItemCommandHandler : ICommandHandler<CreateItemCommand, ItemDto>
 {
@@ -37,7 +37,7 @@ public class CreateItemCommandHandler : ICommandHandler<CreateItemCommand, ItemD
         
         var itemEntity = _itemFactory.Create(command.Item);
         
-        await _repository.RegisterItemAsync(itemEntity);
+        await _repository.RegisterAsync(itemEntity);
 
         return new(itemEntity);
     }

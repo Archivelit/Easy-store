@@ -1,9 +1,9 @@
-using Store.Core.Contracts.CQRS;
+using Store.App.GraphQl.CQRS;
 using Store.Core.Contracts.CQRS.Items.Queries;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Models.Dto.Items;
 
-namespace Store.App.Items.Queries;
+namespace Store.App.CQRS.Items.Queries;
 
 public class GetItemByIdQueryHandler : IQueryHandler<GetItemByIdQuery, ItemDto>
 {
@@ -17,6 +17,6 @@ public class GetItemByIdQueryHandler : IQueryHandler<GetItemByIdQuery, ItemDto>
     {
         cancellationToken.ThrowIfCancellationRequested();
         
-        return new(await _repository.GetItemByIdAsync(request.Id));
+        return new(await _repository.GetByIdAsync(request.Id));
     }
 }

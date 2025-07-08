@@ -1,7 +1,7 @@
+using Store.App.GraphQl.Models;
 using Store.Core.Models;
-using Store.Core.Contracts.Models;
 
-namespace Store.Core.Contracts.Items;
+namespace Store.App.GraphQl.Items;
 
 public interface IItemFactory
 {

@@ -1,4 +1,4 @@
-using Store.Core.Contracts.Validation;
+using Store.App.GraphQl.Validation;
 
 namespace Store.Core.Services.Validation;
 

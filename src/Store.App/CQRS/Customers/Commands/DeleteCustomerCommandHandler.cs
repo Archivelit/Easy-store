@@ -1,9 +1,9 @@
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.Customers.Commands;
+using Store.App.GraphQl.CQRS;
+using Store.App.GraphQl.CQRS.Customers.Commands;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Exceptions.InvalidData.Item;
 
-namespace Store.App.Customers.Commands;
+namespace Store.App.CQRS.Customers.Commands.Update;
 
 public class DeleteCustomerCommandHandler : ICommandHandler<DeleteCustomerCommand>
 {
@@ -12,12 +12,12 @@ public class DeleteCustomerCommandHandler : ICommandHandler<DeleteCustomerComman
     public DeleteCustomerCommandHandler(ICustomerRepository customerRepository) =>
         _customerRepository = customerRepository;
 
-    public async Task Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCustomerCommand command, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         
-        if(request.CustomerId == Guid.Empty) throw new InvalidCustomerId("CustomerId cannot be empty");
+        if(command.CustomerId == Guid.Empty) throw new InvalidCustomerId("CustomerId cannot be empty");
         
-        await _customerRepository.DeleteAsync(request.CustomerId);
+        await _customerRepository.DeleteAsync(command.CustomerId);
     }
 }

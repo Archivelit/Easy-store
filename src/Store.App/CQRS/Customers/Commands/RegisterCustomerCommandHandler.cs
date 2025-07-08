@@ -1,9 +1,9 @@
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.Customers.Commands;
-using Store.Core.Contracts.Customers;
+using Store.App.GraphQl.CQRS;
+using Store.App.GraphQl.CQRS.Customers.Commands;
+using Store.App.GraphQl.Customers;
 using Store.Core.Models.Dto.Customers;
 
-namespace Store.App.Customers.Commands;
+namespace Store.App.CQRS.Customers.Commands.Update;
 
 public class RegisterCustomerCommandHandler : ICommandHandler<RegisterCustomerCommand, CustomerDto>
 {

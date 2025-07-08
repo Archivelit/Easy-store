@@ -1,5 +1,3 @@
-using MediatR;
+namespace Store.App.GraphQl.CQRS;
 
-namespace Store.Core.Contracts.CQRS;
-
-public interface IQuery<TResult> : IRequest<TResult>;
+public interface IQuery<TResult>;

@@ -1,7 +1,7 @@
-using Store.Core.Contracts.Models;
+using Store.App.GraphQl.Models;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Exceptions.InvalidData.Item;
-using Store.Core.Contracts.Validation;
+using Store.App.GraphQl.Validation;
 
 namespace Store.Core.Utils.Validators.Items;
 
@@ -23,7 +23,7 @@ public class ItemValidator : IItemValidator
         ValidateUpdateDate(dto.UpdatedAt, dto.CreatedAt);
     }
 
-    private void ValidateTitle(string title)
+    public void ValidateTitle(string title)
     {
         if (string.IsNullOrEmpty(title))
             throw new InvalidItemTitle("Item title cannot be null or empty.");
@@ -38,7 +38,7 @@ public class ItemValidator : IItemValidator
             throw new InvalidItemTitle("Invalid item title. It must contain at least 1 letter.");
     }
 
-    private void ValidateDescription(string? description)
+    public void ValidateDescription(string? description)
     {
         if (string.IsNullOrWhiteSpace(description))
             return;
@@ -50,34 +50,34 @@ public class ItemValidator : IItemValidator
             throw new InvalidItemDescription("Description must contain letters.");
     }
 
-    private async void ValidateCustomerId(Guid customerId)
+    public async void ValidateCustomerId(Guid customerId)
     {
         if (customerId == Guid.Empty)
             throw new InvalidCustomerId("Customer ID cannot be empty.");
         
-        if (! await _customerRepository.IsCustomerExistsAsync(customerId))
+        if (! await _customerRepository.IsExistsAsync(customerId))
             throw new InvalidCustomerId("Customer with given ID was not found.");
     }
 
-    private void ValidatePrice(decimal price)
+    public void ValidatePrice(decimal price)
     {
         if (price < 0)
             throw new InvalidItemPrice("Price must be greater than zero.");
     }
 
-    private void ValidateQuantity(int quantity)
+    public void ValidateQuantity(int quantity)
     {
         if (quantity < 0)
             throw new InvalidItemQuantity("Quantity must be greater than zero.");
     }
 
-    private void ValidateCreationDate(DateTime creationDate)
+    public void ValidateCreationDate(DateTime creationDate)
     {
         if (creationDate > DateTime.UtcNow)
             throw new InvalidItemCreateTime("Creation date cannot be in the future.");
     }
 
-    private void ValidateUpdateDate(DateTime? updateDate, DateTime creationDate)
+    public void ValidateUpdateDate(DateTime? updateDate, DateTime creationDate)
     {
         if (updateDate == null)
             return;

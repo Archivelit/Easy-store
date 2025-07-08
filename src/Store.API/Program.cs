@@ -11,10 +11,6 @@ public static class Program
     {
         DotNetEnv.Env.Load(Path.Combine(Environment.CurrentDirectory, "..", "..", ".env"));
         
-        Console.WriteLine(Path.Combine(Environment.CurrentDirectory, "..", "..", ".env"));
-        
-        Console.WriteLine(DotNetEnv.Env.GetString("POSTGRES_CONNECTION_STRING"));
-        
         var builder = WebApplication.CreateBuilder(args);
         
         builder.Configuration
@@ -23,14 +19,14 @@ public static class Program
         
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();
-        builder.Services.ConfigureMediatR();
-        builder.Services.AddControllers();
+        builder.Services.ConfigureGraphQl();
+        builder.Services.RegisterHandlersFromApp();
 
         var app = builder.Build();
 
         app.UseLogging();
         app.UseRouting();
-        app.MapControllers();
+        app.MapGraphQL();
         
         app.Run();
     }

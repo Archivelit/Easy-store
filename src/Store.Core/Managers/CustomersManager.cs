@@ -1,10 +1,11 @@
 using System.Security.Authentication;
-using Store.Core.Contracts.Customers;
+using Store.App.GraphQl.Customers;
 using Store.Core.Contracts.Repositories;
-using Store.Core.Contracts.Security;
-using Store.Core.Contracts.Validation;
+using Store.App.GraphQl.Security;
+using Store.App.GraphQl.Validation;
 using Store.Core.Exceptions.InvalidData;
 using Store.Core.Models;
+using Bcrypt = BCrypt.Net.BCrypt;
 
 namespace Store.Core.Managers;
 
@@ -28,7 +29,7 @@ public class CustomersManager : ICustomerManager
     {
         _validationService.ValidateAndThrow(name, email, password);
         
-        if(await _customerRepository.IsEmailClaimed(email))
+        if(await _customerRepository.IsEmailClaimedAsync(email))
             throw new InvalidEmail("Email is already registered");
         
         var passwordHash = _passwordHasher.HashPassword(password);
@@ -45,13 +46,13 @@ public class CustomersManager : ICustomerManager
         _validationService.ValidateEmail(email);
         _validationService.ValidatePassword(password);
         
-        var customerData = await _customerRepository.GetCustomerDataByEmail(email);
+        var customerData = await _customerRepository.GetByEmailAsync(email);
 
         var passwordHashFromDb = customerData.passwordHash;
         
         var passwordHash = _passwordHasher.HashPassword(password);
         
-        if (passwordHashFromDb != passwordHash)
+        if (!Bcrypt.Verify(passwordHash, passwordHashFromDb))
             throw new AuthenticationException("The password doesn't match");
         
         return _jwtManager.GenerateToken(customerData.customer);

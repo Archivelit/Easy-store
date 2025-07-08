@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.6" />
-    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="15.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.5" />
@@ -23,12 +22,7 @@
 
     <ProjectReference Include="../Store.Core/Store.Core.csproj" />
     <ProjectReference Include="../Store.Infrastructure/Store.Infrastructure.csproj" />
-    <ProjectReference Include="..\Store.Application\Store.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\Items\" />
-    <Folder Include="Utils\Validators\" />
+    <ProjectReference Include="..\Store.App\Store.App.csproj" />
   </ItemGroup>
 
 </Project>

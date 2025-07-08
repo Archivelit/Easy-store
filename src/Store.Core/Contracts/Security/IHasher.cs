@@ -1,4 +1,4 @@
-namespace Store.Core.Contracts.Security;
+namespace Store.App.GraphQl.Security;
 
 public interface IPasswordHasher
 {

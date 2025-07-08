@@ -1,8 +1,8 @@
-using Store.Core.Contracts.CQRS;
+using Store.App.GraphQl.CQRS;
 using Store.Core.Contracts.CQRS.Items.Commands;
 using Store.Core.Contracts.Repositories;
 
-namespace Store.App.Items.Commands;
+namespace Store.App.CQRS.Items.Commands;
 
 public class DeleteItemCommandHandler : ICommandHandler<DeleteItemCommand>
 {
@@ -16,6 +16,6 @@ public class DeleteItemCommandHandler : ICommandHandler<DeleteItemCommand>
     {
         cancellationToken.ThrowIfCancellationRequested();
         
-        await _repository.DeleteItemByIdAsync(request.Id);
+        await _repository.DeleteByIdAsync(request.Id);
     }
 }

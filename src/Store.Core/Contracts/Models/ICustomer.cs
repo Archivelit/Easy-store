@@ -1,6 +1,6 @@
 using Store.Core.Enums.Subscriptions;
 
-namespace Store.Core.Contracts.Models;
+namespace Store.App.GraphQl.Models;
 
 public interface ICustomer
 {

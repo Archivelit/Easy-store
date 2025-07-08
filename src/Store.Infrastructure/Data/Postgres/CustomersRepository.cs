@@ -19,12 +19,12 @@ public class CustomersRepository : ICustomerRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<bool> IsEmailClaimed(string email) =>
+    public async Task<bool> IsEmailClaimedAsync(string email) =>
         await _db.Customers
             .AsNoTracking()
             .AnyAsync(c => c.Email == email);
 
-    public async Task<(Customer customer, string passwordHash)> GetCustomerDataByEmail(string email)
+    public async Task<(Customer customer, string passwordHash)> GetByEmailAsync(string email)
     {
         var customerEntity = await _db.Customers
             .AsNoTracking()
@@ -42,5 +42,23 @@ public class CustomersRepository : ICustomerRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<bool> IsCustomerExistsAsync(Guid id) => await _db.Customers.AsNoTracking().AnyAsync(c => c.Id == id);
+    public async Task<bool> IsExistsAsync(Guid id) => await _db.Customers.AsNoTracking().AnyAsync(c => c.Id == id);
+
+    public async Task<(Customer customer, string passwordHash)> GetByIdAsync(Guid id)
+    {
+        var entity = await _db.Customers.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        
+        if (entity == null)
+            throw new CustomerNotFound($"Customer with id {id} not found");
+        
+        return (CustomerMapper.ToDomain(entity), entity.PasswordHash);
+    }
+    
+    public async Task UpdateAsync(Customer customer, string passwordHash)
+    {
+        var entity = CustomerMapper.ToEntity(customer, passwordHash);
+        
+        _db.Customers.Update(entity);
+        await _db.SaveChangesAsync();
+    }
 }

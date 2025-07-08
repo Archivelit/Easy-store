@@ -1,4 +1,4 @@
-using Store.Core.Contracts.Validation;
+using Store.App.GraphQl.Validation;
 using Store.Core.Exceptions.InvalidData;
 using Store.Core.Utils.Validators.Customer;
 

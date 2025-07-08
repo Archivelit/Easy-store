@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using Store.Core.Contracts.Items;
-using Store.Core.Contracts.Models;
+using Store.App.GraphQl.Items;
+using Store.App.GraphQl.Models;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Exceptions.InvalidData.Item;
-using Store.Core.Factories;
 using Store.Core.Models;
+using Store.Core.Models.Dto.Items;
 using Store.Infrastructure.Contracts;
 using Store.Infrastructure.Entities;
 
@@ -23,13 +23,13 @@ public class ItemRepository : IItemRepository
         _itemEntityFactory = itemEntityFactory;
     }
 
-    public async Task<Item> GetItemByIdAsync(Guid id) => _itemFactory.Create(
+    public async Task<Item> GetByIdAsync(Guid id) => _itemFactory.Create(
             await _context.Items
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == id) 
         ?? throw new ItemNotFound($"Item with id {id} not found."));
 
-    public async Task RegisterItemAsync(IItem item)
+    public async Task RegisterAsync(IItem item)
     {
         var entity = item is ItemEntity itemEntity
             ? itemEntity
@@ -39,10 +39,15 @@ public class ItemRepository : IItemRepository
         await _context.SaveChangesAsync();
     }
     
-    public async Task DeleteItemByIdAsync(Guid id)
+    public async Task DeleteByIdAsync(Guid id)
     {
         _context.Remove(await _context.Items.FirstOrDefaultAsync(i => i.Id == id));
+        await _context.SaveChangesAsync();
+    }
 
+    public async Task UpdateAsync(ItemDto itemDto)
+    {
+        _context.Update(itemDto);
         await _context.SaveChangesAsync();
     }
 }
