@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Store.App.GraphQl.Validation;
 using Store.Core.Builders;
 using Store.Core.Models.Dto.Customers;
@@ -8,10 +9,12 @@ public class UpdateCustomerBase : ICustomerUpdateChain
 {
     protected ICustomerUpdateChain? _next;
     protected ICustomerValidator _validator;
+    protected ILogger _logger;
 
-    public UpdateCustomerBase(ICustomerValidator validator)
+    public UpdateCustomerBase(ICustomerValidator validator, ILogger logger)
     {
         _validator = validator;
+        _logger = logger;
     }
 
     public ICustomerUpdateChain SetNext(ICustomerUpdateChain next)

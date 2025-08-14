@@ -3,6 +3,7 @@ using Store.Core.Contracts.Repositories;
 using Store.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Store.Infrastructure.Mappers;
+using Microsoft.Extensions.Logging;
 
 namespace Store.Infrastructure.Data.Postgres;
 
@@ -10,13 +11,22 @@ namespace Store.Infrastructure.Data.Postgres;
 public class CustomersRepository : ICustomerRepository
 {
     private readonly AppDbContext _db;
+    private readonly ILogger<CustomersRepository> _logger;
 
-    public CustomersRepository(AppDbContext db) => _db = db;
+    public CustomersRepository(AppDbContext db, ILogger<CustomersRepository> logger)
+    {
+        _db = db;
+        _logger = logger;
+    }
 
     public async Task RegisterAsync(Customer customer, string passwordHash)
     {
+        _logger.LogInformation("Registering user {UserId}", customer.Id);
+
         await _db.Customers.AddAsync(CustomerMapper.ToEntity(customer, passwordHash));
         await _db.SaveChangesAsync();
+
+        _logger.LogInformation("User {UserId} registered succesfuly", customer.Id);
     }
 
     public async Task<bool> IsEmailClaimedAsync(string email) =>
@@ -35,9 +45,9 @@ public class CustomersRepository : ICustomerRepository
 
     public async Task DeleteAsync(Guid id)
     {
-        var customer =  await _db.Customers .FindAsync(id)
+        var customer = await _db.Customers.FindAsync(id)
             ?? throw new CustomerNotFound($"Customer with id {id} not found");
-        
+
         _db.Customers.Remove(customer);
         await _db.SaveChangesAsync();
     }

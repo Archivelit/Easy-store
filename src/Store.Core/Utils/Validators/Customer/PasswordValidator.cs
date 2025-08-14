@@ -1,3 +1,4 @@
+using Serilog;
 using Store.App.GraphQl.Validation;
 using Store.Core.Exceptions.InvalidData;
 
@@ -27,7 +28,9 @@ public class PasswordValidator : IPasswordValidator
 
         if (!password.Any(IsSymbol))
             throw new InvalidPassword("Password must contain at least one symbol.");
-        
+
+        Log.Debug("User password validated succesfuly");
+
         return true;
     }
 

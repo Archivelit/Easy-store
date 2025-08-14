@@ -1,5 +1,5 @@
+using Serilog;
 using Store.API.Extensions;
-using Store.API.Middleware.Logging;
 using Store.Infrastructure.Data.Postgres;
 using Path = System.IO.Path;
 
@@ -12,11 +12,15 @@ public static class Program
         DotNetEnv.Env.Load(Path.Combine(Environment.CurrentDirectory, "..", "..", ".env"));
         
         var builder = WebApplication.CreateBuilder(args);
-        
+
         builder.Configuration
             .AddJsonFile("appsettings.json", optional: true)
             .AddEnvironmentVariables();
-        
+
+        Log.Logger.SetUpLogger(builder.Configuration);
+
+        builder.Host.UseSerilog(Log.Logger);
+
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();
         builder.Services.ConfigureGraphQl();
@@ -24,8 +28,13 @@ public static class Program
 
         var app = builder.Build();
 
-        app.UseLogging();
+        Log.Debug("Setting up midleware");
+
+        app.UseSerilogRequestLogging();
         app.UseRouting();
+
+        Log.Debug("Midleware setted up succesfuly");
+        
         app.MapGraphQL();
         
         app.Run();

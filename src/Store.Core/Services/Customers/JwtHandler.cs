@@ -5,18 +5,25 @@ using System.IdentityModel.Tokens.Jwt;
 using Store.App.GraphQl.Customers;
 using System.Security.Authentication;
 using Path = System.IO.Path;
+using Microsoft.Extensions.Logging;
 
 namespace Store.Core.Services.Customers;
 
 public class JwtHandler : IJwtManager
 {
     private readonly SigningCredentials _signingCredentials;
+    private readonly ILogger<JwtHandler> _logger;
 
-    public JwtHandler() =>
+    public JwtHandler(ILogger<JwtHandler> logger)
+    {
         _signingCredentials = GetSigningCredentials();
-    
+        _logger = logger;
+    }
+
     public string GenerateToken(Customer customer)
     {
+        _logger.LogDebug("Generating token for {UserId}", customer.Id);
+
         var customerClaims = GenerateClaims(customer);
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -31,7 +38,9 @@ public class JwtHandler : IJwtManager
         var tokenHandler = new JwtSecurityTokenHandler();
         
         var token = tokenHandler.CreateToken(tokenDescriptor);
-        
+
+        _logger.LogDebug("Token for {UserId} generetad", customer.Id);
+
         return tokenHandler.WriteToken(token);
     }
 

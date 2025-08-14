@@ -18,6 +18,7 @@ using Store.Core.Utils.Validators.Items;
 using Store.Infrastructure.Contracts;
 using Store.Infrastructure.Data.Postgres;
 using Store.Infrastructure.Factories;
+using Serilog;
 
 namespace Store.API.Extensions;
 
@@ -25,6 +26,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
+        Log.Debug("Setting up services");
+
         services.AddScoped<IItemFactory, ItemFactory>();
         services.AddScoped<IItemEntityFactory, ItemEntityFactory>();
 
@@ -51,12 +54,16 @@ public static class ServiceCollectionExtensions
         
         services.AddTransient<CustomerUpdateChainFactory>();
 
+        Log.Debug("Services setted up succesfuly");
+
         return services;
     }
 
 
     public static IServiceCollection ConfigureGraphQl(this IServiceCollection services)
     {
+        Log.Debug("Configuring GraphQl");
+
         services
             .AddGraphQLServer()
             .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
@@ -65,11 +72,16 @@ public static class ServiceCollectionExtensions
             /*.AddSubscriptionType<Subscription>()*/;
 
         services.AddGraphQlExtendTypes();
+
+        Log.Debug("GraphQl server configured succesfuly");
+
         return services;
     }
 
     public static IServiceCollection RegisterHandlersFromApp(this IServiceCollection services)
     {
+        Log.Debug("Registering handlers");
+
         var assembly = typeof(Query).Assembly;
         var types = assembly.GetTypes();
 
@@ -95,11 +107,13 @@ public static class ServiceCollectionExtensions
             }
         }
 
+        Log.Debug("Handlers registered succesfuly");
         return services;
     }
 
     private static IServiceCollection AddGraphQlExtendTypes(this IServiceCollection services)
     {
+        Log.Debug("Adding GraphQl extend types");
         var assembly = typeof(Query).Assembly;
         var extenderInterface = typeof(IGraphQlExtender);
         
@@ -110,7 +124,8 @@ public static class ServiceCollectionExtensions
         {
             services.AddGraphQLServer().AddTypeExtension(type);
         }
-        
+
+        Log.Debug("GraphQl extend types added succesfuly");
         return services;
     }
 }

@@ -18,6 +18,6 @@ public class UpdateItemCommandHandler : ICommandHandler<UpdateItemCommand, ItemD
     {
         ct.ThrowIfCancellationRequested();
         
-        return await _facade.UpdateCustomerAsync(command.ItemDto);
+        return await _facade.UpdateItemAsync(command.ItemDto);
     }
 }

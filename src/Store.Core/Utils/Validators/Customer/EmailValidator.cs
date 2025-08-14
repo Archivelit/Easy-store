@@ -1,5 +1,6 @@
-using System.Text.RegularExpressions;
+using Serilog;
 using Store.Core.Exceptions.InvalidData;
+using System.Text.RegularExpressions;
 
 namespace Store.Core.Utils.Validators.Customer;
 
@@ -33,6 +34,8 @@ internal static class EmailValidator
         
         if (!_emailRegex.IsMatch(email)) 
             throw new InvalidEmail("Invalid email.");
+
+        Log.Debug("User email validated succesfuly");
 
         return true;
     }

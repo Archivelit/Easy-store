@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Store.App.GraphQl.Validation;
 using Store.Core.Builders;
 using Store.Core.Models.Dto.Items;
@@ -6,8 +7,15 @@ namespace Store.App.CQRS.Items.Commands.Update.UpdateChain;
 
 public class ItemUpdateChainBase : IItemUpdateChain
 {
-    protected IItemUpdateChain _next;
+    protected IItemUpdateChain? _next;
     protected IItemValidator _validator;
+    protected ILogger _logger;
+
+    public ItemUpdateChainBase(IItemValidator validator, ILogger logger)
+    {
+        _validator = validator;
+        _logger = logger;
+    }
 
     public IItemUpdateChain SetNext(IItemUpdateChain next)
     {

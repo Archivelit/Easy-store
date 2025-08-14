@@ -5,6 +5,7 @@ using Store.App.GraphQl.Security;
 using Store.App.GraphQl.Validation;
 using Store.Core.Models;
 using Store.Core.Models.Dto.Customers;
+using Microsoft.Extensions.Logging;
 
 namespace Store.App.CQRS.Customers.Commands.Update;
 
@@ -15,16 +16,21 @@ public class CustomerUpdateFacade
     private readonly IPasswordValidator _passwordValidator;
     private readonly IPasswordHasher _passwordHasher;
 
-    public CustomerUpdateFacade(ICustomerUpdateChainFactory factory, IPasswordHasher passwordHasher, IPasswordValidator passwordValidator, ICustomerRepository customerRepository)
+    private readonly ILogger<CustomerUpdateFacade> _logger;
+
+    public CustomerUpdateFacade(ICustomerUpdateChainFactory factory, IPasswordHasher passwordHasher, IPasswordValidator passwordValidator, ICustomerRepository customerRepository, ILogger<CustomerUpdateFacade> logger)
     {
         _passwordHasher = passwordHasher;
         _passwordValidator = passwordValidator;
         _customerRepository = customerRepository;
         _chain = factory.Create();
+        _logger = logger;
     }
 
     public async Task UpdateCustomerAsync(CustomerDto model, string password)
     {
+        _logger.LogDebug("Updating user in {method}", nameof(UpdateCustomerAsync));
+
         var customerData = await _customerRepository.GetByIdAsync(model.Id);
 
         var builder = new CustomerBuilder();
@@ -38,10 +44,13 @@ public class CustomerUpdateFacade
         }
         
         await _customerRepository.UpdateAsync(updateData.customer, updateData.passwordHash);
+
+        _logger.LogDebug("End updating user");
     }
 
     private (Customer customer, string passwordHash) GetNewData(CustomerBuilder builder, CustomerDto model, string password)
     {
+        _logger.LogDebug("Trying to extract data for update");
         builder = _chain.Update(builder, model);
         var customer = builder.Build();
         
@@ -55,7 +64,9 @@ public class CustomerUpdateFacade
         {
             passwordHash = string.Empty;
         }
-        
+
+        _logger.LogDebug("Data extracted succesfuly");
+
         return (customer, passwordHash);
     }
 }

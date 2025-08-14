@@ -1,3 +1,4 @@
+using Serilog;
 using Store.App.GraphQl.Validation;
 using Store.Core.Exceptions.InvalidData;
 
@@ -18,7 +19,9 @@ public class CustomerNameValidator : ICustomerNameValidator
 
         if (customerName.Length > 100)
             throw new InvalidName("Name is too long. It has to be 100 characters.");
-        
+
+        Log.Debug("User name validated succesfuly");
+
         return true;
     }
 }

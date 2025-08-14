@@ -2,31 +2,46 @@ using Store.App.GraphQl.Models;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Exceptions.InvalidData.Item;
 using Store.App.GraphQl.Validation;
+using Microsoft.Extensions.Logging;
 
 namespace Store.Core.Utils.Validators.Items;
 
 public class ItemValidator : IItemValidator
 {
     private readonly ICustomerRepository _customerRepository;
-    
-    public ItemValidator(ICustomerRepository repository) =>
+    private readonly ILogger<ItemValidator> _logger;
+
+    public ItemValidator(ICustomerRepository repository, ILogger<ItemValidator> logger)
+    {
         _customerRepository = repository;
-    
+        _logger = logger;
+    }
+
     public void ValidateAndThrow(IItem dto)
     {
-        ValidateTitle(dto.Title);
-        ValidateDescription(dto.Description);
-        ValidatePrice(dto.Price);
-        ValidateQuantity(dto.QuantityInStock);
-        ValidateCustomerId(dto.CustomerId);
-        ValidateCreationDate(dto.CreatedAt);
-        ValidateUpdateDate(dto.UpdatedAt, dto.CreatedAt);
+        _logger.LogDebug("Starting item validation");
+
+        try
+        {
+            ValidateTitle(dto.Title);
+            ValidateDescription(dto.Description);
+            ValidatePrice(dto.Price);
+            ValidateQuantity(dto.QuantityInStock);
+            ValidateCustomerId(dto.CustomerId);
+            ValidateCreationDate(dto.CreatedAt);
+            ValidateUpdateDate(dto.UpdatedAt, dto.CreatedAt);
+
+            _logger.LogDebug("Item validated succesfuly");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Item had invalid data");
+        }
     }
 
     public void ValidateTitle(string title)
     {
-        if (string.IsNullOrEmpty(title))
-            throw new InvalidItemTitle("Item title cannot be null or empty.");
+        ArgumentNullException.ThrowIfNullOrEmpty(title);
 
         if (title.Length < 3)
             throw new InvalidItemTitle("Title is too short. It has to have at least 3 characters.");
