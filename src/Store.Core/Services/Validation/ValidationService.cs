@@ -3,18 +3,18 @@ using Store.App.GraphQl.Validation;
 
 namespace Store.Core.Services.Validation;
 
-public class ValidationService : ICustomerValidator
+public class ValidationService : IUserValidator
 {
     private readonly IEmailValidator _emailValidator;
-    private readonly ICustomerNameValidator _customerNameValidator;
+    private readonly IUserNameValidator _userNameValidator;
     private readonly IPasswordValidator _passwordValidator;
     private readonly ISubscriptionValidator _subscriptionValidator;
     private readonly ILogger<ValidationService> _logger;
 
-    public ValidationService(IEmailValidator emailValidator, ICustomerNameValidator customerNameValidator, IPasswordValidator passwordValidator, ISubscriptionValidator subscriptionValidator, ILogger<ValidationService> logger)
+    public ValidationService(IEmailValidator emailValidator, IUserNameValidator userNameValidator, IPasswordValidator passwordValidator, ISubscriptionValidator subscriptionValidator, ILogger<ValidationService> logger)
     {
         _emailValidator = emailValidator;
-        _customerNameValidator = customerNameValidator;
+        _userNameValidator = userNameValidator;
         _passwordValidator = passwordValidator;
         _subscriptionValidator = subscriptionValidator;
         _logger = logger;
@@ -50,7 +50,7 @@ public class ValidationService : ICustomerValidator
     }
 
     public void ValidateCustomerName(string customerName) =>
-        _customerNameValidator.ValidateCustomerName(customerName);
+        _userNameValidator.ValidateCustomerName(customerName);
 
     public void ValidateEmail(string email) =>
         _emailValidator.ValidateEmail(email);

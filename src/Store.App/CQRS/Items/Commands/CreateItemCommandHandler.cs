@@ -1,8 +1,8 @@
 using Store.App.GraphQl.CQRS;
-using Store.App.GraphQl.Items;
+using Store.App.GraphQl.Factories;
 using Store.Core.Contracts.Repositories;
 using Store.App.GraphQl.Validation;
-using Store.Core.Contracts.CQRS.Items.Commands;
+using Store.Core.Contracts.CQRS.Item.Commands;
 using Store.Core.Models.Dto.Items;
 using Microsoft.Extensions.Logging;
 

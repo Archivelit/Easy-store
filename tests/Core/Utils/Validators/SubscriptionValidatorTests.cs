@@ -1,6 +1,6 @@
 using Store.App.GraphQl.Validation;
 using Store.Core.Exceptions.InvalidData;
-using Store.Core.Utils.Validators.Customer;
+using Store.Core.Utils.Validators.User;
 
 namespace Store.Tests.Core.Utils.Validators;
 

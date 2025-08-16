@@ -9,14 +9,14 @@ public class ItemEntityBuilder
     private string Title { get; set; }
     private string? Description { get; set; }
     private decimal Price { get; set; }
-    private Guid CustomerId { get; set; }
+    private Guid UserId { get; set; }
     private int QuantityInStock { get; set; }
     private DateTime CreatedAt { get; set; }
     private DateTime? UpdatedAt { get; set; }
 
     public ItemEntityBuilder() => InitDefault();
 
-    public ItemEntity Build() => new(Id, Title, Price, QuantityInStock, CustomerId, Description, CreatedAt, UpdatedAt);
+    public ItemEntity Build() => new(Id, Title, Price, QuantityInStock, UserId, Description, CreatedAt, UpdatedAt);
 
     public ItemEntityBuilder From(IItem item) =>
         WithId(item.Id)
@@ -24,7 +24,7 @@ public class ItemEntityBuilder
         .WithDescription(item.Description)
         .WithPrice(item.Price)
         .WithQuantityInStock(item.QuantityInStock)
-        .WithCustomerId(item.CustomerId)
+        .WithUserId(item.UserId)
         .WithCreatedAt(item.CreatedAt)
         .WithUpdatedAt(item.UpdatedAt);
     
@@ -58,9 +58,9 @@ public class ItemEntityBuilder
         return this;
     }
 
-    public ItemEntityBuilder WithCustomerId(Guid customerId)
+    public ItemEntityBuilder WithUserId(Guid userId)
     {
-        CustomerId = customerId;
+        UserId = userId;
         return this;
     }
 
@@ -86,7 +86,7 @@ public class ItemEntityBuilder
     {
         Title = "Untitled";
         Price = 1m;
-        CustomerId = Guid.NewGuid();
+        UserId = Guid.NewGuid();
         QuantityInStock = 1;
         
         return this;
@@ -98,7 +98,7 @@ public class ItemEntityBuilder
         Title = string.Empty;
         Description = null;
         Price = 0;
-        CustomerId = Guid.Empty;
+        UserId = Guid.Empty;
         QuantityInStock = 0;
         CreatedAt = DateTime.Now;
         UpdatedAt = null;

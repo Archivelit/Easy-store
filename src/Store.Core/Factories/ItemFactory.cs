@@ -1,5 +1,5 @@
 using Store.Core.Builders;
-using Store.App.GraphQl.Items;
+using Store.App.GraphQl.Factories;
 using Store.App.GraphQl.Models;
 using Store.Core.Models;
 

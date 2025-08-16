@@ -24,7 +24,7 @@ public class AppDbContext : DbContext
             .EnableSensitiveDataLogging();
         Log.Debug("DbContext configured succesfuly");
     }
-    public DbSet<CustomerEntity> Customers { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
     public DbSet<ItemEntity> Items { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

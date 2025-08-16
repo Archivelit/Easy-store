@@ -1,8 +1,8 @@
 using Store.App.GraphQl.CQRS;
-using Store.Core.Contracts.CQRS.Items.Commands;
+using Store.Core.Contracts.CQRS.Item.Commands;
 using Store.Core.Models.Dto.Items;
 
-namespace Store.App.GraphQl.Items;
+namespace Store.App.GraphQl.Factories;
 
 [ExtendObjectType("Mutation")]
 public class ItemsMutations : IGraphQlExtender

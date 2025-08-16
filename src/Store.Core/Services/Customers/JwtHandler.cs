@@ -2,7 +2,7 @@ using Store.Core.Models;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using Store.App.GraphQl.Customers;
+using Store.App.GraphQl.Users;
 using System.Security.Authentication;
 using Path = System.IO.Path;
 using Microsoft.Extensions.Logging;
@@ -20,11 +20,11 @@ public class JwtHandler : IJwtManager
         _logger = logger;
     }
 
-    public string GenerateToken(Customer customer)
+    public string GenerateToken(User user)
     {
-        _logger.LogDebug("Generating token for {UserId}", customer.Id);
+        _logger.LogDebug("Generating token for {UserId}", user.Id);
 
-        var customerClaims = GenerateClaims(customer);
+        var customerClaims = GenerateClaims(user);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -39,7 +39,7 @@ public class JwtHandler : IJwtManager
         
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-        _logger.LogDebug("Token for {UserId} generetad", customer.Id);
+        _logger.LogDebug("Token for {UserId} generetad", user.Id);
 
         return tokenHandler.WriteToken(token);
     }
@@ -72,10 +72,10 @@ public class JwtHandler : IJwtManager
         return new (securityKey, SecurityAlgorithms.HmacSha256);
     }
 
-    private Claim[] GenerateClaims(Customer customer) => [
-                                                            new("Name", customer.Name),
-                                                            new("Email", customer.Email),
-                                                            new("Subscription", customer.SubscriptionType.ToString()),
-                                                            new("Id", customer.Id.ToString())
+    private Claim[] GenerateClaims(User user) => [
+                                                            new("Name", user.Name),
+                                                            new("Email", user.Email),
+                                                            new("Subscription", user.SubscriptionType.ToString()),
+                                                            new("Id", user.Id.ToString())
                                                         ];
 }

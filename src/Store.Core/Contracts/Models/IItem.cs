@@ -6,7 +6,7 @@ public interface IItem
     string Title { get; }
     string? Description { get; }
     decimal Price { get; }
-    Guid CustomerId { get; }
+    Guid UserId { get; }
     int QuantityInStock { get; }
     DateTime CreatedAt { get; }
     DateTime? UpdatedAt { get; }

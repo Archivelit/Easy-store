@@ -1,5 +1,5 @@
 using Store.App.GraphQl.CQRS;
-using Store.Core.Contracts.CQRS.Items.Commands;
+using Store.Core.Contracts.CQRS.Item.Commands;
 using Store.Core.Models.Dto.Items;
 
 namespace Store.App.CQRS.Items.Commands.Update;

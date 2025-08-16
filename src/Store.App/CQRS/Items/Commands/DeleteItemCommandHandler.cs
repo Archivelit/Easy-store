@@ -1,17 +1,17 @@
 using Microsoft.Extensions.Logging;
 using Store.App.GraphQl.CQRS;
-using Store.Core.Contracts.CQRS.Items.Commands;
+using Store.Core.Contracts.CQRS.Item.Commands;
 using Store.Core.Contracts.Repositories;
 
 namespace Store.App.CQRS.Items.Commands;
 
 public class DeleteItemCommandHandler : ICommandHandler<DeleteItemCommand>
 {
-    private readonly IItemRepository _repository;
+    private readonly IItemRepository _itemRepository;
     private readonly ILogger<DeleteItemCommandHandler> _logger;
-    public DeleteItemCommandHandler(IItemRepository repository, ILogger<DeleteItemCommandHandler> logger)
+    public DeleteItemCommandHandler(IItemRepository itemRepository, ILogger<DeleteItemCommandHandler> logger)
     {
-        _repository = repository;
+        _itemRepository = itemRepository;
         _logger = logger;
     }
 
@@ -22,7 +22,7 @@ public class DeleteItemCommandHandler : ICommandHandler<DeleteItemCommand>
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            await _repository.DeleteByIdAsync(request.Id);
+            await _itemRepository.DeleteByIdAsync(request.Id);
         }
         catch (Exception ex)
         {

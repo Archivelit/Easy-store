@@ -1,6 +1,6 @@
 using Store.App.GraphQl.Validation;
 using Store.Core.Exceptions.InvalidData;
-using Store.Core.Utils.Validators.Customer;
+using Store.Core.Utils.Validators.User;
 
 namespace Store.Tests.Core.Utils.Validators;
 
@@ -8,7 +8,7 @@ namespace Store.Tests.Core.Utils.Validators;
 
 public class CustomerNameValidatorTests
 {
-    private readonly ICustomerNameValidator _customerNameValidator = new CustomerNameValidator();
+    private readonly IUserNameValidator _customerNameValidator = new CustomerNameValidator();
 
     [Fact]
     public void CustomerNameValidator_MinLength()

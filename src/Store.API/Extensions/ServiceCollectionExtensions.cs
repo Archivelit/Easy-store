@@ -1,11 +1,9 @@
-using Store.App.CQRS.Customers.Commands.Update;
-using Store.App.CQRS.Customers.Commands.Update.UpdateChain;
+using Store.App.CQRS.Users.Commands.Update.UpdateChain;
 using Store.App.GraphQl;
 using Store.App.GraphQl.CQRS;
-using Store.App.GraphQl.Customers;
-using Store.App.GraphQl.Items;
+using Store.App.GraphQl.Users;
+using Store.App.GraphQl.Factories;
 using Store.Core.Managers;
-using Store.Core.Contracts.Repositories;
 using Store.Core.Services.Customers;
 using Store.Core.Services.Validation;
 using Store.App.GraphQl.Validation;
@@ -13,10 +11,9 @@ using Store.Core.Providers.Validators;
 using Store.App.GraphQl.Security;
 using Store.Core.Factories;
 using Store.Core.Utils.Hashers;
-using Store.Core.Utils.Validators.Customer;
+using Store.Core.Utils.Validators.User;
 using Store.Core.Utils.Validators.Items;
 using Store.Infrastructure.Contracts;
-using Store.Infrastructure.Data.Postgres;
 using Store.Infrastructure.Factories;
 using Serilog;
 
@@ -34,25 +31,25 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         services.AddScoped<IEmailValidator, EmailValidatorAdapter>();
-        services.AddTransient<ICustomerNameValidator, CustomerNameValidator>();
+        services.AddTransient<IUserNameValidator, CustomerNameValidator>();
         services.AddScoped<IPasswordValidator, PasswordValidator>();
         services.AddScoped<ISubscriptionValidator, SubscriptionValidator>();
 
         services.AddScoped<IItemValidator, ItemValidator>();
-        services.AddScoped<ICustomerValidator, ValidationService>();
+        services.AddScoped<IUserValidator, ValidationService>();
 
-        services.AddScoped<ICustomerRepository, CustomersRepository>();
-        services.AddScoped<IItemRepository, ItemRepository>();
+        //services.AddScoped<IUserRepository, UserRepository>();
+        //services.AddScoped<IItemRepository, ItemRepository>();
 
         services.AddScoped<IJwtManager, JwtHandler>();
 
-        services.AddScoped<ICustomerManager, CustomersManager>();
+        services.AddScoped<IUserManager, UserManager>();
 
-        services.AddTransient<UpdateCustomerEmail>();
-        services.AddTransient<UpdateCustomerName>();
-        services.AddTransient<UpdateCustomerSubscription>();
+        services.AddTransient<UpdateUserEmail>();
+        services.AddTransient<UpdateUserName>();
+        services.AddTransient<UpdateUserSubscription>();
         
-        services.AddTransient<CustomerUpdateChainFactory>();
+        services.AddTransient<UserUpdateChainFactory>();
 
         Log.Debug("Services setted up succesfuly");
 

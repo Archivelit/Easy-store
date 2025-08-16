@@ -8,10 +8,10 @@ namespace Store.Core.Utils.Validators.Items;
 
 public class ItemValidator : IItemValidator
 {
-    private readonly ICustomerRepository _customerRepository;
+    private readonly IUserRepository _customerRepository;
     private readonly ILogger<ItemValidator> _logger;
 
-    public ItemValidator(ICustomerRepository repository, ILogger<ItemValidator> logger)
+    public ItemValidator(IUserRepository repository, ILogger<ItemValidator> logger)
     {
         _customerRepository = repository;
         _logger = logger;
@@ -27,7 +27,7 @@ public class ItemValidator : IItemValidator
             ValidateDescription(dto.Description);
             ValidatePrice(dto.Price);
             ValidateQuantity(dto.QuantityInStock);
-            ValidateCustomerId(dto.CustomerId);
+            ValidateCustomerId(dto.UserId);
             ValidateCreationDate(dto.CreatedAt);
             ValidateUpdateDate(dto.UpdatedAt, dto.CreatedAt);
 

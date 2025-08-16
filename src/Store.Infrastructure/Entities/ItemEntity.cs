@@ -19,23 +19,23 @@ public class ItemEntity : IItem
     
     [Column(TypeName = "decimal(10,2)")]
     public decimal Price { get; private set; }
-    public Guid CustomerId { get; private set; }
+    public Guid UserId { get; private set; }
     public int QuantityInStock { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; }
     
-    public ItemEntity(string title, decimal price, int quantityInStock, Guid customerId,string? description = null)
+    public ItemEntity(string title, decimal price, int quantityInStock, Guid userId,string? description = null)
     {
         UpdateTitle(title);
         UpdatePrice(price);
         SetQuantity(quantityInStock);
-        CustomerId = customerId;
+        UserId = userId;
         UpdateDescription(description);
         UpdatedAt = null;
     }
     
-    public ItemEntity(Guid id, string title, decimal price, int quantityInStock, Guid customerId,string? description, DateTime createdAt, DateTime? updatedAt)
-    : this(title, price, quantityInStock, customerId, description)
+    public ItemEntity(Guid id, string title, decimal price, int quantityInStock, Guid userId,string? description, DateTime createdAt, DateTime? updatedAt)
+    : this(title, price, quantityInStock, userId, description)
     {
         Id = id;
         CreatedAt = createdAt;

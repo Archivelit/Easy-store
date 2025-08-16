@@ -1,8 +1,8 @@
 using Store.App.GraphQl.CQRS;
-using Store.Core.Contracts.CQRS.Items.Queries;
+using Store.Core.Contracts.CQRS.Item.Queries;
 using Store.Core.Models.Dto.Items;
 
-namespace Store.App.GraphQl.Items;
+namespace Store.App.GraphQl.Factories;
 
 [ExtendObjectType("Query")]
 public class ItemsQueries : IGraphQlExtender

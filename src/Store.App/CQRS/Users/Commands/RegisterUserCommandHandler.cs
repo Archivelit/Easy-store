@@ -1,0 +1,23 @@
+using Store.App.GraphQl.CQRS;
+using Store.App.GraphQl.CQRS.User.Commands;
+using Store.App.GraphQl.Users;
+using Store.Core.Models.Dto.User;
+
+namespace Store.App.CQRS.Users.Commands.Update;
+
+public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, UserDto>
+{
+    private readonly IUserManager _userManager;
+
+    public RegisterUserCommandHandler(IUserManager userManager) =>
+        _userManager = userManager;
+
+    public async Task<UserDto> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var user = await _userManager.RegisterAsync(command.Name, command.AuthData.Email, command.AuthData.Password);
+
+        return new(user);
+    }
+}

@@ -9,7 +9,7 @@ public class Item : IItem
     public string Title { get; private set; }
     public string? Description { get; private set; }
     public decimal Price { get; private set; }
-    public Guid CustomerId { get; private set; }
+    public Guid UserId { get; private set; }
     public int QuantityInStock { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
@@ -20,7 +20,7 @@ public class Item : IItem
         Title = title;
         Price = price;
         QuantityInStock = quantityInStock;
-        CustomerId = customerId;
+        UserId = customerId;
         Description = description;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = null;
@@ -32,7 +32,7 @@ public class Item : IItem
         Title = title;
         Price = price;
         QuantityInStock = quantityInStock;
-        CustomerId = customerId;
+        UserId = customerId;
         Description = description;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
