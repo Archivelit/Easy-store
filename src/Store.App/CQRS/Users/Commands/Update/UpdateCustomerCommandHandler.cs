@@ -1,5 +1,5 @@
-using Store.App.GraphQl.CQRS;
-using Store.App.GraphQl.CQRS.User.Commands;
+using Store.Core.Contracts.CQRS;
+using Store.Core.Contracts.CQRS.User.Commands;
 
 namespace Store.App.CQRS.Users.Commands.Update;
 

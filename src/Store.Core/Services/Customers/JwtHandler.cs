@@ -2,10 +2,10 @@ using Store.Core.Models;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using Store.App.GraphQl.Users;
 using System.Security.Authentication;
 using Path = System.IO.Path;
 using Microsoft.Extensions.Logging;
+using Store.Core.Contracts.Users;
 
 namespace Store.Core.Services.Customers;
 

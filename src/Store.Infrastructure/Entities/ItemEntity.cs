@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Store.App.GraphQl.Models;
-using Store.Core.Exceptions.InvalidData.Item;
+using Store.Core.Exceptions.InvalidData;
+using Store.Core.Models;
 
 namespace Store.Infrastructure.Entities;
 
 public class ItemEntity : IItem
 {
+    // TODO: refactor validation
     [Key]
     public Guid Id { get; private set; } = Guid.NewGuid();
     
@@ -41,15 +42,15 @@ public class ItemEntity : IItem
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }
-    
+
     private ItemEntity(){}
     
     public void UpdateTitle(string title)
     {
         if (string.IsNullOrWhiteSpace(title)) 
-            throw new InvalidItemTitle("Title cannot be empty");
+            throw new InvalidItemDataException("Title cannot be empty");
         if (title.Length > 100)
-            throw new InvalidItemTitle("Title length cannot exceed 100 characters");
+            throw new InvalidItemDataException("Title length cannot exceed 100 characters");
 
         Title = title;
         MarkUpdated();
@@ -58,7 +59,7 @@ public class ItemEntity : IItem
     public void UpdatePrice(decimal price)
     {
         if (price < 0) 
-            throw new InvalidItemPrice("Price cannot be negative");
+            throw new InvalidItemDataException("Price cannot be negative");
 
         Price = price;
         MarkUpdated();
@@ -67,7 +68,7 @@ public class ItemEntity : IItem
     public void SetQuantity(int quantity)
     {
         if (quantity < 0)
-            throw new InvalidItemQuantity("Quantity cannot be negative");
+            throw new InvalidItemDataException("Quantity cannot be negative");
 
         QuantityInStock = quantity;
         MarkUpdated();
@@ -76,7 +77,7 @@ public class ItemEntity : IItem
     public void UpdateDescription(string? description)
     {
         if (description != null && description.Length > 1000)
-            throw new InvalidItemDescription("Description length cannot exceed 1000 characters");
+            throw new InvalidItemDataException("Description length cannot exceed 1000 characters");
 
         Description = description;
         MarkUpdated();

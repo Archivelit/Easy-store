@@ -1,12 +1,12 @@
 using Serilog;
-using Store.App.GraphQl.Validation;
+using Store.Core.Contracts.Validation;
 using Store.Core.Exceptions.InvalidData;
 
 namespace Store.Core.Utils.Validators.User;
 
-public class CustomerNameValidator : IUserNameValidator
+public class UserNameValidator : IUserNameValidator
 {
-    public bool ValidateCustomerName(string userName)
+    public bool ValidateUserName(string userName)
     {
         if (string.IsNullOrEmpty(userName))
             throw new InvalidUserDataException("User name cannot be null or empty.");

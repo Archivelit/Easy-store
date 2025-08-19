@@ -1,4 +1,4 @@
-using Store.App.GraphQl.Validation;
+using Store.Core.Contracts.Validation;
 using Store.Core.Exceptions.InvalidData;
 using Store.Core.Utils.Validators.User;
 
@@ -8,14 +8,14 @@ namespace Store.Tests.Core.Utils.Validators;
 
 public class CustomerNameValidatorTests
 {
-    private readonly IUserNameValidator _customerNameValidator = new CustomerNameValidator();
+    private readonly IUserNameValidator _customerNameValidator = new UserNameValidator();
 
     [Fact]
     public void CustomerNameValidator_MinLength()
     {
         string name = "abc";
         
-        bool result = _customerNameValidator.ValidateCustomerName(name);
+        bool result = _customerNameValidator.ValidateUserName(name);
         
         Assert.True(result);
     }
@@ -25,7 +25,7 @@ public class CustomerNameValidatorTests
     {
         string name = new string('a', 100);
         
-        bool result = _customerNameValidator.ValidateCustomerName(name);
+        bool result = _customerNameValidator.ValidateUserName(name);
         
         Assert.True(result);
     }
@@ -35,7 +35,7 @@ public class CustomerNameValidatorTests
     {
         string name = "aa";
         
-        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidUserDataException>(() => _customerNameValidator.ValidateUserName(name));
     }
     
     [Fact]
@@ -43,7 +43,7 @@ public class CustomerNameValidatorTests
     {
         string name = new string('a', 101);
         
-        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidUserDataException>(() => _customerNameValidator.ValidateUserName(name));
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class CustomerNameValidatorTests
     {
         string name = "123";
         
-        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidUserDataException>(() => _customerNameValidator.ValidateUserName(name));
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public class CustomerNameValidatorTests
     {
         string name = "a12";
         
-        bool result = _customerNameValidator.ValidateCustomerName(name);
+        bool result = _customerNameValidator.ValidateUserName(name);
         
         Assert.True(result);
     }
@@ -69,7 +69,7 @@ public class CustomerNameValidatorTests
     {
         string name = null;
 
-        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidUserDataException>(() => _customerNameValidator.ValidateUserName(name));
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public class CustomerNameValidatorTests
     {
         string name = "";
         
-        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidUserDataException>(() => _customerNameValidator.ValidateUserName(name));
     }
 
     [Fact]
@@ -85,6 +85,6 @@ public class CustomerNameValidatorTests
     {
         string name = "   ";
         
-        Assert.Throws<InvalidName>(() => _customerNameValidator.ValidateCustomerName(name));
+        Assert.Throws<InvalidUserDataException>(() => _customerNameValidator.ValidateUserName(name));
     }
 }

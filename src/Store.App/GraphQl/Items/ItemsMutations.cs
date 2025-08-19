@@ -1,4 +1,4 @@
-using Store.App.GraphQl.CQRS;
+using Store.Core.Contracts.CQRS;
 using Store.Core.Contracts.CQRS.Item.Commands;
 using Store.Core.Models.Dto.Items;
 

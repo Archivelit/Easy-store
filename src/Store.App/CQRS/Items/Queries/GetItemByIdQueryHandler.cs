@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using Store.App.GraphQl.CQRS;
+using Store.Core.Contracts.CQRS;
 using Store.Core.Contracts.CQRS.Item.Queries;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Models.Dto.Items;

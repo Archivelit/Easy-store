@@ -1,12 +1,12 @@
 using System.Security.Authentication;
-using Store.App.GraphQl.Users;
 using Store.Core.Contracts.Repositories;
-using Store.App.GraphQl.Security;
-using Store.App.GraphQl.Validation;
 using Store.Core.Exceptions.InvalidData;
 using Store.Core.Models;
 using Bcrypt = BCrypt.Net.BCrypt;
 using Microsoft.Extensions.Logging;
+using Store.Core.Contracts.Validation;
+using Store.Core.Contracts.Users;
+using Store.Core.Contracts.Security;
 
 namespace Store.Core.Managers;
 
@@ -68,9 +68,7 @@ public class UserManager : IUserManager
 
             var passwordHashFromDb = userData.passwordHash;
 
-            var passwordHash = _passwordHasher.HashPassword(password);
-
-            if (!Bcrypt.Verify(passwordHash, passwordHashFromDb))
+            if (!Bcrypt.Verify(password, passwordHashFromDb))
                 throw new AuthenticationException("The password doesn't match");
 
             return _jwtManager.GenerateToken(userData.user);

@@ -1,10 +1,10 @@
-using Store.App.GraphQl.CQRS;
-using Store.App.GraphQl.Factories;
 using Store.Core.Contracts.Repositories;
-using Store.App.GraphQl.Validation;
 using Store.Core.Contracts.CQRS.Item.Commands;
 using Store.Core.Models.Dto.Items;
 using Microsoft.Extensions.Logging;
+using Store.Core.Contracts.Factories;
+using Store.Core.Contracts.Validation;
+using Store.Core.Contracts.CQRS;
 
 namespace Store.App.CQRS.Items.Commands;
 

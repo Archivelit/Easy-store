@@ -1,5 +1,5 @@
 using Serilog;
-using Store.App.GraphQl.Validation;
+using Store.Core.Contracts.Validation;
 using Store.Core.Exceptions.InvalidData;
 
 namespace Store.Core.Utils.Validators.User;

@@ -1,11 +1,11 @@
 using Store.App.CQRS.Users.Commands.Update.UpdateChain;
 using Store.Core.Builders;
 using Store.Core.Contracts.Repositories;
-using Store.App.GraphQl.Security;
-using Store.App.GraphQl.Validation;
 using Store.Core.Models;
 using Store.Core.Models.Dto.User;
 using Microsoft.Extensions.Logging;
+using Store.Core.Contracts.Validation;
+using Store.Core.Contracts.Security;
 
 namespace Store.App.CQRS.Users.Commands.Update;
 

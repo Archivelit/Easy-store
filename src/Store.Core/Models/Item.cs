@@ -1,6 +1,3 @@
-using Store.App.GraphQl.Models;
-using Store.Core.Exceptions.InvalidData.Item;
-
 namespace Store.Core.Models;
 
 public class Item : IItem

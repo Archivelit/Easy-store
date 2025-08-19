@@ -1,14 +1,9 @@
 using Store.App.CQRS.Users.Commands.Update.UpdateChain;
 using Store.App.GraphQl;
-using Store.App.GraphQl.CQRS;
-using Store.App.GraphQl.Users;
-using Store.App.GraphQl.Factories;
 using Store.Core.Managers;
 using Store.Core.Services.Customers;
 using Store.Core.Services.Validation;
-using Store.App.GraphQl.Validation;
 using Store.Core.Providers.Validators;
-using Store.App.GraphQl.Security;
 using Store.Core.Factories;
 using Store.Core.Utils.Hashers;
 using Store.Core.Utils.Validators.User;
@@ -16,6 +11,14 @@ using Store.Core.Utils.Validators.Items;
 using Store.Infrastructure.Contracts;
 using Store.Infrastructure.Factories;
 using Serilog;
+using Store.Core.Contracts.Factories;
+using Store.Core.Contracts.Repositories;
+using Store.Infrastructure.Repositories;
+using Store.Infrastructure.Data.DataAccessObjects;
+using Store.Core.Contracts.Validation;
+using Store.Core.Contracts.Security;
+using Store.Core.Contracts.Users;
+using Store.Core.Contracts.CQRS;
 
 namespace Store.API.Extensions;
 
@@ -25,24 +28,23 @@ public static class ServiceCollectionExtensions
     {
         Log.Debug("Setting up services");
 
-        services.AddScoped<IItemFactory, ItemFactory>();
-        services.AddScoped<IItemEntityFactory, ItemEntityFactory>();
+        services.AddTransient<IItemFactory, ItemFactory>();
+        services.AddTransient<IItemEntityFactory, ItemEntityFactory>();
 
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 
-        services.AddScoped<IEmailValidator, EmailValidatorAdapter>();
-        services.AddTransient<IUserNameValidator, CustomerNameValidator>();
-        services.AddScoped<IPasswordValidator, PasswordValidator>();
-        services.AddScoped<ISubscriptionValidator, SubscriptionValidator>();
+        services.AddTransient<IEmailValidator, EmailValidatorAdapter>();
+        services.AddTransient<IUserNameValidator, UserNameValidator>();
+        services.AddTransient<IPasswordValidator, PasswordValidator>();
+        services.AddTransient<ISubscriptionValidator, SubscriptionValidator>();
 
         services.AddScoped<IItemValidator, ItemValidator>();
         services.AddScoped<IUserValidator, ValidationService>();
 
-        //services.AddScoped<IUserRepository, UserRepository>();
-        //services.AddScoped<IItemRepository, ItemRepository>();
+        services.AddSingleton<IUserRepository, UserRepository>();
+        services.AddSingleton<IItemRepository, ItemRepository>();
 
         services.AddScoped<IJwtManager, JwtHandler>();
-
         services.AddScoped<IUserManager, UserManager>();
 
         services.AddTransient<UpdateUserEmail>();
@@ -50,6 +52,9 @@ public static class ServiceCollectionExtensions
         services.AddTransient<UpdateUserSubscription>();
         
         services.AddTransient<UserUpdateChainFactory>();
+
+        services.AddScoped<IUserDao, UserDao>();
+        services.AddScoped<IItemDao, ItemDao>();
 
         Log.Debug("Services setted up succesfuly");
 

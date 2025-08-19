@@ -1,4 +1,4 @@
-using Store.App.GraphQl.Models;
+using Store.Core.Models;
 using Store.Infrastructure.Builders;
 using Store.Infrastructure.Contracts;
 using Store.Infrastructure.Entities;

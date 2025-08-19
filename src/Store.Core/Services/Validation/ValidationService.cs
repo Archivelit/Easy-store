@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using Store.App.GraphQl.Validation;
+using Store.Core.Contracts.Validation;
 
 namespace Store.Core.Services.Validation;
 
@@ -50,7 +50,7 @@ public class ValidationService : IUserValidator
     }
 
     public void ValidateCustomerName(string customerName) =>
-        _userNameValidator.ValidateCustomerName(customerName);
+        _userNameValidator.ValidateUserName(customerName);
 
     public void ValidateEmail(string email) =>
         _emailValidator.ValidateEmail(email);

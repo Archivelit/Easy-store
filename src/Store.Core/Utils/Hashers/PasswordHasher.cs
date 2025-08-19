@@ -1,4 +1,4 @@
-using Store.App.GraphQl.Security;
+using Store.Core.Contracts.Security;
 using Bcrypt = BCrypt.Net.BCrypt;
 
 namespace Store.Core.Utils.Hashers;

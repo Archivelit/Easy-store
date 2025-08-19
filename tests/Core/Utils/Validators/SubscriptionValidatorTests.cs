@@ -1,4 +1,4 @@
-using Store.App.GraphQl.Validation;
+using Store.Core.Contracts.Validation;
 using Store.Core.Exceptions.InvalidData;
 using Store.Core.Utils.Validators.User;
 
@@ -30,7 +30,7 @@ public class SubscriptionValidatorTests
     [InlineData(" ")]
     public void SubscriptionValidatorTests_InvalidTests(string subscription)
     {
-        Assert.Throws<InvalidSubscription>(() => _subscriptionValidator.ValidateSubscription(subscription));
+        Assert.Throws<InvalidUserDataException>(() => _subscriptionValidator.ValidateSubscription(subscription));
     }
     private void ValidateSubscription(string subscription)
     {

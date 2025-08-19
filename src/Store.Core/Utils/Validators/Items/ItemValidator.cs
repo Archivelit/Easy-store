@@ -1,8 +1,8 @@
-using Store.App.GraphQl.Models;
 using Store.Core.Contracts.Repositories;
-using Store.Core.Exceptions.InvalidData.Item;
-using Store.App.GraphQl.Validation;
 using Microsoft.Extensions.Logging;
+using Store.Core.Models;
+using Store.Core.Exceptions.InvalidData;
+using Store.Core.Contracts.Validation;
 
 namespace Store.Core.Utils.Validators.Items;
 
@@ -44,13 +44,13 @@ public class ItemValidator : IItemValidator
         ArgumentNullException.ThrowIfNullOrEmpty(title);
 
         if (title.Length < 3)
-            throw new InvalidItemTitle("Title is too short. It has to have at least 3 characters.");
+            throw new InvalidItemDataException("Title is too short. It has to have at least 3 characters.");
 
         if (title.Length > 100)
-            throw new InvalidItemTitle("Title is too long. It has to be 100 or less characters.");
+            throw new InvalidItemDataException("Title is too long. It has to be 100 or less characters.");
 
         if (!title.Any(char.IsLetter))
-            throw new InvalidItemTitle("Invalid item title. It must contain at least 1 letter.");
+            throw new InvalidItemDataException("Invalid item title. It must contain at least 1 letter.");
     }
 
     public void ValidateDescription(string? description)
@@ -59,37 +59,37 @@ public class ItemValidator : IItemValidator
             return;
         
         if (description.Length > 1000)
-            throw new InvalidItemDescription("Description is too long. It has to be 1000 or less characters.");
+            throw new InvalidItemDataException("Description is too long. It has to be 1000 or less characters.");
         
         if (!description.Any(char.IsLetter))
-            throw new InvalidItemDescription("Description must contain letters.");
+            throw new InvalidItemDataException("Description must contain letters.");
     }
 
     public async void ValidateCustomerId(Guid customerId)
     {
         if (customerId == Guid.Empty)
-            throw new InvalidCustomerId("Customer ID cannot be empty.");
+            throw new InvalidItemDataException("Customer ID cannot be empty.");
         
         if (! await _customerRepository.IsExistsAsync(customerId))
-            throw new InvalidCustomerId("Customer with given ID was not found.");
+            throw new InvalidItemDataException("Customer with given ID was not found.");
     }
 
     public void ValidatePrice(decimal price)
     {
         if (price < 0)
-            throw new InvalidItemPrice("Price must be greater than zero.");
+            throw new InvalidItemDataException("Price must be greater than zero.");
     }
 
     public void ValidateQuantity(int quantity)
     {
         if (quantity < 0)
-            throw new InvalidItemQuantity("Quantity must be greater than zero.");
+            throw new InvalidItemDataException("Quantity must be greater than zero.");
     }
 
     public void ValidateCreationDate(DateTime creationDate)
     {
         if (creationDate > DateTime.UtcNow)
-            throw new InvalidItemCreateTime("Creation date cannot be in the future.");
+            throw new InvalidItemDataException("Creation date cannot be in the future.");
     }
 
     public void ValidateUpdateDate(DateTime? updateDate, DateTime creationDate)
@@ -98,9 +98,9 @@ public class ItemValidator : IItemValidator
             return;
 
         if (updateDate.Value.Date > DateTime.UtcNow)
-            throw new InvalidItemUpdateTime("Update date cannot be in the future.");
+            throw new InvalidItemDataException("Update date cannot be in the future.");
 
         if (updateDate.Value.Date < creationDate)
-            throw new InvalidItemUpdateTime("Update date cannot be earlier than creation date.");
+            throw new InvalidItemDataException("Update date cannot be earlier than creation date.");
     }
 }

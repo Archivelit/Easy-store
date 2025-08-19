@@ -1,5 +1,3 @@
-using Store.App.GraphQl.Models;
-
 namespace Store.Core.Models.Dto.Items;
 
 public record CreateItemDto(string Title, string? Description, decimal Price, Guid UserId, int QuantityInStock) : IItem

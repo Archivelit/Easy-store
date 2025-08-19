@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Store.Infrastructure.Entities;
 
-namespace Store.Infrastructure.Data.Postgres;
+namespace Store.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {

@@ -1,4 +1,4 @@
-using Store.App.GraphQl.Validation;
+using Store.Core.Contracts.Validation;
 using Store.Core.Utils.Validators.User;
 
 namespace Store.Core.Providers.Validators;

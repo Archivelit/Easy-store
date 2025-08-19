@@ -1,4 +1,4 @@
-namespace Store.App.GraphQl.Validation;
+namespace Store.Core.Contracts.Validation;
 
 public interface IUserValidator
 {

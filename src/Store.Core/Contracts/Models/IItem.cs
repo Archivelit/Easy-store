@@ -1,4 +1,4 @@
-namespace Store.App.GraphQl.Models;
+namespace Store.Core.Models;
 
 public interface IItem
 {

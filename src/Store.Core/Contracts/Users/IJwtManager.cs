@@ -1,6 +1,6 @@
 using Store.Core.Models;
 
-namespace Store.App.GraphQl.Users;
+namespace Store.Core.Contracts.Users;
 
 public interface IJwtManager
 {

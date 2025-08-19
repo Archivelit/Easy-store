@@ -1,4 +1,4 @@
-using Store.App.GraphQl.Models;
+using Store.Core.Contracts.Models;
 using Store.Core.Enums.Subscriptions;
 using Store.Core.Models;
 

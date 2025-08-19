@@ -1,6 +1,6 @@
-namespace Store.App.GraphQl.Validation;
+namespace Store.Core.Contracts.Validation;
 
 public interface IUserNameValidator
 {
-    bool ValidateCustomerName(string customerName);
+    bool ValidateUserName(string customerName);
 }

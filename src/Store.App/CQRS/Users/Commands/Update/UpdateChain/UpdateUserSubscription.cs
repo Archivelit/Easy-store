@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Logging;
-using Store.App.GraphQl.Validation;
 using Store.Core.Builders;
 using Store.Core.Models.Dto.User;
 using Store.Core.Enums.Subscriptions;
+using Store.Core.Contracts.Validation;
 
 namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 

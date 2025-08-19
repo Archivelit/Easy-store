@@ -1,5 +1,4 @@
 using Store.Core.Models;
-using Store.App.GraphQl.Models;
 
 namespace Store.Core.Builders;
 

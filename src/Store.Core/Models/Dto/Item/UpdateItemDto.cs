@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Store.App.GraphQl.Models;
 
 namespace Store.Core.Models.Dto.Items;
 

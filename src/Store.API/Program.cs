@@ -1,6 +1,6 @@
 using Serilog;
 using Store.API.Extensions;
-using Store.Infrastructure.Data.Postgres;
+using Store.Infrastructure.Data;
 using Path = System.IO.Path;
 
 namespace Store.API;
@@ -17,9 +17,14 @@ public static class Program
             .AddJsonFile("appsettings.json", optional: true)
             .AddEnvironmentVariables();
 
-        Log.Logger.SetUpLogger(builder.Configuration);
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
+        });
 
-        builder.Host.UseSerilog(Log.Logger);
+        builder.Configuration.SetUpLogger();
+
+        builder.Host.UseSerilog();
 
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();
