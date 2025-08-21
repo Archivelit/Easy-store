@@ -4,8 +4,8 @@ using Store.Core.Contracts.Repositories;
 using Store.Core.Models;
 using Store.Core.Models.Dto.User;
 using Microsoft.Extensions.Logging;
-using Store.Core.Contracts.Validation;
 using Store.Core.Contracts.Security;
+using Store.Core.Utils.Validators.User;
 
 namespace Store.App.CQRS.Users.Commands.Update;
 
@@ -13,15 +13,13 @@ public class UserUpdateFacade
 {
     private readonly IUserUpdateChain _chain;
     private readonly IUserRepository _userRepository;
-    private readonly IPasswordValidator _passwordValidator;
-    private readonly IPasswordHasher _passwordHasher;
+    private readonly IPasswordManager _passwordHasher;
 
     private readonly ILogger<UserUpdateFacade> _logger;
 
-    public UserUpdateFacade(IUserUpdateChainFactory factory, IPasswordHasher passwordHasher, IPasswordValidator passwordValidator, IUserRepository userRepository, ILogger<UserUpdateFacade> logger)
+    public UserUpdateFacade(IUserUpdateChainFactory factory, IPasswordManager passwordHasher, IUserRepository userRepository, ILogger<UserUpdateFacade> logger)
     {
         _passwordHasher = passwordHasher;
-        _passwordValidator = passwordValidator;
         _userRepository = userRepository;
         _chain = factory.Create();
         _logger = logger;
@@ -57,7 +55,7 @@ public class UserUpdateFacade
         string passwordHash;
         if (!string.IsNullOrWhiteSpace(password))
         {
-            _passwordValidator.ValidatePassword(password);
+            new PasswordValidator().Validate(password);
             passwordHash = _passwordHasher.HashPassword(password);
         }
         else

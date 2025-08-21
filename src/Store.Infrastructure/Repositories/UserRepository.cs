@@ -42,7 +42,8 @@ public class UserRepository : IUserRepository
     {
         _logger.LogDebug("Getting user {UserEmail}", email);
 
-        var userEntity = await _userDao.GetByEmailAsync(email);
+        var userEntity = await _userDao.GetByEmailAsync(email) 
+            ?? throw new InvalidUserDataException($"User {email} not found");
 
         return (UserMapper.ToDomain(userEntity), userEntity.PasswordHash);
     }
@@ -66,7 +67,7 @@ public class UserRepository : IUserRepository
         }
         else
         {
-            userEntity = JsonSerializer.Deserialize<UserEntity>(entityFromCache);
+            userEntity = JsonSerializer.Deserialize<UserEntity>(entityFromCache)!;
         }
 
         return (UserMapper.ToDomain(userEntity), userEntity.PasswordHash);

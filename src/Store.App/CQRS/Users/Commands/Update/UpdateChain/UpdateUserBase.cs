@@ -1,19 +1,16 @@
 using Microsoft.Extensions.Logging;
 using Store.Core.Builders;
-using Store.Core.Contracts.Validation;
 using Store.Core.Models.Dto.User;
 
 namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 
-public class UpdateCustomerBase : IUserUpdateChain
+public class UpdateUserBase : IUserUpdateChain
 {
     protected IUserUpdateChain? _next;
-    protected IUserValidator _validator;
-    protected ILogger _logger;
+    protected ILogger<UpdateUserBase> _logger;
 
-    public UpdateCustomerBase(IUserValidator validator, ILogger logger)
+    public UpdateUserBase(ILogger<UpdateUserBase> logger)
     {
-        _validator = validator;
         _logger = logger;
     }
 

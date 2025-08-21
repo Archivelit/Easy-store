@@ -17,7 +17,6 @@ public class GetItemByIdQueryHandler : IQueryHandler<GetItemByIdQuery, ItemDto>
         _logger = logger;
     }
 
-    //TODO: add validation
     public async Task<ItemDto> Handle(GetItemByIdQuery request, CancellationToken cancellationToken)
     {
         {

@@ -2,35 +2,28 @@ namespace Store.Core.Models;
 
 public class Item : IItem
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; private set; } = Guid.NewGuid();
     public string Title { get; private set; }
     public string? Description { get; private set; }
     public decimal Price { get; private set; }
     public Guid UserId { get; private set; }
     public int QuantityInStock { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
-    
-    internal Item(string title, decimal price, int quantityInStock, Guid customerId, string? description = null)
+    public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+    public DateTime? UpdatedAt { get; private set; } = null;
+
+    internal Item(string title, decimal price, int quantityInStock, Guid userId, string? description = null) 
     {
-        Id = Guid.NewGuid();
+        Description = description;
         Title = title;
         Price = price;
         QuantityInStock = quantityInStock;
-        UserId = customerId;
-        Description = description;
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = null;
+        UserId = userId;
     }
-    
-    internal Item(Guid id, string title, decimal price, int quantityInStock, Guid customerId, string? description, DateTime createdAt, DateTime? updatedAt)
+
+    internal Item(Guid id, string title, decimal price, int quantityInStock, Guid userId, string? description, DateTime createdAt, DateTime? updatedAt)
+        : this(title, price, quantityInStock, userId, description)
     {
         Id = id;
-        Title = title;
-        Price = price;
-        QuantityInStock = quantityInStock;
-        UserId = customerId;
-        Description = description;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }

@@ -4,7 +4,7 @@ using Store.Core.Models;
 
 namespace Store.Core.Factories;
 
-public class ItemFactory : IItemFactory
+public class ItemDomainFactory : IItemFactory
 {
     public Item Create(IItem item) => 
         new ItemBuilder().From(item).Build();

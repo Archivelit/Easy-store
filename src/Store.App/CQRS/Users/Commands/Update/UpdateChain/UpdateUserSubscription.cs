@@ -2,19 +2,17 @@ using Microsoft.Extensions.Logging;
 using Store.Core.Builders;
 using Store.Core.Models.Dto.User;
 using Store.Core.Enums.Subscriptions;
-using Store.Core.Contracts.Validation;
 
 namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 
-public class UpdateUserSubscription : UpdateCustomerBase
+public class UpdateUserSubscription : UpdateUserBase
 {
-    public UpdateUserSubscription(IUserValidator validator, ILogger logger) : base(validator, logger)  { }
+    public UpdateUserSubscription(ILogger<UpdateUserSubscription> logger) : base(logger)  { }
 
     public override UserBuilder Update(UserBuilder builder, UserDto model)
     {
         if (model.SubscriptionType != Subscription.None)
         {
-            _validator.ValidateSubscription(model.SubscriptionType.ToString());
             builder.WithSubscriptionType(model.SubscriptionType);
 
             _logger.LogDebug("User {UserId} updated email to {NewUserSubscription}", model.Id, model.SubscriptionType);

@@ -1,6 +1,7 @@
 namespace Store.Core.Contracts.Security;
 
-public interface IPasswordHasher
+public interface IPasswordManager
 {
     string HashPassword(string password);
+    void VerifyPassword(string hash, string password);
 }

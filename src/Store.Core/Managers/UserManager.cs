@@ -1,10 +1,7 @@
-using System.Security.Authentication;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Exceptions.InvalidData;
 using Store.Core.Models;
-using Bcrypt = BCrypt.Net.BCrypt;
 using Microsoft.Extensions.Logging;
-using Store.Core.Contracts.Validation;
 using Store.Core.Contracts.Users;
 using Store.Core.Contracts.Security;
 
@@ -13,17 +10,14 @@ namespace Store.Core.Managers;
 public class UserManager : IUserManager
 {
     private readonly IUserRepository _userRepository;
-    private readonly IUserValidator _validationService;
-    private readonly IPasswordHasher _passwordHasher;
+    private readonly IPasswordManager _passwordManager;
     private readonly IJwtManager _jwtManager;
     private readonly ILogger<UserManager> _logger;
 
-    public UserManager(IUserRepository userRepository, IUserValidator validationService,
-        IPasswordHasher passwordHasher, IJwtManager jwtManager, ILogger<UserManager> logger)
+    public UserManager(IUserRepository userRepository, IPasswordManager passwordManager, IJwtManager jwtManager, ILogger<UserManager> logger)
     {
         _userRepository = userRepository;
-        _validationService = validationService;
-        _passwordHasher = passwordHasher;
+        _passwordManager = passwordManager;
         _jwtManager = jwtManager;
         _logger = logger;
     }
@@ -34,20 +28,18 @@ public class UserManager : IUserManager
 
         try
         {
-            _validationService.ValidateAndThrow(name, email, password);
-
             if (await _userRepository.IsEmailClaimedAsync(email))
+            {
                 throw new InvalidUserDataException("Email is already registered");
+            }
 
-            var passwordHash = _passwordHasher.HashPassword(password);
-
-            var customer = new User(name, email);
-
-            await _userRepository.RegisterAsync(customer, passwordHash);
+            var passwordHash = _passwordManager.HashPassword(password);
+            var user = new User(name, email);
+            await _userRepository.RegisterAsync(user, passwordHash);
 
             _logger.LogDebug("Ending user registration");
             
-            return customer;
+            return user;
         }
         catch (Exception ex)
         {
@@ -58,19 +50,15 @@ public class UserManager : IUserManager
 
     public async Task<string> AuthenticateAsync(string email, string password)
     {
-        try {
-            _logger.LogInformation("Starting user {UserEmail} authentication", email);
-
-            _validationService.ValidateEmail(email);
-            _validationService.ValidatePassword(password);
+        try
+        {
+            _logger.LogDebug("Starting user {UserEmail} authentication", email);
 
             var userData = await _userRepository.GetByEmailAsync(email);
 
             var passwordHashFromDb = userData.passwordHash;
-
-            if (!Bcrypt.Verify(password, passwordHashFromDb))
-                throw new AuthenticationException("The password doesn't match");
-
+            _passwordManager.VerifyPassword(passwordHashFromDb, password);
+            
             return _jwtManager.GenerateToken(userData.user);
         }
         catch (Exception ex)
@@ -89,9 +77,6 @@ public class UserManager : IUserManager
         try
         {
             _logger.LogInformation("Deleting user {UserId}", id);
-            if (id == Guid.Empty)
-                throw new InvalidUserDataException("Id cannot be empty");
-
             await _userRepository.DeleteAsync(id);
         }
         catch (Exception ex)

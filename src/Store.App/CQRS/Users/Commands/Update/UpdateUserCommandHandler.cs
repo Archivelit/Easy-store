@@ -3,12 +3,12 @@ using Store.Core.Contracts.CQRS.User.Commands;
 
 namespace Store.App.CQRS.Users.Commands.Update;
 
-public class UpdateCustomerCommandHandler : ICommandHandler<UpdateUserCommand>
+public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
 {
     
     private readonly UserUpdateFacade _facade;
     
-    public UpdateCustomerCommandHandler(UserUpdateFacade facade)
+    public UpdateUserCommandHandler(UserUpdateFacade facade)
     {
         _facade = facade;
     }

@@ -5,23 +5,20 @@ namespace Store.Core.Models;
 
 public class User : IUser
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; init; } = Guid.NewGuid();
     public string Name { get; init; }
     public string Email { get; init; }
-    public Subscription SubscriptionType { get; init; }
+    public Subscription SubscriptionType { get; init; } = Subscription.None;
     
     public User(string name, string email)
     {
-        Id = Guid.NewGuid();
         Name = name;
         Email = email;
-        SubscriptionType = Subscription.None;
     }
     
     public User(Guid id, string name, string email, Subscription subscriptionType)
+    : this (name, email)
     {
-        Id = id;
-        Name = name;
         Email = email;
         SubscriptionType = subscriptionType;
     }

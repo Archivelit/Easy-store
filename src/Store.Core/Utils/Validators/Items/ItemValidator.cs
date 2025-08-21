@@ -1,106 +1,136 @@
-using Store.Core.Contracts.Repositories;
-using Microsoft.Extensions.Logging;
+﻿using FluentValidation;
 using Store.Core.Models;
-using Store.Core.Exceptions.InvalidData;
-using Store.Core.Contracts.Validation;
 
 namespace Store.Core.Utils.Validators.Items;
 
-public class ItemValidator : IItemValidator
+public class ItemValidator : AbstractValidator<Item>
 {
-    private readonly IUserRepository _customerRepository;
-    private readonly ILogger<ItemValidator> _logger;
-
-    public ItemValidator(IUserRepository repository, ILogger<ItemValidator> logger)
+    public ItemValidator()
     {
-        _customerRepository = repository;
-        _logger = logger;
-    }
-
-    public void ValidateAndThrow(IItem dto)
-    {
-        _logger.LogDebug("Starting item validation");
-
-        try
+        RuleSet("Title", () =>
         {
-            ValidateTitle(dto.Title);
-            ValidateDescription(dto.Description);
-            ValidatePrice(dto.Price);
-            ValidateQuantity(dto.QuantityInStock);
-            ValidateCustomerId(dto.UserId);
-            ValidateCreationDate(dto.CreatedAt);
-            ValidateUpdateDate(dto.UpdatedAt, dto.CreatedAt);
+            RuleFor(i => i.Title).SetValidator(new TitleValidator());
+        });
 
-            _logger.LogDebug("Item validated succesfuly");
-        }
-        catch (Exception ex)
+        RuleSet("Description", () =>
         {
-            _logger.LogError(ex, "Item had invalid data");
-        }
+            RuleFor(i => i.Description).SetValidator(new DescriptionValidator());
+        });
+
+        RuleSet("Price", () =>
+        {
+            RuleFor(i => i.Price).SetValidator(new PriceValidator());
+        });
+
+        RuleSet("Quantity", () =>
+        {
+            RuleFor(i => i.QuantityInStock).SetValidator(new QuantityValidator());
+        });
+
+        RuleSet("UserId", () =>
+        {
+            RuleFor(i => i.UserId).SetValidator(new UserIdValidator());
+        });
+
+        RuleSet("Id", () =>
+        {
+            RuleFor(i => i.Id).SetValidator(new ItemIdValidator());
+        });
+
+        RuleSet("CreatedAt", () =>
+        {
+            RuleFor(i => i).SetValidator(new CreatedAtValidator());
+        });
+
+        RuleSet("UpdatedAt", () =>
+        {
+            RuleFor(i => i).SetValidator(new UpdatedAtValidator());
+        });
     }
+}
 
-    public void ValidateTitle(string title)
+public class ItemIdValidator : AbstractValidator<Guid>
+{
+    public ItemIdValidator()
     {
-        ArgumentNullException.ThrowIfNullOrEmpty(title);
-
-        if (title.Length < 3)
-            throw new InvalidItemDataException("Title is too short. It has to have at least 3 characters.");
-
-        if (title.Length > 100)
-            throw new InvalidItemDataException("Title is too long. It has to be 100 or less characters.");
-
-        if (!title.Any(char.IsLetter))
-            throw new InvalidItemDataException("Invalid item title. It must contain at least 1 letter.");
+        RuleFor(x => x).NotEmpty();
     }
+}
 
-    public void ValidateDescription(string? description)
+public class UserIdValidator : AbstractValidator<Guid>
+{
+    public UserIdValidator()
     {
-        if (string.IsNullOrWhiteSpace(description))
-            return;
-        
-        if (description.Length > 1000)
-            throw new InvalidItemDataException("Description is too long. It has to be 1000 or less characters.");
-        
-        if (!description.Any(char.IsLetter))
-            throw new InvalidItemDataException("Description must contain letters.");
+        RuleFor(x => x).NotEmpty();
     }
+}
 
-    public async void ValidateCustomerId(Guid customerId)
+public class TitleValidator : AbstractValidator<string>
+{
+    public TitleValidator()
     {
-        if (customerId == Guid.Empty)
-            throw new InvalidItemDataException("Customer ID cannot be empty.");
-        
-        if (! await _customerRepository.IsExistsAsync(customerId))
-            throw new InvalidItemDataException("Customer with given ID was not found.");
+        RuleFor(x => x)
+            .NotEmpty()
+            .WithMessage("Title cannot be empty");
+
+        RuleFor(x => x)
+            .Length(3, 100)
+            .WithMessage("Title must be between 3 and 100 chars");
+
+        RuleFor(x => x)
+            .Must(x => x.Any(char.IsLetter))
+            .WithMessage("Title must contain atleast 1 letter");
     }
+}
 
-    public void ValidatePrice(decimal price)
+public class DescriptionValidator : AbstractValidator<string?>
+{
+    public DescriptionValidator()
     {
-        if (price < 0)
-            throw new InvalidItemDataException("Price must be greater than zero.");
+        RuleFor(x => x)
+            .Length(1, 2000)
+            .When(x => x != null)
+            .WithMessage("Description cannot be longer 2000 characters");
+
+        RuleFor(x => x)
+            .Must(x => x.Any(char.IsLetter))
+            .When(x => x != null)
+            .WithMessage("Title must contain atleast 1 letter");
     }
+}
 
-    public void ValidateQuantity(int quantity)
+public class PriceValidator : AbstractValidator<decimal>
+{
+    public PriceValidator()
     {
-        if (quantity < 0)
-            throw new InvalidItemDataException("Quantity must be greater than zero.");
+        RuleFor(x => x)
+            .GreaterThan(0)
+            .WithMessage("Price cannot be under 0 inclusive");
     }
+}
 
-    public void ValidateCreationDate(DateTime creationDate)
+public class QuantityValidator : AbstractValidator<int>
+{
+    public QuantityValidator()
     {
-        if (creationDate > DateTime.UtcNow)
-            throw new InvalidItemDataException("Creation date cannot be in the future.");
+        RuleFor(x => x)
+            .GreaterThanOrEqualTo(0)
+            .WithMessage("Quantity cannot be under 0");
     }
+}
 
-    public void ValidateUpdateDate(DateTime? updateDate, DateTime creationDate)
+public class CreatedAtValidator : AbstractValidator<Item>
+{
+    public CreatedAtValidator()
     {
-        if (updateDate == null)
-            return;
+        RuleFor(x => x);
+    }
+}
 
-        if (updateDate.Value.Date > DateTime.UtcNow)
-            throw new InvalidItemDataException("Update date cannot be in the future.");
-
-        if (updateDate.Value.Date < creationDate)
-            throw new InvalidItemDataException("Update date cannot be earlier than creation date.");
+public class UpdatedAtValidator : AbstractValidator<Item>
+{
+    public UpdatedAtValidator()
+    {
+        RuleFor(x => x);
     }
 }

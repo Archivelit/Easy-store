@@ -22,7 +22,7 @@ public class UserUpdateChainFactory : IUserUpdateChainFactory
         var nameHandler = _serviceProvider.GetRequiredService<UpdateUserName>();
         var subscriptionHandler = _serviceProvider.GetRequiredService<UpdateUserSubscription>();
 
-        emailHandler.SetNext(nameHandler).SetNext(subscriptionHandler).SetNext(null);
+        emailHandler.SetNext(nameHandler).SetNext(subscriptionHandler);
 
         _logger.LogDebug("User update chain created");
 

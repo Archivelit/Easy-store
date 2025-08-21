@@ -1,20 +1,24 @@
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Store.Core.Builders;
-using Store.Core.Contracts.Validation;
 using Store.Core.Models.Dto.Items;
+using Store.Core.Utils.Validators.Items;
 
 namespace Store.App.CQRS.Items.Commands.Update.UpdateChain;
 
 public class UpdateQuantity : ItemUpdateChainBase
 {
-    public UpdateQuantity(IItemValidator validator, ILogger logger) : base(validator, logger) { }
+    public UpdateQuantity(ILogger<UpdateQuantity> logger) : base(logger) { }
 
     public override ItemBuilder Update(ItemBuilder builder, UpdateItemDto itemDto)
     {
         if (itemDto.QuantityInStock != null)
         {
             _logger.LogDebug("Updating quantity of {ItemId}", itemDto.QuantityInStock);
-            _validator.ValidateQuantity((int)itemDto.QuantityInStock);
+            new QuantityValidator().Validate((int)itemDto.QuantityInStock, options =>
+            {
+                options.ThrowOnFailures();
+            });
             builder.WithQuantityInStock((int)itemDto.QuantityInStock);
         }
         return base.Update(builder, itemDto);

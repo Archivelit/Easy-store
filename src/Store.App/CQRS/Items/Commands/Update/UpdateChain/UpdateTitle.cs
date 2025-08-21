@@ -1,20 +1,24 @@
+using FluentValidation;
 using Microsoft.Extensions.Logging;
 using Store.Core.Builders;
-using Store.Core.Contracts.Validation;
 using Store.Core.Models.Dto.Items;
+using Store.Core.Utils.Validators.Items;
 
 namespace Store.App.CQRS.Items.Commands.Update.UpdateChain;
 
 public class UpdateTitle : ItemUpdateChainBase
 {
-    public UpdateTitle(IItemValidator validator, ILogger logger) : base(validator, logger) { }
+    public UpdateTitle(ILogger<UpdateTitle> logger) : base(logger) { }
 
     public override ItemBuilder Update(ItemBuilder builder, UpdateItemDto itemDto)
     {
         if (itemDto.Title != null)
         {
             _logger.LogDebug("Updating title of {ItemId}", itemDto.Id);
-            _validator.ValidateTitle(itemDto.Title);
+            new TitleValidator().Validate(itemDto.Title, options =>
+            {
+                options.ThrowOnFailures();
+            });
             builder.WithTitle(itemDto.Title);
         }
         return base.Update(builder, itemDto);

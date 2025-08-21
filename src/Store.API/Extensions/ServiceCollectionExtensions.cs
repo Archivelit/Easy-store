@@ -1,24 +1,26 @@
+using FluentValidation;
+using Serilog;
+using Store.App.CQRS.Items.Commands.Update;
+using Store.App.CQRS.Items.Commands.Update.UpdateChain;
+using Store.App.CQRS.Users.Commands.Update;
 using Store.App.CQRS.Users.Commands.Update.UpdateChain;
 using Store.App.GraphQl;
-using Store.Core.Managers;
-using Store.Core.Services.Customers;
-using Store.Core.Services.Validation;
-using Store.Core.Providers.Validators;
-using Store.Core.Factories;
-using Store.Core.Utils.Hashers;
-using Store.Core.Utils.Validators.User;
-using Store.Core.Utils.Validators.Items;
-using Store.Infrastructure.Contracts;
-using Store.Infrastructure.Factories;
-using Serilog;
+using Store.Core.Contracts.CQRS;
 using Store.Core.Contracts.Factories;
 using Store.Core.Contracts.Repositories;
-using Store.Infrastructure.Repositories;
-using Store.Infrastructure.Data.DataAccessObjects;
-using Store.Core.Contracts.Validation;
 using Store.Core.Contracts.Security;
 using Store.Core.Contracts.Users;
-using Store.Core.Contracts.CQRS;
+using Store.Core.Factories;
+using Store.Core.Managers;
+using Store.Core.Models;
+using Store.Core.Services.Customers;
+using Store.Core.Utils.Hashers;
+using Store.Core.Utils.Validators.Items;
+using Store.Core.Utils.Validators.User;
+using Store.Infrastructure.Contracts;
+using Store.Infrastructure.Data.DataAccessObjects;
+using Store.Infrastructure.Factories;
+using Store.Infrastructure.Repositories;
 
 namespace Store.API.Extensions;
 
@@ -28,39 +30,52 @@ public static class ServiceCollectionExtensions
     {
         Log.Debug("Setting up services");
 
-        services.AddTransient<IItemFactory, ItemFactory>();
-        services.AddTransient<IItemEntityFactory, ItemEntityFactory>();
-
-        services.AddScoped<IPasswordHasher, PasswordHasher>();
-
-        services.AddTransient<IEmailValidator, EmailValidatorAdapter>();
-        services.AddTransient<IUserNameValidator, UserNameValidator>();
-        services.AddTransient<IPasswordValidator, PasswordValidator>();
-        services.AddTransient<ISubscriptionValidator, SubscriptionValidator>();
-
-        services.AddScoped<IItemValidator, ItemValidator>();
-        services.AddScoped<IUserValidator, ValidationService>();
-
-        services.AddSingleton<IUserRepository, UserRepository>();
-        services.AddSingleton<IItemRepository, ItemRepository>();
-
-        services.AddScoped<IJwtManager, JwtHandler>();
-        services.AddScoped<IUserManager, UserManager>();
-
-        services.AddTransient<UpdateUserEmail>();
-        services.AddTransient<UpdateUserName>();
-        services.AddTransient<UpdateUserSubscription>();
-        
-        services.AddTransient<UserUpdateChainFactory>();
-
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IUserDao, UserDao>();
         services.AddScoped<IItemDao, ItemDao>();
+        services.AddScoped<IUserManager, UserManager>();
+
+        services.AddScoped<IJwtManager, JwtHandler>();
+        services.AddScoped<IPasswordManager, PasswordManager>();
+
+        services.RegisterUpdateUserServices();
+        services.RegisterUpdateItemServices();
+
+        services.AddTransient<IValidator<User>, UserValidator>();
+        services.AddTransient<IValidator<Item>, ItemValidator>();
+
+        services.AddTransient<IItemFactory, ItemDomainFactory>();
+        services.AddTransient<IItemEntityFactory, ItemEntityFactory>();
 
         Log.Debug("Services setted up succesfuly");
 
         return services;
     }
 
+    private static void RegisterUpdateUserServices(this IServiceCollection services)
+    {
+        services.AddTransient<IUserUpdateChainFactory, UserUpdateChainFactory>();
+
+        services.AddTransient<UserUpdateChainFactory>();
+        services.AddTransient<UpdateUserEmail>();
+        services.AddTransient<UpdateUserName>();
+        services.AddTransient<UpdateUserSubscription>();
+
+        services.AddScoped<UserUpdateFacade>();
+    }
+
+    private static void RegisterUpdateItemServices(this IServiceCollection services)
+    {
+        services.AddTransient<IItemUpdateChainFactory, ItemUpdateChainFactory>();
+        services.AddTransient<UpdateTitle>();
+        services.AddTransient<UpdateDescription>();
+        services.AddTransient<UpdatePrice>();
+        services.AddTransient<UpdateQuantity>();
+        services.AddTransient<RefreshUpdatedAt>();
+
+        services.AddScoped<ItemUpdateFacade>();
+    }
 
     public static IServiceCollection ConfigureGraphQl(this IServiceCollection services)
     {

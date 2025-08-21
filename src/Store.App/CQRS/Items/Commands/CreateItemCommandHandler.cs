@@ -3,52 +3,48 @@ using Store.Core.Contracts.CQRS.Item.Commands;
 using Store.Core.Models.Dto.Items;
 using Microsoft.Extensions.Logging;
 using Store.Core.Contracts.Factories;
-using Store.Core.Contracts.Validation;
 using Store.Core.Contracts.CQRS;
+using FluentValidation;
+using Store.Core.Models;
 
 namespace Store.App.CQRS.Items.Commands;
 
 public class CreateItemCommandHandler : ICommandHandler<CreateItemCommand, ItemDto>
 {
     private readonly IItemRepository _repository;
-    private readonly IItemValidator _itemValidator;
+    private readonly IValidator<Item> _validator;
     private readonly IItemFactory _itemFactory;
     private readonly ILogger<CreateItemCommandHandler> _logger;
 
-    public CreateItemCommandHandler(IItemRepository repository, IItemValidator itemValidator, IItemFactory itemFactory, ILogger<CreateItemCommandHandler> logger)
+    public CreateItemCommandHandler(IItemRepository repository, IItemFactory itemFactory, ILogger<CreateItemCommandHandler> logger, IValidator<Item> validator)
     {
         _repository = repository;
-        _itemValidator = itemValidator;
         _itemFactory = itemFactory;
         _logger = logger;
+        _validator = validator;
     }
 
     public async Task<ItemDto> Handle(CreateItemCommand command, CancellationToken cancellationToken)
     {
         try
         {
-            _logger.LogDebug("Starting item registration");
-
             cancellationToken.ThrowIfCancellationRequested();
 
-            command = command with
+            _logger.LogDebug("Starting item registration");
+
+            var item = _itemFactory.Create(command.Item);
+
+            _validator.Validate(item, options =>
             {
-                Item = command.Item with
-                {
-                    Title = command.Item.Title.Trim(),
-                    Description = command.Item.Description?.Trim()
-                }
-            };
+                options.IncludeRuleSets("*");
+                options.ThrowOnFailures();
+            });
 
-            _itemValidator.ValidateAndThrow(command.Item);
+            await _repository.RegisterAsync(item);
 
-            var itemEntity = _itemFactory.Create(command.Item);
-
-            await _repository.RegisterAsync(itemEntity);
-
-            _logger.LogInformation("Item {ItemId} registered", itemEntity.Id);
+            _logger.LogInformation("Item {ItemId} registered", item.Id);
             
-            return new(itemEntity);
+            return new(item);
         }
         catch (Exception ex)
         {

@@ -1,13 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Store.Core.Exceptions.InvalidData;
 using Store.Core.Models;
 
 namespace Store.Infrastructure.Entities;
 
 public class ItemEntity : IItem
 {
-    // TODO: refactor validation
     [Key]
     public Guid Id { get; private set; } = Guid.NewGuid();
     
@@ -23,16 +21,16 @@ public class ItemEntity : IItem
     public Guid UserId { get; private set; }
     public int QuantityInStock { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; private set; }
-    
+    public DateTime? UpdatedAt { get; private set; } = null;
+
+
     public ItemEntity(string title, decimal price, int quantityInStock, Guid userId,string? description = null)
     {
-        UpdateTitle(title);
-        UpdatePrice(price);
-        SetQuantity(quantityInStock);
+        Title = title;
+        Price = price;
+        QuantityInStock = quantityInStock;
         UserId = userId;
-        UpdateDescription(description);
-        UpdatedAt = null;
+        Description = description;
     }
     
     public ItemEntity(Guid id, string title, decimal price, int quantityInStock, Guid userId,string? description, DateTime createdAt, DateTime? updatedAt)
@@ -42,46 +40,4 @@ public class ItemEntity : IItem
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }
-
-    private ItemEntity(){}
-    
-    public void UpdateTitle(string title)
-    {
-        if (string.IsNullOrWhiteSpace(title)) 
-            throw new InvalidItemDataException("Title cannot be empty");
-        if (title.Length > 100)
-            throw new InvalidItemDataException("Title length cannot exceed 100 characters");
-
-        Title = title;
-        MarkUpdated();
-    }
-
-    public void UpdatePrice(decimal price)
-    {
-        if (price < 0) 
-            throw new InvalidItemDataException("Price cannot be negative");
-
-        Price = price;
-        MarkUpdated();
-    }
-
-    public void SetQuantity(int quantity)
-    {
-        if (quantity < 0)
-            throw new InvalidItemDataException("Quantity cannot be negative");
-
-        QuantityInStock = quantity;
-        MarkUpdated();
-    }
-
-    public void UpdateDescription(string? description)
-    {
-        if (description != null && description.Length > 1000)
-            throw new InvalidItemDataException("Description length cannot exceed 1000 characters");
-
-        Description = description;
-        MarkUpdated();
-    }
-
-    private void MarkUpdated() => UpdatedAt = DateTime.UtcNow;
 }

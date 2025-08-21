@@ -9,13 +9,13 @@ public class DeleteItemCommandHandler : ICommandHandler<DeleteItemCommand>
 {
     private readonly IItemRepository _itemRepository;
     private readonly ILogger<DeleteItemCommandHandler> _logger;
+
     public DeleteItemCommandHandler(IItemRepository itemRepository, ILogger<DeleteItemCommandHandler> logger)
     {
         _itemRepository = itemRepository;
         _logger = logger;
     }
 
-    // TODO: add validation
     public async Task Handle(DeleteItemCommand request, CancellationToken cancellationToken)
     {
         try

@@ -22,7 +22,7 @@ public static class Program
             options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
         });
 
-        builder.Configuration.SetUpLogger();
+        builder.Configuration.ConfigureLogger();
 
         builder.Host.UseSerilog();
 
