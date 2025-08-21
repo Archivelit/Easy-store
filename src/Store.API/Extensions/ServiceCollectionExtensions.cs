@@ -13,7 +13,6 @@ using Store.Core.Contracts.Users;
 using Store.Core.Factories;
 using Store.Core.Managers;
 using Store.Core.Models;
-using Store.Core.Services.Customers;
 using Store.Core.Utils.Hashers;
 using Store.Core.Utils.Validators.Items;
 using Store.Core.Utils.Validators.User;
@@ -51,30 +50,6 @@ public static class ServiceCollectionExtensions
         Log.Debug("Services setted up succesfuly");
 
         return services;
-    }
-
-    private static void RegisterUpdateUserServices(this IServiceCollection services)
-    {
-        services.AddTransient<IUserUpdateChainFactory, UserUpdateChainFactory>();
-
-        services.AddTransient<UserUpdateChainFactory>();
-        services.AddTransient<UpdateUserEmail>();
-        services.AddTransient<UpdateUserName>();
-        services.AddTransient<UpdateUserSubscription>();
-
-        services.AddScoped<UserUpdateFacade>();
-    }
-
-    private static void RegisterUpdateItemServices(this IServiceCollection services)
-    {
-        services.AddTransient<IItemUpdateChainFactory, ItemUpdateChainFactory>();
-        services.AddTransient<UpdateTitle>();
-        services.AddTransient<UpdateDescription>();
-        services.AddTransient<UpdatePrice>();
-        services.AddTransient<UpdateQuantity>();
-        services.AddTransient<RefreshUpdatedAt>();
-
-        services.AddScoped<ItemUpdateFacade>();
     }
 
     public static IServiceCollection ConfigureGraphQl(this IServiceCollection services)
@@ -144,5 +119,29 @@ public static class ServiceCollectionExtensions
 
         Log.Debug("GraphQl extend types added succesfuly");
         return services;
+    }
+
+    private static void RegisterUpdateUserServices(this IServiceCollection services)
+    {
+        services.AddTransient<IUserUpdateChainFactory, UserUpdateChainFactory>();
+
+        services.AddTransient<UserUpdateChainFactory>();
+        services.AddTransient<UpdateUserEmail>();
+        services.AddTransient<UpdateUserName>();
+        services.AddTransient<UpdateUserSubscription>();
+
+        services.AddScoped<UserUpdateFacade>();
+    }
+
+    private static void RegisterUpdateItemServices(this IServiceCollection services)
+    {
+        services.AddTransient<IItemUpdateChainFactory, ItemUpdateChainFactory>();
+        services.AddTransient<UpdateTitle>();
+        services.AddTransient<UpdateDescription>();
+        services.AddTransient<UpdatePrice>();
+        services.AddTransient<UpdateQuantity>();
+        services.AddTransient<RefreshUpdatedAt>();
+
+        services.AddScoped<ItemUpdateFacade>();
     }
 }

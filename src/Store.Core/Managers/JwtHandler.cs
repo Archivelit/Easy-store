@@ -7,7 +7,7 @@ using Path = System.IO.Path;
 using Microsoft.Extensions.Logging;
 using Store.Core.Contracts.Users;
 
-namespace Store.Core.Services.Customers;
+namespace Store.Core.Managers;
 
 public class JwtHandler : IJwtManager
 {
@@ -24,11 +24,10 @@ public class JwtHandler : IJwtManager
     {
         _logger.LogDebug("Generating token for {UserId}", user.Id);
 
-        var customerClaims = GenerateClaims(user);
-
+        var userClaims = GenerateClaims(user);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(customerClaims),
+            Subject = new ClaimsIdentity(userClaims),
             Expires = DateTime.Now.AddMinutes(15),
             SigningCredentials = _signingCredentials,
             Issuer = "localhost",

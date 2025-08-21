@@ -2,6 +2,7 @@ using Serilog;
 using Store.API.Extensions;
 using Store.Infrastructure.Data;
 using Path = System.IO.Path;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Store.API;
 
@@ -26,6 +27,26 @@ public static class Program
 
         builder.Host.UseSerilog();
 
+        builder.Services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "http://localhost:8080/realms/store";
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false
+                };
+            });
+
+        builder.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("default", policy =>
+                policy.RequireAuthenticatedUser());
+        });
+
+        builder.Services
+            .AddReverseProxy()
+            .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();
         builder.Services.ConfigureGraphQl();
@@ -37,11 +58,14 @@ public static class Program
 
         app.UseSerilogRequestLogging();
         app.UseRouting();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         Log.Debug("Midleware setted up succesfuly");
-        
+
+        app.MapReverseProxy();
         app.MapGraphQL();
-        
+
         app.Run();
     }
 }
