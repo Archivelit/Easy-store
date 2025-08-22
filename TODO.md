@@ -6,7 +6,7 @@
 - add OpenTelemetry
 - fix namespaces
 - try AutoMapper/Manual mapping
-- configure audience in tokens
+- configure keycloak
 
 ---
 

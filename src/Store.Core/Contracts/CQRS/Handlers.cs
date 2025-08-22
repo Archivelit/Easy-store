@@ -16,5 +16,5 @@ public interface ICommandHandler<TCommand>
 public interface IQueryHandler<TQuery, TResponse>
     where TQuery : IQuery<TResponse>
 {
-Task<TResponse> Handle(TQuery query, CancellationToken ct);
+    Task<TResponse> Handle(TQuery query, CancellationToken ct);
 };
