@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Store.App.CQRS.Items.Commands.Update;
 using Store.App.CQRS.Items.Commands.Update.UpdateChain;
@@ -95,6 +96,48 @@ public static class ServiceCollectionExtensions
         }
 
         Log.Debug("Handlers registered succesfuly");
+        return services;
+    }
+
+    public static IServiceCollection ConfigureRedis(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        return services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = configuration.GetConnectionString("RedisConnection");
+        });
+    }
+
+    public static IServiceCollection ConfigureReverseProxy(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        services.AddReverseProxy()
+            .LoadFromConfig(configuration.GetSection("ReverseProxy"));
+
+        return services;
+    }
+
+    public static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
+    {
+        services.AddAuthentication("Bearer")
+            .AddJwtBearer("Bearer", options =>
+            {
+                options.Authority = "http://localhost:8080/realms/store";
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = false
+                };
+            });
+
+        return services;
+    }
+
+    public static IServiceCollection ConfigureAuthorization(this IServiceCollection services)
+    {
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("default", policy =>
+                policy.RequireAuthenticatedUser());
+        });
+
         return services;
     }
 

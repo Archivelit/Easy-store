@@ -2,7 +2,6 @@ using Serilog;
 using Store.API.Extensions;
 using Store.Infrastructure.Data;
 using Path = System.IO.Path;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Store.API;
 
@@ -14,39 +13,16 @@ public static class Program
         
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Configuration
-            .AddJsonFile("appsettings.json", optional: true)
+        builder.Configuration.AddJsonFile("appsettings.json", optional: false)
             .AddEnvironmentVariables();
-
-        builder.Services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = builder.Configuration.GetConnectionString("RedisConnection");
-        });
-
         builder.Configuration.ConfigureLogger();
-
+        
         builder.Host.UseSerilog();
 
-        builder.Services.AddAuthentication("Bearer")
-            .AddJwtBearer("Bearer", options =>
-            {
-                options.Authority = "http://localhost:8080/realms/store";
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = false
-                };
-            });
-
-        builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy("default", policy =>
-                policy.RequireAuthenticatedUser());
-        });
-
-        builder.Services
-            .AddReverseProxy()
-            .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
-
+        builder.Services.ConfigureRedis(builder.Configuration);
+        builder.Services.ConfigureReverseProxy(builder.Configuration);
+        builder.Services.ConfigureAuthentication();
+        builder.Services.ConfigureAuthorization();
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();
         builder.Services.ConfigureGraphQl();
