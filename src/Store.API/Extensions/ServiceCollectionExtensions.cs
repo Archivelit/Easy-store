@@ -134,7 +134,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("default", policy =>
+            options.AddPolicy("authenticated", policy =>
                 policy.RequireAuthenticatedUser());
         });
 
