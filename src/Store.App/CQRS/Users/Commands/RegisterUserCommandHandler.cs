@@ -18,16 +18,12 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, U
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        new EmailValidator().Validate(command.AuthData.Email, options => 
-        {
-            options.ThrowOnFailures();
-        });
-        new PasswordValidator().Validate(command.AuthData.Password, options =>
+        new EmailValidator().Validate(command.Email, options => 
         {
             options.ThrowOnFailures();
         });
 
-        var user = await _userManager.RegisterAsync(command.Name, command.AuthData.Email, command.AuthData.Password);
+        var user = await _userManager.RegisterAsync(command.Name, command.Email);
 
         return new(user);
     }

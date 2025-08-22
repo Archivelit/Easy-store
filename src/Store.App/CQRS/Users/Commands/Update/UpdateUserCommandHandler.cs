@@ -17,6 +17,6 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
     {
         ct.ThrowIfCancellationRequested();
         
-        await _facade.UpdateUserAsync(command.UserDto, command.Password);
+        await _facade.UpdateUserAsync(command.UserDto);
     }
 }

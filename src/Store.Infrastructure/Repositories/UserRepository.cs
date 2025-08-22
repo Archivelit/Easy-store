@@ -38,17 +38,17 @@ public class UserRepository : IUserRepository
         _logger.LogInformation("User {UserId} was succesfuly deleted", id);
     }
 
-    public async Task<(User user, string passwordHash)> GetByEmailAsync(string email)
+    public async Task<User> GetByEmailAsync(string email)
     {
         _logger.LogDebug("Getting user {UserEmail}", email);
 
         var userEntity = await _userDao.GetByEmailAsync(email) 
             ?? throw new InvalidUserDataException($"User {email} not found");
 
-        return (UserMapper.ToDomain(userEntity), userEntity.PasswordHash);
+        return UserMapper.ToDomain(userEntity);
     }
 
-    public async Task<(User user, string passwordHash)> GetByIdAsync(Guid id)
+    public async Task<User> GetByIdAsync(Guid id)
     {
         _logger.LogDebug("Getting user {UserId}", id);
 
@@ -70,7 +70,7 @@ public class UserRepository : IUserRepository
             userEntity = JsonSerializer.Deserialize<UserEntity>(entityFromCache)!;
         }
 
-        return (UserMapper.ToDomain(userEntity), userEntity.PasswordHash);
+        return UserMapper.ToDomain(userEntity);
     }
 
     public async Task<bool> IsEmailClaimedAsync(string email)
@@ -95,13 +95,13 @@ public class UserRepository : IUserRepository
         return await _userDao.IsExistsAsync(id);
     }
 
-    public async Task RegisterAsync(User user, string passwordHash)
+    public async Task RegisterAsync(User user)
     {
         _logger.LogDebug("Registering user {UserId}", user.Id);
 
         var key = $"user:{user.Id}";
 
-        var userEntity = UserMapper.ToEntity(user, passwordHash);
+        var userEntity = UserMapper.ToEntity(user);
 
         await _userDao.RegisterAsync(userEntity);
         await _cache.SetStringAsync(key, JsonSerializer.Serialize(userEntity));
@@ -109,13 +109,13 @@ public class UserRepository : IUserRepository
         _logger.LogInformation("User {UserId} registered succesfuly", user.Id);
     }
 
-    public async Task UpdateAsync(User user, string passwordHash)
+    public async Task UpdateAsync(User user)
     {
         _logger.LogDebug("Updating user {UserId}", user.Id);
 
         var key = $"user:{user.Id}";
 
-        var userEntity = UserMapper.ToEntity(user, passwordHash);
+        var userEntity = UserMapper.ToEntity(user);
 
         await _userDao.UpdateAsync(userEntity);
         await _cache.UpdateCacheAsync(key, JsonSerializer.Serialize(userEntity));

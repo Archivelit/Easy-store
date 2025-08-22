@@ -8,12 +8,10 @@ using Store.App.GraphQl;
 using Store.Core.Contracts.CQRS;
 using Store.Core.Contracts.Factories;
 using Store.Core.Contracts.Repositories;
-using Store.Core.Contracts.Security;
 using Store.Core.Contracts.Users;
 using Store.Core.Factories;
 using Store.Core.Managers;
 using Store.Core.Models;
-using Store.Core.Utils.Hashers;
 using Store.Core.Utils.Validators.Items;
 using Store.Core.Utils.Validators.User;
 using Store.Infrastructure.Contracts;
@@ -34,9 +32,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUserDao, UserDao>();
         services.AddScoped<IItemDao, ItemDao>();
         services.AddScoped<IUserManager, UserManager>();
-
-        services.AddScoped<IJwtManager, JwtHandler>();
-        services.AddScoped<IPasswordManager, PasswordManager>();
 
         services.RegisterUpdateUserServices();
         services.RegisterUpdateItemServices();

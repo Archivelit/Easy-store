@@ -4,8 +4,6 @@ using Store.Core.Contracts.Repositories;
 using Store.Core.Models;
 using Store.Core.Models.Dto.User;
 using Microsoft.Extensions.Logging;
-using Store.Core.Contracts.Security;
-using Store.Core.Utils.Validators.User;
 
 namespace Store.App.CQRS.Users.Commands.Update;
 
@@ -13,58 +11,40 @@ public class UserUpdateFacade
 {
     private readonly IUserUpdateChain _chain;
     private readonly IUserRepository _userRepository;
-    private readonly IPasswordManager _passwordHasher;
-
     private readonly ILogger<UserUpdateFacade> _logger;
 
-    public UserUpdateFacade(IUserUpdateChainFactory factory, IPasswordManager passwordHasher, IUserRepository userRepository, ILogger<UserUpdateFacade> logger)
+    public UserUpdateFacade(IUserUpdateChainFactory factory, IUserRepository userRepository, ILogger<UserUpdateFacade> logger)
     {
-        _passwordHasher = passwordHasher;
         _userRepository = userRepository;
         _chain = factory.Create();
         _logger = logger;
     }
 
-    public async Task UpdateUserAsync(UserDto model, string password)
+    public async Task UpdateUserAsync(UserDto model)
     {
         _logger.LogDebug("Updating user {UserId} in {method}", model.Id, nameof(UpdateUserAsync));
 
         var userData = await _userRepository.GetByIdAsync(model.Id);
 
         var builder = new UserBuilder();
-        builder.From(userData.user);
+        builder.From(userData);
 
-        var updateData = GetNewData(builder, model, password);
-
-        if (string.IsNullOrEmpty(updateData.passwordHash))
-        {
-            updateData.passwordHash = userData.passwordHash;
-        }
+        var updateData = GetNewData(builder, model);
         
-        await _userRepository.UpdateAsync(updateData.customer, updateData.passwordHash);
+        await _userRepository.UpdateAsync(updateData);
 
         _logger.LogDebug("End updating user");
     }
 
-    private (User customer, string passwordHash) GetNewData(UserBuilder builder, UserDto model, string password)
+    private User GetNewData(UserBuilder builder, UserDto model)
     {
         _logger.LogDebug("Trying to extract data for update");
+        
         builder = _chain.Update(builder, model);
         var user = builder.Build();
-        
-        string passwordHash;
-        if (!string.IsNullOrWhiteSpace(password))
-        {
-            new PasswordValidator().Validate(password);
-            passwordHash = _passwordHasher.HashPassword(password);
-        }
-        else
-        {
-            passwordHash = string.Empty;
-        }
 
         _logger.LogDebug("Data extracted succesfuly");
 
-        return (user, passwordHash);
+        return user;
     }
 }

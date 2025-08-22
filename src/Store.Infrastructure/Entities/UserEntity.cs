@@ -20,17 +20,13 @@ public class UserEntity : IUser
 
     [Required]
     public Subscription SubscriptionType { get; private set; }
-
-    [Required]
-    public string PasswordHash { get; private set; }
     
-    public UserEntity(Guid id, string name, string email, Subscription subscriptionType, string passwordHash)
+    public UserEntity(Guid id, string name, string email, Subscription subscriptionType)
     {
         Id = id;
         Name = name;
         Email = email;
         SubscriptionType = subscriptionType;
-        PasswordHash = passwordHash;
     }
     
     private UserEntity() { }

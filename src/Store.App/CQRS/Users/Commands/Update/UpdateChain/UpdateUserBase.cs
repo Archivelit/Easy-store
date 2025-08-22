@@ -20,7 +20,7 @@ public class UpdateUserBase : IUserUpdateChain
         return next;
     }
 
-    public virtual UserBuilder Update(UserBuilder builder,UserDto model)
+    public virtual UserBuilder Update(UserBuilder builder, UserDto model)
     {
         return _next.Update(builder, model);
     }

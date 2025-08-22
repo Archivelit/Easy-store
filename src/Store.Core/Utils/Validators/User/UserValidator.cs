@@ -16,11 +16,6 @@ public class UserValidator : AbstractValidator<Models.User>
         {
             RuleFor(u => u.Email).SetValidator(new EmailValidator());
         });
-
-        RuleSet("Password", () =>
-        {
-            RuleFor(u => u.Name).SetValidator(new PasswordValidator());
-        });
     }
 }
 
@@ -64,36 +59,4 @@ public class EmailValidator : AbstractValidator<string>
     {
         return MailAddress.TryCreate(email, out var addr) && addr.Address == email;
     }
-}
-
-public class PasswordValidator : AbstractValidator<string>
-{
-    public PasswordValidator()
-    {
-        RuleFor(x => x)
-            .NotEmpty()
-            .WithMessage("Password cannot be empty");
-
-        RuleFor(x => x)
-            .MinimumLength(8)
-            .WithMessage("Password is too short. It must be atleast 8 characters long");
-
-        RuleFor(x => x)
-            .Must(x => x.Any(IsSymbol))
-            .WithMessage("Password must contain 1 symbol");
-
-        RuleFor(x => x)
-            .Must(x => x.Any(char.IsDigit))
-            .WithMessage("Password must contain 1 digit");
-
-        RuleFor(x => x)
-            .Must(x => x.Any(char.IsLower))
-            .WithMessage("Password must contain 1 lower letter");
-
-        RuleFor(x => x)
-            .Must(x => x.Any(char.IsUpper))
-            .WithMessage("Password must contain 1 upper letter");
-    }
-
-    private bool IsSymbol(char c) => !(char.IsLetterOrDigit(c) && char.IsWhiteSpace(c));
 }

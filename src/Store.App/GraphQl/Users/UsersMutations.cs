@@ -15,14 +15,6 @@ public class UsersMutations : IGraphQlExtender
         return await handler.Handle(command, ct);
     }
 
-    public async Task<string> AuthenticateCustomer(
-        [GraphQLName("input")] AuthenticateUserCommand command, 
-        [Service] ICommandHandler<AuthenticateUserCommand, string> handler, 
-        CancellationToken ct)
-    {
-        return await handler.Handle(command, ct);
-    }
-
     public async Task DeleteCustomer(
         [GraphQLName("input")] DeleteUserCommand command,
         [Service] ICommandHandler<DeleteUserCommand> handler,
