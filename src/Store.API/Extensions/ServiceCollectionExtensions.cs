@@ -11,7 +11,7 @@ using Store.Core.Contracts.Factories;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Factories;
 using Store.Core.Models;
-using Store.Core.Utils.Validators.Items;
+using Store.Core.Utils.Validators;
 using Store.Core.Utils.Validators.User;
 using Store.Infrastructure.Contracts;
 using Store.Infrastructure.Data.DataAccessObjects;
