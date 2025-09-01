@@ -9,9 +9,7 @@ using Store.App.GraphQl;
 using Store.Core.Contracts.CQRS;
 using Store.Core.Contracts.Factories;
 using Store.Core.Contracts.Repositories;
-using Store.Core.Contracts.Users;
 using Store.Core.Factories;
-using Store.Core.Managers;
 using Store.Core.Models;
 using Store.Core.Utils.Validators.Items;
 using Store.Core.Utils.Validators.User;
@@ -32,7 +30,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IUserDao, UserDao>();
         services.AddScoped<IItemDao, ItemDao>();
-        services.AddScoped<IUserManager, UserManager>();
 
         services.RegisterUpdateUserServices();
         services.RegisterUpdateItemServices();
