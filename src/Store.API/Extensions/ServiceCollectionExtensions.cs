@@ -14,6 +14,7 @@ using Store.Core.Models;
 using Store.Core.Utils.Validators;
 using Store.Core.Utils.Validators.User;
 using Store.Infrastructure.Contracts;
+using Store.Infrastructure.Contracts.Dao;
 using Store.Infrastructure.Data.DataAccessObjects;
 using Store.Infrastructure.Factories;
 using Store.Infrastructure.Repositories;

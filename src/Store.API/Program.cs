@@ -1,7 +1,6 @@
 using Serilog;
 using Store.API.Extensions;
 using Store.Infrastructure.Data;
-using Path = System.IO.Path;
 
 namespace Store.API;
 
@@ -9,12 +8,9 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        DotNetEnv.Env.Load(Path.Combine(Environment.CurrentDirectory, "..", "..", ".env"));
-        
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Configuration.AddJsonFile("appsettings.json", optional: false)
-            .AddEnvironmentVariables();
+        builder.Configuration.AddJsonFile("appsettings.json", optional: false);
         builder.Configuration.ConfigureLogger();
         
         builder.Host.UseSerilog();

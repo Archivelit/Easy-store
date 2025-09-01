@@ -1,0 +1,23 @@
+services:
+
+  store_database:
+    image: postgres:latest
+    container_name: store_db
+    environment:
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=store_db
+    ports:
+      - 5432:5432
+    restart: always
+
+  store.api:
+    image: ${DOCKER_REGISTRY-}storeapi
+    build:
+      context: .
+      dockerfile: src/Store.API/Dockerfile
+    depends_on:
+        - store_database
+    environment:
+        - ConnectionStrings:DefaultConnection="Host=store_database;Database=store_db;Username=username;Password=password;"
+        - ASPNETCORE_URLS=http://+80;

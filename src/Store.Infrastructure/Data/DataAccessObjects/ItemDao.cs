@@ -1,15 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Store.Infrastructure.Contracts.Dao;
 using Store.Infrastructure.Entities;
 
 namespace Store.Infrastructure.Data.DataAccessObjects; 
-
-public interface IItemDao
-{
-    Task<ItemEntity?> GetByIdAsync(Guid id);
-    Task RegisterAsync(ItemEntity item);
-    Task UpdateAsync(ItemEntity item);
-    Task DeleteAsync(ItemEntity item);
-}
 
 internal class ItemDao : IItemDao
 { 

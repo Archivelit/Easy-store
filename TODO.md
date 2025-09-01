@@ -12,4 +12,3 @@
 # Main tasks
 
 - integration tests
-- dockerize

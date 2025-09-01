@@ -7,13 +7,14 @@ namespace Store.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
-    private readonly IConfiguration _configuration;
+    public DbSet<UserEntity> Users { get; set; }
+    public DbSet<ItemEntity> Items { get; set; }
+
     private readonly string? _connectionString;
 
     public AppDbContext(IConfiguration configuration)
     {
-        _configuration = configuration;
-        _connectionString = _configuration.GetConnectionString("DefaultConnection");
+        _connectionString = configuration.GetConnectionString("DefaultConnection");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -24,8 +25,6 @@ public class AppDbContext : DbContext
             .EnableSensitiveDataLogging();
         Log.Debug("DbContext configured succesfuly");
     }
-    public DbSet<UserEntity> Users { get; set; }
-    public DbSet<ItemEntity> Items { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

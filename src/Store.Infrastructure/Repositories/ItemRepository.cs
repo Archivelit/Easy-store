@@ -5,7 +5,7 @@ using Store.Core.Contracts.Repositories;
 using Store.Core.Exceptions.InvalidData;
 using Store.Core.Models;
 using Store.Infrastructure.Contracts;
-using Store.Infrastructure.Data.DataAccessObjects;
+using Store.Infrastructure.Contracts.Dao;
 using Store.Infrastructure.Extensions;
 using System.Text.Json;
 

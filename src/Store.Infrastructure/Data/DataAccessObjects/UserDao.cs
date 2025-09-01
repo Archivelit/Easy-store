@@ -1,19 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Store.Infrastructure.Contracts.Dao;
 using Store.Infrastructure.Entities;
 
 namespace Store.Infrastructure.Data.DataAccessObjects;
-
-public interface IUserDao
-{
-    Task RegisterAsync(UserEntity entity);
-    Task<bool> IsEmailClaimedAsync(string email);
-    Task<UserEntity?> GetByEmailAsync(string email);
-    Task DeleteAsync(UserEntity entity);
-    Task<bool> IsExistsAsync(Guid id);
-    Task<UserEntity?> GetByIdAsync(Guid id);
-    Task UpdateAsync(UserEntity entity);
-}
-
 
 internal class UserDao : IUserDao
 {

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Store.Core.Contracts.Repositories;
 using Store.Core.Exceptions.InvalidData;
 using Store.Core.Models;
-using Store.Infrastructure.Data.DataAccessObjects;
+using Store.Infrastructure.Contracts.Dao;
 using Store.Infrastructure.Entities;
 using Store.Infrastructure.Extensions;
 using Store.Infrastructure.Mappers;
