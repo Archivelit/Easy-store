@@ -24,8 +24,12 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - "KC_BOOTSTRAP_ADMIN_USERNAME=admin"
-      - "KC_BOOTSTRAP_ADMIN_PASSWORD=admin"
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://keycloak_db:5433/keycloak
+      - KC_DB_USERNAME=kc_admin
+      - KC_DB_PASSWORD=kc_password
     depends_on:
       - keycloak_db
     restart: always
@@ -34,9 +38,9 @@ services:
     image: postgres:latest
     container_name: keycloak_db
     environment:
-      - POSTGRES_USER=username
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=store_db
+      - POSTGRES_USER=kc_admin
+      - POSTGRES_PASSWORD=kc_password
+      - POSTGRES_DB=keycloak
     ports:
       - 5433:5433
     restart: always

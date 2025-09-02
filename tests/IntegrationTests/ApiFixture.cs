@@ -11,17 +11,9 @@ public class ApiFixture : IAsyncLifetime
 
     public async ValueTask InitializeAsync()
     {
-        Postgres = new PostgreSqlBuilder()
-            .WithImage("postgres:16")
-            .WithDatabase("test_db")
-            .WithUsername("postgres")
-            .WithPassword("postgres")
-            .Build();
+        Postgres = InitPostgresContainer();
+        Redis = InitRedisContainer();
 
-        Redis = new RedisBuilder()
-            .WithImage("redis:8.2")
-            .Build();
-        
         Postgres.StartAsync().GetAwaiter().GetResult();
         Redis.StartAsync().GetAwaiter().GetResult();
 
@@ -33,5 +25,22 @@ public class ApiFixture : IAsyncLifetime
         await Factory.DisposeAsync();
         await Postgres.DisposeAsync();
         await Redis.DisposeAsync();
+    }
+
+    private PostgreSqlContainer InitPostgresContainer()
+    {
+        return new PostgreSqlBuilder()
+            .WithImage("postgres:16")
+            .WithDatabase("test_db")
+            .WithUsername("postgres")
+            .WithPassword("postgres")
+            .Build();
+    }
+
+    private RedisContainer InitRedisContainer() 
+    {
+        return new RedisBuilder()
+            .WithImage("redis:8.2")
+            .Build();
     }
 }

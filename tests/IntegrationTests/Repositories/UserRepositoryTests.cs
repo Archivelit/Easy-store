@@ -31,7 +31,7 @@ public class UserRepositoryTests : IClassFixture<ApiFixture>
         await _userRepository.RegisterAsync(user);
         
         // Assert
-        var saved = await _context.Users.FirstOrDefaultAsync(u => u.Email == "bob@example.com");
+        var saved = await _context.Users.FirstOrDefaultAsync(u => u.Email == "bob@example.com", cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(saved);
         Assert.Equal("Bob", saved.Name);
     }
