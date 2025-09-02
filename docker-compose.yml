@@ -27,7 +27,7 @@ services:
       - KC_BOOTSTRAP_ADMIN_USERNAME=admin
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
       - KC_DB=postgres
-      - KC_DB_URL=jdbc:postgresql://keycloak_db:5433/keycloak
+      - KC_DB_URL=jdbc:postgresql://keycloak_db:5432/keycloak
       - KC_DB_USERNAME=kc_admin
       - KC_DB_PASSWORD=kc_password
     depends_on:

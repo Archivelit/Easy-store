@@ -11,7 +11,7 @@ using Testcontainers.Redis;
 
 namespace IntegrationTests;
 
-public class ApiFactory: WebApplicationFactory<Program>
+public class ApiFactory : WebApplicationFactory<Program>
 {
     private readonly PostgreSqlContainer _postgresContainer;
     private readonly RedisContainer _redisContainer;
