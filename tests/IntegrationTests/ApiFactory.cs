@@ -1,3 +1,4 @@
+using Docker.DotNet.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -26,8 +27,13 @@ public class ApiFactory : WebApplicationFactory<Program>
     {
         builder.ConfigureServices(services =>
         {
-            services.RemoveAll<DbContextOptions<AppDbContext>>();
-            services.RemoveAll<IDistributedCache>();
+            services.RemoveAll(typeof(DbContextOptions<AppDbContext>));
+            services.RemoveAll(typeof(IDistributedCache));
+
+            while (true)
+            {
+                if (_postgresContainer.Health == DotNet.Testcontainers.Containers.TestcontainersHealthStatus.Healthy) break;
+            }
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseNpgsql(_postgresContainer.GetConnectionString()));
