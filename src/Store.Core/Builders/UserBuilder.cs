@@ -61,6 +61,15 @@ public class UserBuilder
         SubscriptionType = subscriptionType;
         return this;
     }
+    
+    public UserBuilder WithDefault()
+    {
+        return this
+            .WithEmail("example@domain.com")
+            .WithId(Guid.NewGuid())
+            .WithName("Foo")
+            .WithSubscriptionType(Subscription.None);
+    }
 
     public User Build()
     {

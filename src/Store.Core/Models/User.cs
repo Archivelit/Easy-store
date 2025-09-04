@@ -19,7 +19,7 @@ public class User : IUser
     public User(Guid id, string name, string email, Subscription subscriptionType)
     : this (name, email)
     {
-        Email = email;
+        Id = id;
         SubscriptionType = subscriptionType;
     }
 }

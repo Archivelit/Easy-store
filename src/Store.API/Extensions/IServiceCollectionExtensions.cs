@@ -15,13 +15,14 @@ using Store.Core.Utils.Validators;
 using Store.Core.Utils.Validators.User;
 using Store.Infrastructure.Contracts;
 using Store.Infrastructure.Contracts.Dao;
+using Store.Infrastructure.Data;
 using Store.Infrastructure.Data.DataAccessObjects;
 using Store.Infrastructure.Factories;
 using Store.Infrastructure.Repositories;
 
 namespace Store.API.Extensions;
 
-public static class ServiceCollectionExtensions
+public static class IServiceCollectionExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {

@@ -6,7 +6,7 @@ namespace Store.API;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -26,18 +26,20 @@ public class Program
 
         var app = builder.Build();
 
-        Log.Debug("Setting up midleware");
+        Log.Debug("Setting up middleware");
 
         app.UseSerilogRequestLogging();
         app.UseRouting();
         app.UseAuthentication();
         app.UseAuthorization();
 
-        Log.Debug("Midleware setted up succesfuly");
+        Log.Debug("Middleware setted up successfully");
 
         app.MapReverseProxy();
         app.MapGraphQL();
 
-        app.Run();
+        await app.Services.MigrateDatabaseAsync();
+
+        await app.RunAsync();
     }
 }
