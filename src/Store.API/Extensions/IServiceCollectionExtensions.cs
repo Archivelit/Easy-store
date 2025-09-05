@@ -1,25 +1,3 @@
-using FluentValidation;
-using Microsoft.IdentityModel.Tokens;
-using Serilog;
-using Store.App.CQRS.Items.Commands.Update;
-using Store.App.CQRS.Items.Commands.Update.UpdateChain;
-using Store.App.CQRS.Users.Commands.Update;
-using Store.App.CQRS.Users.Commands.Update.UpdateChain;
-using Store.App.GraphQl;
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.Factories;
-using Store.Core.Contracts.Repositories;
-using Store.Core.Factories;
-using Store.Core.Models;
-using Store.Core.Utils.Validators;
-using Store.Core.Utils.Validators.User;
-using Store.Infrastructure.Contracts;
-using Store.Infrastructure.Contracts.Dao;
-using Store.Infrastructure.Data;
-using Store.Infrastructure.Data.DataAccessObjects;
-using Store.Infrastructure.Factories;
-using Store.Infrastructure.Repositories;
-
 namespace Store.API.Extensions;
 
 public static class IServiceCollectionExtensions

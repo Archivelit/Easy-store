@@ -1,7 +1,3 @@
-using Serilog;
-using Store.API.Extensions;
-using Store.Infrastructure.Data;
-
 namespace Store.API;
 
 public class Program

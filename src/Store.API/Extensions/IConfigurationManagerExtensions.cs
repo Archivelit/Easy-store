@@ -1,6 +1,4 @@
-﻿using Serilog;
-
-namespace Store.API.Extensions;
+﻿namespace Store.API.Extensions;
 
 public static class IConfigurationManagerExtensions
 {

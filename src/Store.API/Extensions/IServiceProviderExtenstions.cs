@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Store.Infrastructure.Data;
-
-namespace Store.API.Extensions;
+﻿namespace Store.API.Extensions;
 
 public static class IServiceProviderExtenstions
 {
