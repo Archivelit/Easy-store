@@ -1,0 +1,10 @@
+﻿global using Store.Core.Models;
+global using Store.Core.Contracts.Models;
+global using Store.Core.Enums.Subscriptions;
+global using Store.Core.Models.Dto.Items;
+global using Store.Core.Models.Dto.User;
+global using Store.Core.Builders;
+global using Store.Core.Contracts.Factories;
+global using System.ComponentModel.DataAnnotations;
+global using FluentValidation;
+global using System.Net.Mail;

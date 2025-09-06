@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Store.Core.Models.Dto.Items;
 
 public record ItemDto : IItem

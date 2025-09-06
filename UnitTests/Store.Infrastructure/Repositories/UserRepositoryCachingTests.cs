@@ -1,15 +1,3 @@
-using System.Text.Json;
-using FluentAssertions;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Moq;
-using Store.Core.Builders;
-using Store.Core.Models;
-using Store.Infrastructure.Contracts.Dao;
-using Store.Infrastructure.Repositories;
-
 namespace UnitTests.Store.Infrastructure.Repositories;
 
 public class UserRepositoryCachingTests
@@ -54,7 +42,6 @@ public class UserRepositoryCachingTests
         var serializedUser = JsonSerializer.Serialize(user);
         
         // Act
-        
         await _cache.SetStringAsync(key, serializedUser);
         
         // Assert

@@ -1,6 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
 namespace Store.App.CQRS.Items.Commands.Update.UpdateChain;
 
 public class ItemUpdateChainFactory : IItemUpdateChainFactory

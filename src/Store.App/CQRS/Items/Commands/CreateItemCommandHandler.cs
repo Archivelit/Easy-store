@@ -1,12 +1,3 @@
-using Store.Core.Contracts.Repositories;
-using Store.Core.Contracts.CQRS.Item.Commands;
-using Store.Core.Models.Dto.Items;
-using Microsoft.Extensions.Logging;
-using Store.Core.Contracts.Factories;
-using Store.Core.Contracts.CQRS;
-using FluentValidation;
-using Store.Core.Models;
-
 namespace Store.App.CQRS.Items.Commands;
 
 public class CreateItemCommandHandler : ICommandHandler<CreateItemCommand, ItemDto>

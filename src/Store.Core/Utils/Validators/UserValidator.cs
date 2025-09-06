@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using System.Net.Mail;
-
-namespace Store.Core.Utils.Validators.User;
+﻿namespace Store.Core.Utils.Validators.User;
 
 public class UserValidator : AbstractValidator<Models.User>
 {

@@ -1,7 +1,3 @@
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.User.Commands;
-using Store.Core.Models.Dto.User;
-
 namespace Store.App.GraphQl.Users;
 
 [ExtendObjectType("Mutation")]

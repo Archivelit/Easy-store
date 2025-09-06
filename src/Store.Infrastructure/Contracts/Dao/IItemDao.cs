@@ -1,6 +1,4 @@
-﻿using Store.Infrastructure.Entities;
-
-namespace Store.Infrastructure.Contracts.Dao;
+﻿namespace Store.Infrastructure.Contracts.Dao;
 
 public interface IItemDao
 {

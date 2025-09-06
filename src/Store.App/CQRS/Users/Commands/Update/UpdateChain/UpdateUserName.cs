@@ -1,9 +1,3 @@
-using FluentValidation;
-using Microsoft.Extensions.Logging;
-using Store.Core.Builders;
-using Store.Core.Models.Dto.User;
-using Store.Core.Utils.Validators.User;
-
 namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 
 public class UpdateUserName : UpdateUserBase

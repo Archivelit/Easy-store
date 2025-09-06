@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Store.Infrastructure.Contracts.Dao;
-using Store.Infrastructure.Entities;
-
 namespace Store.Infrastructure.Data.DataAccessObjects; 
 
 internal class ItemDao : IItemDao

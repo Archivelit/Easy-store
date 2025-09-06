@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-
-namespace Store.Infrastructure.Extensions;
+﻿namespace Store.Infrastructure.Extensions;
 
 public static class IDistributedCacheExtensions
 {

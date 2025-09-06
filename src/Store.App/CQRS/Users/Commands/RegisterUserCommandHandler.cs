@@ -1,13 +1,3 @@
-using FluentValidation;
-using Microsoft.Extensions.Logging;
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.User.Commands;
-using Store.Core.Contracts.Repositories;
-using Store.Core.Exceptions.InvalidData;
-using Store.Core.Models;
-using Store.Core.Models.Dto.User;
-using Store.Core.Utils.Validators.User;
-
 namespace Store.App.CQRS.Users.Commands.Update;
 
 public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, UserDto>

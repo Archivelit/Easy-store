@@ -1,6 +1,3 @@
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.User.Commands;
-
 namespace Store.App.CQRS.Users.Commands.Update;
 
 public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>

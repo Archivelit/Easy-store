@@ -1,8 +1,3 @@
-using Microsoft.Extensions.Logging;
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.Item.Commands;
-using Store.Core.Contracts.Repositories;
-
 namespace Store.App.CQRS.Items.Commands;
 
 public class DeleteItemCommandHandler : ICommandHandler<DeleteItemCommand>

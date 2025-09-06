@@ -1,5 +1,3 @@
-using Store.Core.Models;
-
 namespace Store.Core.Builders;
 
 public class ItemBuilder

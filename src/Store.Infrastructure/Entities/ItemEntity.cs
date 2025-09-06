@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Store.Core.Models;
-
 namespace Store.Infrastructure.Entities;
 
 public class ItemEntity : IItem

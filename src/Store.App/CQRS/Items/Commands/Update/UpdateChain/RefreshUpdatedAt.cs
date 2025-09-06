@@ -1,7 +1,3 @@
-using Microsoft.Extensions.Logging;
-using Store.Core.Builders;
-using Store.Core.Models.Dto.Items;
-
 namespace Store.App.CQRS.Items.Commands.Update.UpdateChain;
 
 public class RefreshUpdatedAt : ItemUpdateChainBase

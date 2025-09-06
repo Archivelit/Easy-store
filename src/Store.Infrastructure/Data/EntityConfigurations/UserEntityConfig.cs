@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Store.Infrastructure.Entities;
-
-namespace Store.Infrastructure.Data.EntityConfigurations;
+﻿namespace Store.Infrastructure.Data.EntityConfigurations;
 
 internal class UserEntityConfig : IEntityTypeConfiguration<UserEntity>
 {

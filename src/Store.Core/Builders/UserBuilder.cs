@@ -1,7 +1,3 @@
-using Store.Core.Contracts.Models;
-using Store.Core.Enums.Subscriptions;
-using Store.Core.Models;
-
 namespace Store.Core.Builders;
 
 public class UserBuilder

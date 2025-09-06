@@ -1,8 +1,3 @@
-using Microsoft.Extensions.Logging;
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.User.Commands;
-using Store.Core.Contracts.Repositories;
-
 namespace Store.App.CQRS.Users.Commands.Update;
 
 public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>

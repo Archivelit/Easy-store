@@ -1,15 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Logging;
-using Store.Core.Contracts.Factories;
-using Store.Core.Contracts.Repositories;
-using Store.Core.Exceptions.InvalidData;
-using Store.Core.Models;
-using Store.Infrastructure.Contracts;
-using Store.Infrastructure.Contracts.Dao;
-using Store.Infrastructure.Extensions;
-using System.Text.Json;
-
-namespace Store.Infrastructure.Repositories;
+﻿namespace Store.Infrastructure.Repositories;
 
 public class ItemRepository : IItemRepository
 {

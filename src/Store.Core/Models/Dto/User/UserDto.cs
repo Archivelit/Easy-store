@@ -1,7 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using Store.Core.Contracts.Models;
-using Store.Core.Enums.Subscriptions;
-
 namespace Store.Core.Models.Dto.User;
 
 public record UserDto : IUser

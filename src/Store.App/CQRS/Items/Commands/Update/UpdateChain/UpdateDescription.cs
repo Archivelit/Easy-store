@@ -1,9 +1,3 @@
-using FluentValidation;
-using Microsoft.Extensions.Logging;
-using Store.Core.Builders;
-using Store.Core.Models.Dto.Items;
-using Store.Core.Utils.Validators;
-
 namespace Store.App.CQRS.Items.Commands.Update.UpdateChain;
 
 public class UpdateDescription : ItemUpdateChainBase

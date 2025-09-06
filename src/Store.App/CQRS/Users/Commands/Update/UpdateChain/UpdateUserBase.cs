@@ -1,7 +1,3 @@
-using Microsoft.Extensions.Logging;
-using Store.Core.Builders;
-using Store.Core.Models.Dto.User;
-
 namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 
 public class UpdateUserBase : IUserUpdateChain

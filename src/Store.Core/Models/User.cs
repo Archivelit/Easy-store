@@ -1,6 +1,3 @@
-using Store.Core.Contracts.Models;
-using Store.Core.Enums.Subscriptions;
-
 namespace Store.Core.Models;
 
 public class User : IUser

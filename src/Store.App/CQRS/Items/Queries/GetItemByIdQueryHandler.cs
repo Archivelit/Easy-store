@@ -1,9 +1,3 @@
-using Microsoft.Extensions.Logging;
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.Item.Queries;
-using Store.Core.Contracts.Repositories;
-using Store.Core.Models.Dto.Items;
-
 namespace Store.App.CQRS.Items.Queries;
 
 public class GetItemByIdQueryHandler : IQueryHandler<GetItemByIdQuery, ItemDto>

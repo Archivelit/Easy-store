@@ -1,7 +1,3 @@
-using Store.Core.Contracts.CQRS;
-using Store.Core.Contracts.CQRS.Item.Commands;
-using Store.Core.Models.Dto.Items;
-
 namespace Store.App.GraphQl.Factories;
 
 [ExtendObjectType("Mutation")]
