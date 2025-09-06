@@ -17,7 +17,31 @@ public class AppDbContext : DbContext
         Log.Debug("Configuring DbContext");
         optionsBuilder
             .UseNpgsql(_connectionString)
-            .EnableSensitiveDataLogging();
+            .EnableSensitiveDataLogging()
+            .UseSeeding((context, _) =>
+            {
+                Log.Logger.Debug("Seeding database started");
+
+                if (context is AppDbContext appContext)
+                {
+                    new UserSeeder().SeedUsers(appContext);
+                    new ItemSeeder().SeedItems(appContext);
+                }
+
+                Log.Logger.Debug("Seeding database completed");
+            })
+            .UseAsyncSeeding(async (context, _, ct) =>
+            {
+                Log.Logger.Debug("Seeding database started");
+
+                if (context is AppDbContext appContext)
+                {
+                    await new UserSeeder().SeedUsersAsync(appContext, ct);
+                    await new ItemSeeder().SeedItemsAsync(appContext, ct);
+                }
+
+                Log.Logger.Debug ("Seeding database completed");
+            });
         Log.Debug("DbContext configured succesfuly");
     }
 

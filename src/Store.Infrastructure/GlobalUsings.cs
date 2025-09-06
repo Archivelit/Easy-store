@@ -19,3 +19,4 @@ global using Store.Core.Exceptions.InvalidData;
 global using Store.Infrastructure.Extensions;
 global using System.Text.Json;
 global using Store.Infrastructure.Mappers;
+global using Store.Infrastructure.Data.Seeders;

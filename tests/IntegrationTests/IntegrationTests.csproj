@@ -19,5 +19,12 @@
 	<PackageReference Include="FluentAssertions" Version="8.6.0" />
 	<PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Store.API\Store.API.csproj" />
+    <ProjectReference Include="..\..\src\Store.App\Store.App.csproj" />
+    <ProjectReference Include="..\..\src\Store.Core\Store.Core.csproj" />
+    <ProjectReference Include="..\..\src\Store.Infrastructure\Store.Infrastructure.csproj" />
+  </ItemGroup>
   
 </Project>

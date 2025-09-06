@@ -24,6 +24,7 @@ public class UserEntity : IUser
         Email = email;
         SubscriptionType = subscriptionType;
     }
-    
+#pragma warning disable CS8618
     private UserEntity() { }
+#pragma warning restore
 }
