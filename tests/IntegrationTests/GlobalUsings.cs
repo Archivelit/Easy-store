@@ -1,4 +1,16 @@
 ﻿global using Xunit;
-global using IntegrationTests;
 global using Testcontainers.PostgreSql;
 global using Testcontainers.Redis;
+global using Store.Core.Contracts.CQRS;
+global using Store.Core.Contracts.CQRS.Item.Queries;
+global using Store.Core.Models.Dto.Items;
+global using Microsoft.Extensions.DependencyInjection;
+global using FluentAssertions;
+global using Store.Infrastructure.Data.Seeders;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.AspNetCore.Mvc.Testing;
+global using Microsoft.Extensions.Configuration;
+global using Store.API;
+global using Serilog;
+global using Microsoft.EntityFrameworkCore;
+global using Store.Infrastructure.Data;

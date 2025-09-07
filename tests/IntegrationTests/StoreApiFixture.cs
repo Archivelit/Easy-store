@@ -1,66 +1,46 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Store.API;
+﻿using Microsoft.EntityFrameworkCore;
+using Store.Infrastructure.Data;
 
 namespace IntegrationTests;
 
 public sealed class StoreApiFixture : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private IHost? _app;
+#nullable disable
     private PostgreSqlContainer _postgres;
-    private string? _postgresConnectionString;
+    private string _postgresConnectionString;
     private RedisContainer _redis;
-    private string? _redisConnectionString;
-    
-    public StoreApiFixture()
-    {
-        _postgres = InitPostgresContainer();
-        _redis = InitRedicContainer();
-    }
+    private string _redisConnectionString;
+#nullable enable
 
     public async ValueTask InitializeAsync()
     {
-        await _postgres.StartAsync();
-        await _redis.StartAsync();
+        _postgres = InitPostgresContainer();
+        _redis = InitRedisContainer();
+
+        _postgres.StartAsync().GetAwaiter().GetResult();
+        _redis.StartAsync().GetAwaiter().GetResult();
 
         _postgresConnectionString = _postgres.GetConnectionString();
         _redisConnectionString = _redis.GetConnectionString();
-
-        _app = CreateHostBuilder()?.Build();
-
-        await _app!.StartAsync().ConfigureAwait(false);
     }
     public new async Task DisposeAsync()
     {
-        if (_app is IAsyncDisposable asyncDisposable)
-        {
-            await asyncDisposable.DisposeAsync().ConfigureAwait(false);
-        }
-        else
-        {
-            _app?.Dispose();
-        }
-
         await _postgres.StopAsync();
         await _redis.StopAsync();
 
         await base.DisposeAsync();
     }
 
-    protected override IHostBuilder CreateHostBuilder()
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-    #pragma warning disable CS8620, CS8604
-        return base.CreateHostBuilder()!
-            .ConfigureHostConfiguration(config =>
+        builder.ConfigureAppConfiguration((context, config) =>
         {
-            config.AddInMemoryCollection(new Dictionary<string, string>
+            config.AddInMemoryCollection(new Dictionary<string, string?>
             {
-                { "ConnectionStrings:DefaultConnection", _postgresConnectionString },
-                { "ConnectionStrings:RedisConnection", _redisConnectionString }
+                [ "ConnectionStrings:DefaultConnection" ] = _postgresConnectionString,
+                [ "ConnectionStrings:RedisConnection" ] = _redisConnectionString 
             });
         });
-    #pragma warning restore
     }
 
     private PostgreSqlContainer InitPostgresContainer()
@@ -73,7 +53,7 @@ public sealed class StoreApiFixture : WebApplicationFactory<Program>, IAsyncLife
             .Build();
     }
 
-    private RedisContainer InitRedicContainer()
+    private RedisContainer InitRedisContainer()
     {
         return new RedisBuilder()
             .WithImage("redis:latest")

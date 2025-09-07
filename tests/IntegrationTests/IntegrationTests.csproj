@@ -26,5 +26,11 @@
     <ProjectReference Include="..\..\src\Store.Core\Store.Core.csproj" />
     <ProjectReference Include="..\..\src\Store.Infrastructure\Store.Infrastructure.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Handlers\Item\Command\" />
+    <Folder Include="Handlers\User\Command\" />
+    <Folder Include="Handlers\User\Query\" />
+  </ItemGroup>
   
 </Project>
