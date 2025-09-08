@@ -12,5 +12,5 @@ global using Microsoft.AspNetCore.Mvc.Testing;
 global using Microsoft.Extensions.Configuration;
 global using Store.API;
 global using Serilog;
-global using Microsoft.EntityFrameworkCore;
-global using Store.Infrastructure.Data;
+global using Store.Core.Contracts.CQRS.User.Queries;
+global using Store.Core.Models.Dto.User;

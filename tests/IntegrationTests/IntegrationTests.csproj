@@ -30,7 +30,6 @@
   <ItemGroup>
     <Folder Include="Handlers\Item\Command\" />
     <Folder Include="Handlers\User\Command\" />
-    <Folder Include="Handlers\User\Query\" />
   </ItemGroup>
   
 </Project>

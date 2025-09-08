@@ -4,8 +4,8 @@ namespace Store.App.GraphQl.Users;
 public class UsersMutations : IGraphQlExtender  
 {
     public async Task<UserDto> RegisterCustomer(
-        [GraphQLName("input")] RegisterUserCommand command, 
-        [Service] ICommandHandler<RegisterUserCommand, UserDto> handler, 
+        [GraphQLName("input")] RegisterUserQuery command, 
+        [Service] ICommandHandler<RegisterUserQuery, UserDto> handler, 
         CancellationToken ct)
     {
         return await handler.Handle(command, ct);

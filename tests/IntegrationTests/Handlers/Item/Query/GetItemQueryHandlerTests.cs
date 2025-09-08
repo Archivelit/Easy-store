@@ -1,11 +1,11 @@
 ﻿namespace IntegrationTests.Handlers.Item.Query;
 
-public class GetItemCommandHandlerTests : IClassFixture<StoreApiFixture>
+public class GetItemQueryHandlerTests : IClassFixture<StoreApiFixture>
 {
 	private readonly StoreApiFixture _fixture;
 	private readonly IServiceScope _scope;
 	
-	public GetItemCommandHandlerTests(StoreApiFixture fixture)
+	public GetItemQueryHandlerTests(StoreApiFixture fixture)
 	{
 		_fixture = fixture;
 		_scope = fixture.Services.CreateScope();

@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Users.Commands.Update;
 
-public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, UserDto>
+public class RegisterUserCommandHandler : ICommandHandler<RegisterUserQuery, UserDto>
 {
     private readonly ILogger<RegisterUserCommandHandler> _logger;
     private readonly IUserRepository _userRepository;
@@ -11,7 +11,7 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, U
         _logger = logger;
     }
 
-    public async Task<UserDto> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+    public async Task<UserDto> Handle(RegisterUserQuery command, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 

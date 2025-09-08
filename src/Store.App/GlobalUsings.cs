@@ -17,3 +17,4 @@ global using Store.Core.Enums.Subscriptions;
 global using Store.Core.Contracts.CQRS.User.Commands;
 global using Store.App.CQRS.Users.Commands.Update.UpdateChain;
 global using Store.Core.Exceptions.InvalidData;
+global using Store.Core.Contracts.CQRS.User.Queries;
