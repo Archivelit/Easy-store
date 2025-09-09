@@ -16,7 +16,8 @@ public class UserEntity : IUser
 
     [Required]
     public Subscription SubscriptionType { get; private set; }
-    
+
+    [JsonConstructor]
     public UserEntity(Guid id, string name, string email, Subscription subscriptionType)
     {
         Id = id;
@@ -28,5 +29,5 @@ public class UserEntity : IUser
     public UserEntity(IUser user) : this(user.Id, user.Name, user.Email, user.SubscriptionType) { }
     
 #pragma warning disable CS8618
-    private UserEntity() { }
+    public UserEntity() { }
 }

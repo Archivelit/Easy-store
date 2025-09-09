@@ -12,7 +12,8 @@ public class User : IUser
         Name = name;
         Email = email;
     }
-    
+
+    [JsonConstructor]
     public User(Guid id, string name, string email, Subscription subscriptionType)
     : this (name, email)
     {

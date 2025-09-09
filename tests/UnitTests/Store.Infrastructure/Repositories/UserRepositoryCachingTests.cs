@@ -1,3 +1,5 @@
+using Store.Core.Models.Entities;
+
 namespace UnitTests.Store.Infrastructure.Repositories;
 
 public class UserRepositoryCachingTests
@@ -24,13 +26,13 @@ public class UserRepositoryCachingTests
         var user = GetDefaultUser(out var userId);
         var key = $"user:{userId}";
         
-        await _cache.SetStringAsync(key, JsonSerializer.Serialize(user));
+        _cache.SetString(key, JsonSerializer.Serialize(user));
 
         // Act
         var result = await _userRepository.GetByIdAsync(userId);
         
         // Assert
-        result.Should().BeEquivalentTo(user);
+        result.Should().BeEquivalentTo(new User(user));
     }
     
     [Fact]
@@ -42,14 +44,14 @@ public class UserRepositoryCachingTests
         var serializedUser = JsonSerializer.Serialize(user);
         
         // Act
-        await _cache.SetStringAsync(key, serializedUser);
+        await _cache.SetStringAsync(key, serializedUser, CancellationToken.None);
         
         // Assert
-        var userFromCache = await _cache.GetStringAsync(key);
+        var userFromCache = await _cache.GetStringAsync(key, CancellationToken.None);
         userFromCache.Should().Be(serializedUser);
     }
     
-    private static User GetDefaultUser(out Guid userId)
+    private static UserEntity GetDefaultUser(out Guid userId)
     {
         var builder = new UserBuilder();
         userId = Guid.NewGuid();
@@ -59,6 +61,6 @@ public class UserRepositoryCachingTests
             .WithId(userId);
 
         var user = builder.Build();
-        return user;
+        return new(user);
     }
 }

@@ -20,6 +20,7 @@ public class Item : IItem
         UserId = userId;
     }
 
+    [JsonConstructor]
     internal Item(Guid id, string title, decimal price, int quantityInStock, Guid userId, string? description, DateTime createdAt, DateTime? updatedAt)
         : this(title, price, quantityInStock, userId, description)
     {

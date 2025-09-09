@@ -28,7 +28,8 @@ public class ItemEntity : IItem
         UserId = userId;
         Description = description;
     }
-    
+
+    [JsonConstructor]
     public ItemEntity(Guid id, string title, decimal price, int quantityInStock, Guid userId,string? description, DateTime createdAt, DateTime? updatedAt)
     : this(title, price, quantityInStock, userId, description)
     {
@@ -36,4 +37,7 @@ public class ItemEntity : IItem
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }
+
+#pragma warning disable CS8618
+    public ItemEntity() { }
 }
