@@ -1,36 +1,29 @@
 namespace Store.Infrastructure.Data.DataAccessObjects; 
 
-internal class ItemDao : IItemDao
-{ 
-    private readonly AppDbContext _context; 
-    
-    public ItemDao(AppDbContext context) 
-    { 
-        _context = context; 
-    }
-
+internal class ItemDao(AppDbContext context) : IItemDao
+{
     public async Task<ItemEntity?> GetByIdAsync(Guid id)
     {
-        return await _context.Items
+        return await context.Items
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == id);
     }
 
     public async Task RegisterAsync(ItemEntity item) 
     {
-        await _context.Items.AddAsync(item); 
-        await _context.SaveChangesAsync();
+        await context.Items.AddAsync(item); 
+        await context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(ItemEntity item) 
     {
-        _context.Remove(item); 
-        await _context.SaveChangesAsync(); 
+        context.Remove(item); 
+        await context.SaveChangesAsync(); 
     }
 
     public async Task UpdateAsync(ItemEntity item) 
     { 
-        _context.Update(item);
-        await _context.SaveChangesAsync();
+        context.Update(item);
+        await context.SaveChangesAsync();
     } 
 }

@@ -1,46 +1,39 @@
 namespace Store.Infrastructure.Data.DataAccessObjects;
 
-internal class UserDao : IUserDao
+internal class UserDao(AppDbContext context) : IUserDao
 {
-    private readonly AppDbContext _db;
-
-    public UserDao(AppDbContext db)
-    {
-        _db = db;
-    }
-
     public async Task RegisterAsync(UserEntity entity)
     {
-        await _db.Users.AddAsync(entity);
-        await _db.SaveChangesAsync();
+        await context.Users.AddAsync(entity);
+        await context.SaveChangesAsync();
     }
 
     public async Task<bool> IsEmailClaimedAsync(string email) =>
-        await _db.Users
+        await context.Users
             .AsNoTracking()
             .AnyAsync(c => c.Email == email);
 
-    public async Task<UserEntity?> GetByEmailAsync(string email) => await _db.Users
+    public async Task<UserEntity?> GetByEmailAsync(string email) => await context.Users
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Email == email);
 
     public async Task DeleteAsync(UserEntity entity)
     {
-        _db.Users.Remove(entity);
-        await _db.SaveChangesAsync();
+        context.Users.Remove(entity);
+        await context.SaveChangesAsync();
     }
 
-    public async Task<bool> IsExistsAsync(Guid id) => await _db.Users
+    public async Task<bool> IsExistsAsync(Guid id) => await context.Users
         .AsNoTracking()
         .AnyAsync(c => c.Id == id);
 
-    public async Task<UserEntity?> GetByIdAsync(Guid id) => await _db.Users
+    public async Task<UserEntity?> GetByIdAsync(Guid id) => await context.Users
         .AsNoTracking()
         .FirstOrDefaultAsync(c => c.Id == id);
     
     public async Task UpdateAsync(UserEntity entity)
     {   
-        _db.Users.Update(entity);
-        await _db.SaveChangesAsync();
+        context.Users.Update(entity);
+        await context.SaveChangesAsync();
     }
 }

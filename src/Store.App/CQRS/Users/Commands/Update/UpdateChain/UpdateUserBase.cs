@@ -1,4 +1,4 @@
-using Store.Core.Models.Dto.Items;
+using Store.Core.Models.Dto.Item;
 
 namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 

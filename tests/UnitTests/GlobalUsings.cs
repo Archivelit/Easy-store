@@ -1,7 +1,7 @@
 ﻿global using Microsoft.Extensions.Caching.Distributed;
 global using Microsoft.Extensions.Logging;
 global using Store.Core.Models;
-global using Store.Infrastructure.Contracts.Dao;
+global using Store.Core.Contracts.Infrastructure.Dao;
 global using System.Text.Json;
 global using Microsoft.Extensions.Caching.Memory;
 global using Moq;

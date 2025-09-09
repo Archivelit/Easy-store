@@ -9,4 +9,4 @@
 
 # Main tasks
 
-- fix data update methods
+- identification, authorization, authentication

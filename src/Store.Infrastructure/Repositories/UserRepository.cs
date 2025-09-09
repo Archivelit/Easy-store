@@ -22,7 +22,8 @@ public class UserRepository : IUserRepository
         await _cache.RemoveAsync(key);
         await _userDao.DeleteAsync(
             await _userDao.GetByIdAsync(id) 
-            ?? throw new InvalidUserDataException($"User {id} not found"));
+            ?? throw new InvalidUserDataException($"User {id} not found")
+        );
 
         _logger.LogInformation("User {UserId} was succesfuly deleted", id);
     }
@@ -34,7 +35,7 @@ public class UserRepository : IUserRepository
         var userEntity = await _userDao.GetByEmailAsync(email) 
             ?? throw new InvalidUserDataException($"User {email} not found");
 
-        return UserMapper.ToDomain(userEntity);
+        return new(userEntity);
     }
 
     public async Task<User> GetByIdAsync(Guid id)
@@ -42,24 +43,25 @@ public class UserRepository : IUserRepository
         _logger.LogDebug("Getting user {UserId}", id);
 
         var key = $"user:{id}";
-        var entityFromCache = await _cache.GetStringAsync(key);
-        UserEntity userEntity;
+        var userFromCache = await _cache.GetStringAsync(key);
+        
+        UserEntity user;
 
-        if (entityFromCache is null)
+        if (userFromCache is null)
         {
-            userEntity = await _userDao.GetByIdAsync(id) 
+            user = await _userDao.GetByIdAsync(id) 
                 ?? throw new InvalidUserDataException("User not found");
             
-            var json = JsonSerializer.Serialize(userEntity);
+            var json = JsonSerializer.Serialize(user);
             
             await _cache.SetStringAsync(key, json);
         }
         else
         {
-            userEntity = JsonSerializer.Deserialize<UserEntity>(entityFromCache)!;
+            user = JsonSerializer.Deserialize<UserEntity>(userFromCache)!;
         }
 
-        return UserMapper.ToDomain(userEntity);
+        return new(user);
     }
 
     public async Task<bool> IsEmailClaimedAsync(string email)
@@ -90,7 +92,7 @@ public class UserRepository : IUserRepository
 
         var key = $"user:{user.Id}";
 
-        var userEntity = UserMapper.ToEntity(user);
+        var userEntity = new UserEntity(user);
 
         await _userDao.RegisterAsync(userEntity);
         await _cache.SetStringAsync(key, JsonSerializer.Serialize(userEntity));
@@ -104,7 +106,7 @@ public class UserRepository : IUserRepository
 
         var key = $"user:{user.Id}";
 
-        var userEntity = UserMapper.ToEntity(user);
+        var userEntity = new UserEntity(user);
 
         await _userDao.UpdateAsync(userEntity);
         await _cache.UpdateCacheAsync(key, JsonSerializer.Serialize(userEntity));

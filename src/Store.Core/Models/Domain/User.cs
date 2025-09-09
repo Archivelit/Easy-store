@@ -19,4 +19,6 @@ public class User : IUser
         Id = id;
         SubscriptionType = subscriptionType;
     }
+
+    public User(IUser user) : this(user.Id, user.Name, user.Email, user.SubscriptionType) { }
 }

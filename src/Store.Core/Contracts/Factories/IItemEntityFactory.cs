@@ -1,4 +1,4 @@
-namespace Store.Infrastructure.Contracts;
+namespace Store.Core.Factories;
 
 public interface IItemEntityFactory
 {

@@ -1,4 +1,4 @@
-namespace Store.Infrastructure.Entities;
+namespace Store.Core.Models.Entities;
 
 public class ItemEntity : IItem
 {
@@ -20,7 +20,7 @@ public class ItemEntity : IItem
     public DateTime? UpdatedAt { get; private set; } = null;
 
 
-    public ItemEntity(string title, decimal price, int quantityInStock, Guid userId,string? description = null)
+    public ItemEntity(string title, decimal price, int quantityInStock, Guid userId, string? description = null)
     {
         Title = title;
         Price = price;

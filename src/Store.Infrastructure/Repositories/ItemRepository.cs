@@ -27,15 +27,32 @@ public class ItemRepository : IItemRepository
             ?? throw new InvalidItemDataException($"Item with id {id} not found."));
         await _cache.RemoveAsync(key);
 
-        _logger.LogInformation("Item {ItemId} was succesfuly deleted", id);
+        _logger.LogInformation("Item {ItemId} was successfully deleted", id);
     }
 
     public async Task<Item> GetByIdAsync(Guid id)
     {
         _logger.LogDebug("Requested to get item {ItemId}", id);
-        var item = await _itemDao.GetByIdAsync(id)
-            ?? throw new InvalidItemDataException($"Item with id {id} not found.");
         
+        var key = $"item:{id}";
+        var itemFromCache = await _cache.GetStringAsync(key);
+        
+        ItemEntity item;
+        
+        if (itemFromCache is null)
+        {
+            item = await _itemDao.GetByIdAsync(id)
+                   ?? throw new InvalidItemDataException($"Item with id {id} not found.");
+            
+            var json = JsonSerializer.Serialize(item);
+            
+            await _cache.SetStringAsync(key, json);
+        }
+        else
+        {
+            item = JsonSerializer.Deserialize<ItemEntity>(itemFromCache)!;
+        }
+
         return _itemFactory.Create(item);
     }
 
@@ -46,7 +63,7 @@ public class ItemRepository : IItemRepository
         await _itemDao.RegisterAsync(_itemEntityFactory.Create(item));
         await _cache.SetStringAsync(key, JsonSerializer.Serialize(item));
 
-        _logger.LogInformation("Item {ItemId} succesfuly registered", item.Id);
+        _logger.LogInformation("Item {ItemId} successfully registered", item.Id);
     }
 
     public async Task UpdateAsync(IItem item)
@@ -58,6 +75,6 @@ public class ItemRepository : IItemRepository
         await _itemDao.UpdateAsync(_itemEntityFactory.Create(entity));
         await _cache.UpdateCacheAsync(key, JsonSerializer.Serialize(entity));
 
-        _logger.LogInformation("Item {ItemId} was succesfuly updated", item.Id);
+        _logger.LogInformation("Item {ItemId} was successfully updated", item.Id);
     }
 }

@@ -1,4 +1,4 @@
-namespace Store.Infrastructure.Factories;
+namespace Store.Core.Factories;
 
 public class ItemEntityFactory : IItemEntityFactory
 {

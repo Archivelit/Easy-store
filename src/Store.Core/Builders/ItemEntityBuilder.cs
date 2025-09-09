@@ -1,4 +1,4 @@
-namespace Store.Infrastructure.Builders;
+namespace Store.Core.Builders;
 
 public class ItemEntityBuilder
 {

@@ -1,4 +1,4 @@
-namespace Store.Core.Models.Dto.Items;
+namespace Store.Core.Models.Dto.Item;
 
 public record ItemDto : IItem
 {
