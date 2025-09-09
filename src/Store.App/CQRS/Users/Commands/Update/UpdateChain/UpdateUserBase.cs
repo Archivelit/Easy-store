@@ -1,3 +1,5 @@
+using Store.Core.Models.Dto.Items;
+
 namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 
 public class UpdateUserBase : IUserUpdateChain
@@ -16,8 +18,10 @@ public class UpdateUserBase : IUserUpdateChain
         return next;
     }
 
-    public virtual UserBuilder Update(UserBuilder builder, UserDto model)
+    public virtual UserBuilder Update(UserBuilder builder, UserDto user)
     {
-        return _next.Update(builder, model);
+        if (_next != null)
+            return _next.Update(builder, user);
+        return builder;
     }
 }

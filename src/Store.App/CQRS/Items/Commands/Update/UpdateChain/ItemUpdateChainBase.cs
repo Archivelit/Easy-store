@@ -16,8 +16,10 @@ public class ItemUpdateChainBase : IItemUpdateChain
         return next;
     }
 
-    public virtual ItemBuilder Update(ItemBuilder builder, UpdateItemDto itemDto)
+    public virtual ItemBuilder Update(ItemBuilder builder, UpdateItemDto item)
     {
-        return _next.Update(builder, itemDto);
+        if (_next != null) 
+            return _next.Update(builder, item);
+        return builder;
     }
 }

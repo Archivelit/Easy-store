@@ -18,15 +18,13 @@ public class UpdateUserCommandHandlerTests : IClassFixture<StoreApiFixture>
     {
         // Arrange
         var expectedUser = new UserDto(SeedModels.User2) with { Name = "John Doe" };
-        var handler = _scope.ServiceProvider.GetRequiredService<ICommandHandler<UpdateUserCommand>>();
+        var handler = _scope.ServiceProvider.GetRequiredService<ICommandHandler<UpdateUserCommand, UserDto>>();
         var command = new UpdateUserCommand(expectedUser);
-        var db = _scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
+        
         // Act
-        await handler.Handle(command, CancellationToken.None);
+        var user = await handler.Handle(command, CancellationToken.None);
 
         // Assert
-        var userFromDb = db.Users.FirstOrDefault(u => u.Email == SeedModels.User2.Email);
-        userFromDb.Should().BeEquivalentTo(expectedUser);
+        user.Should().BeEquivalentTo(expectedUser);
     }
 }

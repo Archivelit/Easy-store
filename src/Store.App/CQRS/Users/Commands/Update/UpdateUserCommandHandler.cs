@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Users.Commands.Update;
 
-public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
+public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand, UserDto>
 {
     
     private readonly UserUpdateFacade _facade;
@@ -10,10 +10,10 @@ public class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
         _facade = facade;
     }
 
-    public async Task Handle(UpdateUserCommand command, CancellationToken ct)
+    public async Task<UserDto> Handle(UpdateUserCommand command, CancellationToken ct)
     {
         ct.ThrowIfCancellationRequested();
         
-        await _facade.UpdateUserAsync(command.UserDto);
+        return await _facade.UpdateUserAsync(command.UserDto);
     }
 }

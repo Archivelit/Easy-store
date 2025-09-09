@@ -13,20 +13,22 @@ public class UserUpdateFacade
         _logger = logger;
     }
 
-    public async Task UpdateUserAsync(UserDto model)
+    public async Task<UserDto> UpdateUserAsync(UserDto user)
     {
-        _logger.LogDebug("Updating user {UserId} in {method}", model.Id, nameof(UpdateUserAsync));
+        _logger.LogDebug("Updating user {UserId} in {method}", user.Id, nameof(UpdateUserAsync));
 
-        var userData = await _userRepository.GetByIdAsync(model.Id);
+        var userFromDb = await _userRepository.GetByIdAsync(user.Id);
 
         var builder = new UserBuilder();
-        builder.From(userData);
+        builder.From(userFromDb);
 
-        var updateData = GetNewData(builder, model);
+        var updatedUser = GetNewData(builder, user);
         
-        await _userRepository.UpdateAsync(updateData);
+        await _userRepository.UpdateAsync(updatedUser);
 
-        _logger.LogDebug("End updating user");
+        _logger.LogDebug("End updating user {UserId}", user.Id);
+
+        return new(updatedUser);
     }
 
     private User GetNewData(UserBuilder builder, UserDto model)

@@ -21,7 +21,7 @@ public class UsersMutations : IGraphQlExtender
 
     public async Task UpdateCustomer(
         [GraphQLName("input")] UpdateUserCommand command,
-        [Service] ICommandHandler<UpdateUserCommand> handler,
+        [Service] ICommandHandler<UpdateUserCommand, UserDto> handler,
         CancellationToken ct)
     {
         await handler.Handle(command, ct);

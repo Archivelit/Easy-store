@@ -14,19 +14,17 @@ public class UpdateItemCommandHandlerTests : IClassFixture<StoreApiFixture>
 	[Fact]
 	public async Task CreateItemAsync_ShouldWork()
 	{
-		// Arrange
-		var item = new UpdateItemDto(SeedModels.Item1.Id, null, null, null, 15);
-        var command = new UpdateItemCommand(item);
+        // Arrange
+        var expectedItem = new ItemDto(SeedModels.Item1) with { QuantityInStock = 15 };
+		var dto = new UpdateItemDto(expectedItem);
+        var command = new UpdateItemCommand(dto);
 		var handler = _scope.ServiceProvider.GetRequiredService<ICommandHandler<UpdateItemCommand, ItemDto>>();
-		
-		var expectedResult = new ItemDto(SeedModels.Item1) with {
-			QuantityInStock = 15
-		};
 
 		// Act
         var result = await handler.Handle(command, CancellationToken.None);
 
 		// Assert
-		result.Should().BeEquivalentTo(expectedResult);
-	}
+		result.Should().BeEquivalentTo(expectedItem, options => options
+			.Excluding(x => x.UpdatedAt));
+    }
 }
