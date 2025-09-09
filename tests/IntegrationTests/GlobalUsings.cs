@@ -14,3 +14,6 @@ global using Store.API;
 global using Serilog;
 global using Store.Core.Contracts.CQRS.User.Queries;
 global using Store.Core.Models.Dto.User;
+global using Store.Core.Contracts.CQRS.Item.Commands;
+global using Store.Infrastructure.Data;
+global using Store.Core.Contracts.CQRS.User.Commands;

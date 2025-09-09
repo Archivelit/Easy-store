@@ -11,7 +11,7 @@ public class GetUserByIdQueryHandlerTests : IClassFixture<StoreApiFixture>
     }
 
     [Fact]
-    public async Task GetByIdAsync_ShouldWork()
+    public async Task GetUserByIdAsync_ShouldWork()
     {
         // Arrange
         var query = new GetUserByIdQuery(SeedModels.User1.Id);

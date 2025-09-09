@@ -9,4 +9,4 @@
 
 # Main tasks
 
-- integration tests
+- fix data update methods

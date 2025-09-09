@@ -13,24 +13,24 @@ public class ItemUpdateFacade
         _logger = logger;
     }
 
-    public async Task<ItemDto> UpdateItemAsync(UpdateItemDto itemDto)
+    public async Task<ItemDto> UpdateItemAsync(UpdateItemDto item)
     {
         try
         {
-            _logger.LogInformation("Starting update of {ItemId}", itemDto.Id);
+            _logger.LogInformation("Starting update of {ItemId}", item.Id);
 
-            var itemData = await _itemRepository.GetByIdAsync(itemDto.Id);
+            var itemFromDb = await _itemRepository.GetByIdAsync(item.Id);
 
             var builder = new ItemBuilder();
-            builder.From(itemData);
+            builder.From(itemFromDb);
 
-            var updateData = GetNewData(builder, itemDto);
+            var updatedItem = GetNewItem(builder, item);
 
-            await _itemRepository.UpdateAsync(updateData);
+            await _itemRepository.UpdateAsync(updatedItem);
 
-            _logger.LogInformation("Item {ItemId} updated succesfuly", itemDto.Id);
+            _logger.LogInformation("Item {ItemId} updated succesfuly", item.Id);
 
-            return updateData;
+            return new (updatedItem);
         }
         catch (Exception ex)
         {
@@ -39,12 +39,12 @@ public class ItemUpdateFacade
         }
     }
 
-    private ItemDto GetNewData(ItemBuilder builder, UpdateItemDto itemDto)
+    private Item GetNewItem(ItemBuilder builder, UpdateItemDto itemDto)
     {
         builder = _chain.Update(builder, itemDto);
         
         var item = builder.Build();
         
-        return new ItemDto(item);
+        return item;
     }
 }

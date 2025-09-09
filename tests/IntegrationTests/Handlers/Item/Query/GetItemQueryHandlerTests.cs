@@ -12,7 +12,7 @@ public class GetItemQueryHandlerTests : IClassFixture<StoreApiFixture>
 	}
 
 	[Fact]
-	public async Task GetByIdAsync_ShouldWork()
+	public async Task GetItemByIdAsync_ShouldWork()
 	{
         // Arrange
         var query = new GetItemByIdQuery(SeedModels.Item2.Id);
