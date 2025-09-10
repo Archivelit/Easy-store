@@ -13,7 +13,7 @@ public class Program
 
         builder.Services.ConfigureRedis(builder.Configuration);
         builder.Services.ConfigureReverseProxy(builder.Configuration);
-        builder.Services.ConfigureAuthentication();
+        builder.Services.ConfigureAuthentication(builder.Configuration);
         builder.Services.ConfigureAuthorization();
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();

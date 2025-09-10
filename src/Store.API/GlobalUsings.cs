@@ -19,3 +19,4 @@ global using Store.Infrastructure.Data.DataAccessObjects;
 global using Store.Infrastructure.Repositories;
 global using Store.Infrastructure.Data;
 global using Store.Core.Contracts.Factories;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;

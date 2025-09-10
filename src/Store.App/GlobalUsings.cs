@@ -18,3 +18,4 @@ global using Store.App.CQRS.Users.Commands.Update.UpdateChain;
 global using Store.Core.Exceptions.InvalidData;
 global using Store.App.CQRS.Models.User.Queries;
 global using Store.Core.Contracts.Factories;
+global using HotChocolate.Authorization;

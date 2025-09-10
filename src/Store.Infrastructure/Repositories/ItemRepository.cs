@@ -1,21 +1,18 @@
 ﻿namespace Store.Infrastructure.Repositories;
 
-public class ItemRepository : IItemRepository
+public class ItemRepository(
+    ILogger<ItemRepository> logger, 
+    IItemFactory itemFactory, 
+    IItemDao itemDao, 
+    IDistributedCache cache, 
+    IItemEntityFactory itemEntityFactory
+    ) : IItemRepository
 {
-    private readonly ILogger<ItemRepository> _logger;
-    private readonly IItemFactory _itemFactory;
-    private readonly IItemEntityFactory _itemEntityFactory;
-    private readonly IItemDao _itemDao;
-    private readonly IDistributedCache _cache;
-
-    public ItemRepository(ILogger<ItemRepository> logger, IItemFactory itemFactory, IItemDao itemDao, IDistributedCache cache, IItemEntityFactory itemEntityFactory)
-    {
-        _logger = logger;
-        _itemFactory = itemFactory;
-        _itemDao = itemDao;
-        _cache = cache;
-        _itemEntityFactory = itemEntityFactory;
-    }
+    private readonly ILogger<ItemRepository> _logger = logger;
+    private readonly IItemFactory _itemFactory = itemFactory;
+    private readonly IItemEntityFactory _itemEntityFactory = itemEntityFactory;
+    private readonly IItemDao _itemDao = itemDao;
+    private readonly IDistributedCache _cache = cache;
 
     public async Task DeleteByIdAsync(Guid id)
     {

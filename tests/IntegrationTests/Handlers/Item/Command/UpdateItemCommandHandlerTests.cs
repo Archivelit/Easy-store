@@ -12,7 +12,7 @@ public class UpdateItemCommandHandlerTests : IClassFixture<StoreApiFixture>
 	}
 
 	[Fact]
-	public async Task CreateItemAsync_ShouldWork()
+	public async Task UpdateItemAsync_ShouldWork()
 	{
         // Arrange
         var expectedItem = new ItemDto(SeedModels.Item1) with { QuantityInStock = 15 };

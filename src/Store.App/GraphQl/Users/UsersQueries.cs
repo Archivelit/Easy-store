@@ -2,6 +2,7 @@
 
 public class UsersQueries : IGraphQlExtender
 {
+    [Authorize(Roles = new[] { "Admin", "User" })]
     public async Task<UserDto> GetUserById(
         [GraphQLName("input")] GetUserByIdQuery query,
         [Service] IQueryHandler<GetUserByIdQuery, UserDto> handler,

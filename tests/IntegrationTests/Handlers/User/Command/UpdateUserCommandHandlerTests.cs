@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace IntegrationTests.Handlers.User.Command;
+﻿namespace IntegrationTests.Handlers.User.Command;
 
 public class UpdateUserCommandHandlerTests : IClassFixture<StoreApiFixture>
 {

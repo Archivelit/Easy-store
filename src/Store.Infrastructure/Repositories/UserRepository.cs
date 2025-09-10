@@ -1,17 +1,14 @@
 ﻿namespace Store.Infrastructure.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository(
+    ILogger<UserRepository> logger, 
+    IUserDao userDao, 
+    IDistributedCache cache
+    ) : IUserRepository
 {
-    private readonly ILogger<UserRepository> _logger;
-    private readonly IUserDao _userDao;
-    private readonly IDistributedCache _cache;
-
-    public UserRepository(ILogger<UserRepository> logger, IUserDao userDao, IDistributedCache cache)
-    {
-        _logger = logger;
-        _userDao = userDao;
-        _cache = cache;
-    }
+    private readonly ILogger<UserRepository> _logger = logger;
+    private readonly IUserDao _userDao = userDao;
+    private readonly IDistributedCache _cache = cache;
 
     public async Task DeleteAsync(Guid id)
     {

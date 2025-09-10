@@ -32,6 +32,7 @@ public static class IServiceCollectionExtensions
         services
             .AddGraphQLServer()
             .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
+            .AddAuthorization()
             .AddQueryType<Query>()
             .AddMutationType<Mutation>()
             /*.AddSubscriptionType<Subscription>()*/;
@@ -92,15 +93,20 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
+    public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.AddAuthentication("Bearer")
-            .AddJwtBearer("Bearer", options =>
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                options.Authority = "http://localhost:8080/realms/store";
+                options.Authority = configuration["Keycloak:Authority"];
+                options.Audience = configuration["Keycloak:Audience"];
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateAudience = false
+                    ValidIssuer = configuration["Keycloak:ValidIssuer"],
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true
                 };
             });
 
@@ -113,6 +119,10 @@ public static class IServiceCollectionExtensions
         {
             options.AddPolicy("authenticated", policy =>
                 policy.RequireAuthenticatedUser());
+            options.AddPolicy("Admin", policy => 
+                policy.RequireRole("Admin"));
+            options.AddPolicy("User", policy => 
+                policy.RequireRole("User"));
         });
 
         return services;

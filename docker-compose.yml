@@ -19,8 +19,7 @@ services:
     restart: always
  
   keycloak:
-    image: quay.io/keycloak/keycloak:26.3.3
-    command: "start-dev"
+    build: ./keycloak
     ports:
       - "8080:8080"
     environment:
@@ -32,8 +31,7 @@ services:
       - KC_DB_PASSWORD=kc_password
     depends_on:
       - keycloak_db
-    restart: always
-    
+
   keycloak_db:
     image: postgres:latest
     container_name: keycloak_db

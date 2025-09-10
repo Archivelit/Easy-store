@@ -3,7 +3,8 @@ namespace Store.App.GraphQl.Users;
 [ExtendObjectType("Mutation")]
 public class UsersMutations : IGraphQlExtender  
 {
-    public async Task<UserDto> RegisterCustomer(
+    [Authorize("Admin")]
+    public async Task<UserDto> RegisterUser(
         [GraphQLName("input")] RegisterUserCommand command, 
         [Service] ICommandHandler<RegisterUserCommand, UserDto> handler, 
         CancellationToken ct)
@@ -11,7 +12,8 @@ public class UsersMutations : IGraphQlExtender
         return await handler.Handle(command, ct);
     }
 
-    public async Task DeleteCustomer(
+    [Authorize("Admin")]
+    public async Task DeleteUser(
         [GraphQLName("input")] DeleteUserCommand command,
         [Service] ICommandHandler<DeleteUserCommand> handler,
         CancellationToken ct)
@@ -19,7 +21,8 @@ public class UsersMutations : IGraphQlExtender
         await handler.Handle(command, ct);
     }
 
-    public async Task UpdateCustomer(
+    [Authorize(Roles = new[] { "Admin", "User"})]
+    public async Task UpdateUser(
         [GraphQLName("input")] UpdateUserCommand command,
         [Service] ICommandHandler<UpdateUserCommand, UserDto> handler,
         CancellationToken ct)

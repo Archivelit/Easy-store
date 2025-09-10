@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Store.Infrastructure.Data;
-
-namespace IntegrationTests;
+﻿namespace IntegrationTests;
 
 public sealed class StoreApiFixture : WebApplicationFactory<Program>, IAsyncLifetime
 {
@@ -17,8 +14,8 @@ public sealed class StoreApiFixture : WebApplicationFactory<Program>, IAsyncLife
         _postgres = InitPostgresContainer();
         _redis = InitRedisContainer();
 
-        _postgres.StartAsync().GetAwaiter().GetResult();
-        _redis.StartAsync().GetAwaiter().GetResult();
+        await _postgres.StartAsync();
+        await _redis.StartAsync();
 
         _postgresConnectionString = _postgres.GetConnectionString();
         _redisConnectionString = _redis.GetConnectionString();
