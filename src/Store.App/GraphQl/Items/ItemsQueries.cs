@@ -1,9 +1,11 @@
-namespace Store.App.GraphQl.Factories;
+namespace Store.App.GraphQl.Items;
+
+using HotChocolate.Authorization;
 
 [ExtendObjectType("Query")]
 public class ItemsQueries : IGraphQlExtender
 {
-    [Authorize(Roles = new[] { "User", "Admin" })]
+    [AllowAnonymous]
     public async Task<ItemDto> GetItemById(
         [GraphQLName("input")]GetItemByIdQuery query,
         [Service] IQueryHandler<GetItemByIdQuery, ItemDto> handler, 

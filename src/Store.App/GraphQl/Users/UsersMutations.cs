@@ -1,9 +1,11 @@
 namespace Store.App.GraphQl.Users;
 
+using HotChocolate.Authorization;
+
 [ExtendObjectType("Mutation")]
 public class UsersMutations : IGraphQlExtender  
 {
-    [Authorize("Admin")]
+    [AllowAnonymous]
     public async Task<UserDto> RegisterUser(
         [GraphQLName("input")] RegisterUserCommand command, 
         [Service] ICommandHandler<RegisterUserCommand, UserDto> handler, 

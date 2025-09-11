@@ -21,7 +21,7 @@ services:
   keycloak:
     build: ./keycloak
     ports:
-      - "8080:8080"
+      - "8000:8080"
     environment:
       - KC_BOOTSTRAP_ADMIN_USERNAME=admin
       - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
@@ -54,4 +54,6 @@ services:
         - keycloak
     environment:
         - ConnectionStrings:DefaultConnection="Host=store_database;Database=store_db;Username=username;Password=password;"
-        - ASPNETCORE_URLS=http://+80;
+        - ASPNETCORE_URLS=http://+:5000;
+    ports:
+        - 5000:5000

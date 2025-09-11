@@ -20,3 +20,7 @@ global using Store.Infrastructure.Repositories;
 global using Store.Infrastructure.Data;
 global using Store.Core.Contracts.Factories;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Store.App.Authorization.AuthorizationRequirements;
+global using Microsoft.AspNetCore.HttpOverrides;
+global using Store.App.Authorization.AuthorizationHandlers;
+global using System.Net;

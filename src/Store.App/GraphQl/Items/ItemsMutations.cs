@@ -1,9 +1,11 @@
-namespace Store.App.GraphQl.Factories;
+namespace Store.App.GraphQl.Items;
+
+using HotChocolate.Authorization;
 
 [ExtendObjectType("Mutation")]
 public class ItemsMutations : IGraphQlExtender
 {
-    [Authorize(Roles = new[] { "User", "Admin" })]
+    [Authorize("ItemOwner")]
     public async Task DeleteItem(
         [GraphQLName("input")] DeleteItemCommand command,
         [Service] ICommandHandler<DeleteItemCommand> handler, 
@@ -21,7 +23,7 @@ public class ItemsMutations : IGraphQlExtender
         return await handler.Handle(command, cancellationToken);
     }
 
-    [Authorize(Roles = new[] { "User", "Admin" })]
+    [Authorize("ItemOwner")]
     public async Task<ItemDto> UpdateItem(
         [GraphQLName("input")] UpdateItemCommand command,
         [Service] ICommandHandler<UpdateItemCommand, ItemDto> handler,

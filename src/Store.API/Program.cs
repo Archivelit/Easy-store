@@ -17,13 +17,14 @@ public class Program
         builder.Services.ConfigureAuthorization();
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();
-        builder.Services.ConfigureGraphQl();
         builder.Services.RegisterHandlersFromApp();
+        builder.Services.ConfigureGraphQl();
 
         var app = builder.Build();
 
         Log.Debug("Setting up middleware");
 
+        app.UseForwardedHeaders();
         app.UseSerilogRequestLogging();
         app.UseRouting();
         app.UseAuthentication();

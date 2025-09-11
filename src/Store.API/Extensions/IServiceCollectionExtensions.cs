@@ -1,4 +1,5 @@
 namespace Store.API.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 public static class IServiceCollectionExtensions
 {
@@ -13,6 +14,7 @@ public static class IServiceCollectionExtensions
 
         services.RegisterUpdateUserServices();
         services.RegisterUpdateItemServices();
+        services.RegisterAuthorizationHandlers();
 
         services.AddTransient<IValidator<User>, UserValidator>();
         services.AddTransient<IValidator<Item>, ItemValidator>();
@@ -90,6 +92,12 @@ public static class IServiceCollectionExtensions
         services.AddReverseProxy()
             .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
+        services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
+        });
+
         return services;
     }
 
@@ -100,13 +108,14 @@ public static class IServiceCollectionExtensions
             {
                 options.Authority = configuration["Keycloak:Authority"];
                 options.Audience = configuration["Keycloak:Audience"];
+                options.RequireHttpsMetadata = false; // only for dev environment
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = configuration["Keycloak:ValidIssuer"],
                     ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true
+                    ValidateLifetime = false, // only for dev environment
+                    ValidateIssuerSigningKey = false, // only for dev environment
+                    ValidateIssuer = false // only for dev environment
                 };
             });
 
@@ -123,6 +132,8 @@ public static class IServiceCollectionExtensions
                 policy.RequireRole("Admin"));
             options.AddPolicy("User", policy => 
                 policy.RequireRole("User"));
+            options.AddPolicy("ItemOwner", policy =>
+                policy.Requirements.Add(new ItemOwnerRequirement()));
         });
 
         return services;
@@ -168,5 +179,10 @@ public static class IServiceCollectionExtensions
         services.AddTransient<RefreshUpdatedAt>();
 
         services.AddScoped<ItemUpdateFacade>();
+    }
+
+    private static void RegisterAuthorizationHandlers(this IServiceCollection services)
+    {
+        services.AddScoped<IAuthorizationHandler, ItemOwnerHandler>();
     }
 }
