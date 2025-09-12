@@ -37,6 +37,6 @@ public class Program
 
         await app.Services.MigrateDatabaseAsync();
 
-        await app.RunAsync();
+        await app.RunWithGraphQLCommandsAsync(args);
     }
 }

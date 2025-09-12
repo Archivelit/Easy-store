@@ -1,5 +1,6 @@
 namespace Store.API.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Store.Core.Enums.Subscriptions;
 
 public static class IServiceCollectionExtensions
 {
@@ -37,9 +38,9 @@ public static class IServiceCollectionExtensions
             .AddAuthorization()
             .AddQueryType<Query>()
             .AddMutationType<Mutation>()
+            .AddType<EnumType<Subscription>>()
+            .AddGraphQlExtendTypes();
             /*.AddSubscriptionType<Subscription>()*/;
-
-        services.AddGraphQlExtendTypes();
 
         Log.Debug("GraphQl server configured succesfuly");
 
@@ -104,7 +105,7 @@ public static class IServiceCollectionExtensions
     public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, ConfigurationManager configuration)
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.Authority = configuration["Keycloak:Authority"];
                 options.Audience = configuration["Keycloak:Audience"];
@@ -126,8 +127,6 @@ public static class IServiceCollectionExtensions
     {
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("authenticated", policy =>
-                policy.RequireAuthenticatedUser());
             options.AddPolicy("Admin", policy => 
                 policy.RequireRole("Admin"));
             options.AddPolicy("User", policy => 
@@ -136,24 +135,6 @@ public static class IServiceCollectionExtensions
                 policy.Requirements.Add(new ItemOwnerRequirement()));
         });
 
-        return services;
-    }
-
-    private static IServiceCollection AddGraphQlExtendTypes(this IServiceCollection services)
-    {
-        Log.Debug("Adding GraphQl extend types");
-        var assembly = typeof(Query).Assembly;
-        var extenderInterface = typeof(IGraphQlExtender);
-        
-        var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && extenderInterface.IsAssignableFrom(t));
-
-
-        foreach (var type in types)
-        {
-            services.AddGraphQLServer().AddTypeExtension(type);
-        }
-
-        Log.Debug("GraphQl extend types added succesfuly");
         return services;
     }
 

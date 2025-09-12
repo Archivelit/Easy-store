@@ -24,3 +24,4 @@ global using Store.App.Authorization.AuthorizationRequirements;
 global using Microsoft.AspNetCore.HttpOverrides;
 global using Store.App.Authorization.AuthorizationHandlers;
 global using System.Net;
+global using HotChocolate.Execution.Configuration;
