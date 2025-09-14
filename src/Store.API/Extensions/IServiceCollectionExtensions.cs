@@ -1,5 +1,8 @@
 namespace Store.API.Extensions;
+
+using Keycloak.AuthServices.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Store.App.CQRS.Models.Item.Queries;
 using Store.Core.Enums.Subscriptions;
 
 public static class IServiceCollectionExtensions
@@ -39,6 +42,8 @@ public static class IServiceCollectionExtensions
             .AddQueryType<Query>()
             .AddMutationType<Mutation>()
             .AddType<EnumType<Subscription>>()
+            .AddType<ItemDto>()
+            .AddType<GetItemByIdQuery>()
             .AddGraphQlExtendTypes();
             /*.AddSubscriptionType<Subscription>()*/;
 
@@ -73,6 +78,7 @@ public static class IServiceCollectionExtensions
             foreach (var iface in interfaces)
             {
                 services.AddScoped(iface, type);
+                Log.Debug("Adding scoped service {TypeName}, implements {InterfaceName}", type.Name, iface.Name);
             }
         }
 
@@ -104,21 +110,24 @@ public static class IServiceCollectionExtensions
 
     public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            {
-                options.Authority = configuration["Keycloak:Authority"];
-                options.Audience = configuration["Keycloak:Audience"];
-                options.RequireHttpsMetadata = false; // only for dev environment
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = configuration["Keycloak:ValidIssuer"],
-                    ValidateAudience = false,
-                    ValidateLifetime = false, // only for dev environment
-                    ValidateIssuerSigningKey = false, // only for dev environment
-                    ValidateIssuer = false // only for dev environment
-                };
-            });
+        #region JWT Bearer configuration
+        //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+        //    {
+        //        options.Authority = configuration["Keycloak:Authority"];
+        //        options.Audience = configuration["Keycloak:Audience"];
+        //        options.RequireHttpsMetadata = false; // only for dev environment
+        //        options.TokenValidationParameters = new TokenValidationParameters
+        //        {
+        //            ValidIssuer = configuration["Keycloak:ValidIssuer"],
+        //            ValidateAudience = false,
+        //            ValidateLifetime = false, // only for dev environment
+        //            ValidateIssuerSigningKey = false, // only for dev environment
+        //            ValidateIssuer = false // only for dev environment
+        //        };
+        //    });
+        #endregion
+        services.AddKeycloakWebApiAuthentication(configuration);
 
         return services;
     }
@@ -153,6 +162,7 @@ public static class IServiceCollectionExtensions
     private static void RegisterUpdateItemServices(this IServiceCollection services)
     {
         services.AddTransient<IItemUpdateChainFactory, ItemUpdateChainFactory>();
+
         services.AddTransient<UpdateTitle>();
         services.AddTransient<UpdateDescription>();
         services.AddTransient<UpdatePrice>();

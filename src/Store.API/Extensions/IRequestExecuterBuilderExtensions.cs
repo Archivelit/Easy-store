@@ -14,6 +14,7 @@ public static class IRequestExecuterBuilderExtensions
         foreach (var type in types)
         {
             builder.AddTypeExtension(type);
+            Log.Debug("Adding extend type {TypeName}", type.Name);
         }
 
         Log.Debug("GraphQl extend types added succesfuly");

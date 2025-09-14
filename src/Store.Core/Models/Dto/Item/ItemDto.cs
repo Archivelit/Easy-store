@@ -6,8 +6,8 @@ public record ItemDto : IItem
     [Required] public string Title { get; init; }
     public string? Description { get; init; }
     public decimal Price { get; init; }
-    public Guid UserId { get; init; }
-    public int QuantityInStock { get; init; } 
+    [Required] public Guid UserId { get; init; }
+    public int QuantityInStock { get; init; }
     public DateTime CreatedAt { get; init; }
     public DateTime? UpdatedAt { get; init; }
 

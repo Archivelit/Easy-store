@@ -22,6 +22,7 @@
     <PackageReference Include="HotChocolate.AspNetCore.CommandLine" Version="15.1.10" />
     <PackageReference Include="HotChocolate.Types" Version="15.1.10" />
     <PackageReference Include="HotChocolate.Utilities" Version="15.1.10" />
+    <PackageReference Include="Keycloak.AuthServices.Authentication" Version="2.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />

@@ -1,3 +1,16 @@
 namespace Store.App.CQRS.Models.Item.Queries;
 
-public record GetItemByIdQuery(Guid Id) : IQuery<ItemDto>; 
+public record GetItemByIdQuery : IQuery<ItemDto>
+{
+    public Guid Id { get; set; }
+
+    public GetItemByIdQuery(Guid id)
+    {
+        Id = id;
+    }
+
+    public GetItemByIdQuery(string id)
+    {
+        Id = Guid.Parse(id);
+    }
+}; 
