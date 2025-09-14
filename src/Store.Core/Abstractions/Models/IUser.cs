@@ -1,4 +1,4 @@
-namespace Store.Core.Contracts.Models;
+namespace Store.Core.Abstractions.Models;
 
 public interface IUser
 {

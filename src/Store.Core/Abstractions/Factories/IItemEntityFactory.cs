@@ -1,4 +1,4 @@
-namespace Store.Core.Factories;
+namespace Store.Core.Abstractions.Factories;
 
 public interface IItemEntityFactory
 {

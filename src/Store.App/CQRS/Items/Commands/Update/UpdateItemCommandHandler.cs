@@ -14,6 +14,8 @@ public class UpdateItemCommandHandler : ICommandHandler<UpdateItemCommand, ItemD
     {
         ct.ThrowIfCancellationRequested();
         
-        return await _facade.UpdateItemAsync(command.Item);
+        var result = await _facade.UpdateItemAsync(command.Item);
+
+        return result;
     }
 }

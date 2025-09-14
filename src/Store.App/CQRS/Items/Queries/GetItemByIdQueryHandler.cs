@@ -18,7 +18,7 @@ public class GetItemByIdQueryHandler : IQueryHandler<GetItemByIdQuery, ItemDto>
             
             cancellationToken.ThrowIfCancellationRequested();
 
-            return new(await _repository.GetByIdAsync(request.Id));
+            return new (await _repository.GetByIdAsync(request.Id));
         }
     }
 }

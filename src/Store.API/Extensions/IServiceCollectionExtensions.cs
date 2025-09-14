@@ -1,8 +1,6 @@
-namespace Store.API.Extensions;
+using Keycloak.AuthServices.Authorization;
 
-using Keycloak.AuthServices.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using System.Reflection;
+namespace Store.API.Extensions;
 
 public static class IServiceCollectionExtensions
 {
@@ -112,17 +110,25 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection ConfigureAuthorization(this IServiceCollection services)
+    public static IServiceCollection ConfigureAuthorization(this IServiceCollection services, ConfigurationManager configuration)
     {
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("Admin", policy => 
-                policy.RequireRole("Admin"));
+            options.AddPolicy("Administrator", policy => 
+                policy.RequireRealmRoles(Roles.ADMINISTRATOR));
+            
             options.AddPolicy("User", policy => 
-                policy.RequireRole("User"));
+                policy.RequireRealmRoles(Roles.USER));
+            
+            options.AddPolicy("UserOrAdministrator", policy =>
+                policy
+                    .RequireRealmRoles(Roles.ADMINISTRATOR)
+                    .RequireRealmRoles(Roles.USER));
+            
             options.AddPolicy("ItemOwner", policy =>
                 policy.Requirements.Add(new ItemOwnerRequirement()));
-        });
+        
+        }).AddKeycloakAuthorization(configuration);
 
         return services;
     }

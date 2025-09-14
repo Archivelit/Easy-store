@@ -1,7 +1,7 @@
 ﻿global using Xunit;
 global using Testcontainers.PostgreSql;
 global using Testcontainers.Redis;
-global using Store.Core.Contracts.CQRS;
+global using Store.Core.Abstractions.CQRS;
 global using Store.App.CQRS.Models.Item.Queries;
 global using Store.Core.Models.Dto.Item;
 global using Microsoft.Extensions.DependencyInjection;

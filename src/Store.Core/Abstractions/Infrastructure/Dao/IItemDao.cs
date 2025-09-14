@@ -1,4 +1,4 @@
-﻿namespace Store.Core.Contracts.Infrastructure.Dao;
+﻿namespace Store.Core.Abstractions.Infrastructure.Dao;
 
 public interface IItemDao
 {

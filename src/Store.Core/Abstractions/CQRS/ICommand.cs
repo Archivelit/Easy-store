@@ -1,4 +1,5 @@
-namespace Store.Core.Contracts.CQRS;
+namespace Store.Core.Abstractions.CQRS;
 
 public interface ICommand;
+
 public interface ICommand<TResult>;

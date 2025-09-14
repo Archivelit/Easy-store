@@ -11,7 +11,7 @@ public class Item : IItem
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; } = null;
 
-    internal Item(string title, decimal price, int quantityInStock, Guid userId, string? description = null) 
+    public Item(string title, decimal price, int quantityInStock, Guid userId, string? description = null) 
     {
         Description = description;
         Title = title;
@@ -21,7 +21,7 @@ public class Item : IItem
     }
 
     [JsonConstructor]
-    internal Item(Guid id, string title, decimal price, int quantityInStock, Guid userId, string? description, DateTime createdAt, DateTime? updatedAt)
+    public Item(Guid id, string title, decimal price, int quantityInStock, Guid userId, string? description, DateTime createdAt, DateTime? updatedAt)
         : this(title, price, quantityInStock, userId, description)
     {
         Id = id;

@@ -1,8 +1,8 @@
-﻿global using Store.Core.Contracts.Repositories;
+﻿global using Store.Core.Abstractions.Repositories;
 global using Store.App.CQRS.Models.Item.Commands;
 global using Store.Core.Models.Dto.Item;
 global using Microsoft.Extensions.Logging;
-global using Store.Core.Contracts.CQRS;
+global using Store.Core.Abstractions.CQRS;
 global using FluentValidation;
 global using Store.Core.Models;
 global using Store.App.CQRS.Items.Commands.Update.UpdateChain;
@@ -17,6 +17,4 @@ global using Store.App.CQRS.Models.User.Commands;
 global using Store.App.CQRS.Users.Commands.Update.UpdateChain;
 global using Store.Core.Exceptions.InvalidData;
 global using Store.App.CQRS.Models.User.Queries;
-global using Store.Core.Contracts.Factories;
-global using Store.App.Authorization.AuthorizationHandlers;
-global using Microsoft.AspNetCore.Authorization;
+global using Store.Core.Abstractions.Factories;

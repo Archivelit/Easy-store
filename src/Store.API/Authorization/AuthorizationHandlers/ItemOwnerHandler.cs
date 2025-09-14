@@ -1,4 +1,4 @@
-﻿namespace Store.App.Authorization.AuthorizationRequirements;
+﻿namespace Store.API.Authorization.AuthorizationHandlers;
 
 public class ItemOwnerHandler : AuthorizationHandler<ItemOwnerRequirement, Item>
 {

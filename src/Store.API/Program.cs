@@ -14,7 +14,7 @@ public class Program
         builder.Services.ConfigureRedis(builder.Configuration);
         builder.Services.ConfigureReverseProxy(builder.Configuration);
         builder.Services.ConfigureAuthentication(builder.Configuration);
-        builder.Services.ConfigureAuthorization();
+        builder.Services.ConfigureAuthorization(builder.Configuration);
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();
         builder.Services.RegisterHandlersFromApp();
@@ -32,6 +32,7 @@ public class Program
         Log.Debug("Middleware setted up successfully");
 
         app.MapReverseProxy();
+        app.MapControllers();
 
         await app.Services.MigrateDatabaseAsync();
 

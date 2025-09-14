@@ -1,4 +1,4 @@
-namespace Store.Core.Contracts.Repositories;
+namespace Store.Core.Abstractions.Repositories;
 
 public interface IUserRepository
 {
