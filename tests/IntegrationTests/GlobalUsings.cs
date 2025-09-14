@@ -11,7 +11,6 @@ global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Mvc.Testing;
 global using Microsoft.Extensions.Configuration;
 global using Store.API;
-global using Serilog;
 global using Store.App.CQRS.Models.User.Queries;
 global using Store.Core.Models.Dto.User;
 global using Store.App.CQRS.Models.Item.Commands;

@@ -18,7 +18,6 @@ public class Program
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();
         builder.Services.RegisterHandlersFromApp();
-        builder.Services.ConfigureGraphQl();
 
         var app = builder.Build();
 
@@ -33,10 +32,9 @@ public class Program
         Log.Debug("Middleware setted up successfully");
 
         app.MapReverseProxy();
-        app.MapGraphQL();
 
         await app.Services.MigrateDatabaseAsync();
 
-        await app.RunWithGraphQLCommandsAsync(args);
+        await app.RunAsync();
     }
 }

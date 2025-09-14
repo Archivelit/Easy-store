@@ -2,8 +2,7 @@ namespace Store.API.Extensions;
 
 using Keycloak.AuthServices.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Store.App.CQRS.Models.Item.Queries;
-using Store.Core.Enums.Subscriptions;
+using System.Reflection;
 
 public static class IServiceCollectionExtensions
 {
@@ -31,32 +30,12 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection ConfigureGraphQl(this IServiceCollection services)
-    {
-        Log.Debug("Configuring GraphQl");
-
-        services
-            .AddGraphQLServer()
-            .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
-            .AddAuthorization()
-            .AddQueryType<Query>()
-            .AddMutationType<Mutation>()
-            .AddType<EnumType<Subscription>>()
-            .AddType<ItemDto>()
-            .AddType<GetItemByIdQuery>()
-            .AddGraphQlExtendTypes();
-            /*.AddSubscriptionType<Subscription>()*/;
-
-        Log.Debug("GraphQl server configured succesfuly");
-
-        return services;
-    }
-
+#nullable disable
     public static IServiceCollection RegisterHandlersFromApp(this IServiceCollection services)
     {
         Log.Debug("Registering handlers");
 
-        var assembly = typeof(Query).Assembly;
+        var assembly = Assembly.GetAssembly(typeof(RegisterUserCommandHandler));
         var types = assembly.GetTypes();
 
         var handlerInterfaces = new[]
@@ -85,6 +64,7 @@ public static class IServiceCollectionExtensions
         Log.Debug("Handlers registered succesfuly");
         return services;
     }
+#nullable enable
 
     public static IServiceCollection ConfigureRedis(this IServiceCollection services, ConfigurationManager configuration)
     {
