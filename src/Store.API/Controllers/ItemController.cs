@@ -1,9 +1,5 @@
 ﻿namespace Store.API.Controllers;
 
-using Store.App.CQRS.Models.Item.Commands;
-using Store.App.CQRS.Models.Item.Queries;
-using Store.Core.Models.Dto.Item;
-
 [ApiController]
 [Route("items")]
 public class ItemController : ControllerBase
@@ -44,9 +40,14 @@ public class ItemController : ControllerBase
         CancellationToken ct,
         [FromServices] ICommandHandler<CreateItemCommand, ItemDto> handler)
     {
-        await handler.Handle(new CreateItemCommand(item), ct);
+        var result = await handler.Handle(new CreateItemCommand(item), ct);
 
-        return Ok();
+        if (result is null)
+        {
+            return BadRequest();
+        }
+
+        return Ok(item);
     }
 
     [HttpPost("{id:guid}/update")]

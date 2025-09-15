@@ -1,5 +1,3 @@
-using Keycloak.AuthServices.Authorization;
-
 namespace Store.API.Extensions;
 
 public static class IServiceCollectionExtensions
@@ -124,10 +122,13 @@ public static class IServiceCollectionExtensions
                 policy
                     .RequireRealmRoles(Roles.ADMINISTRATOR)
                     .RequireRealmRoles(Roles.USER));
-            
+
+            /*options.AddPolicy("Me", policy =>
+                policy policy.Requirements.Add());*/
+
             options.AddPolicy("ItemOwner", policy =>
                 policy.Requirements.Add(new ItemOwnerRequirement()));
-        
+
         }).AddKeycloakAuthorization(configuration);
 
         return services;

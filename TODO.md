@@ -9,5 +9,4 @@
 
 # Main tasks
 
-- Rebuild api to controller based REST
 - "MeOrAdmin", "Me" and "OwnerOrAdmin" authorization policies

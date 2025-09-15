@@ -15,7 +15,7 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, U
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        new EmailValidator().Validate(command.Email, options => 
+        new EmailValidator().Validate(command.user.Email, options => 
         {
             options.ThrowOnFailures();
         });
@@ -24,12 +24,12 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, U
 
         try
         {
-            if (await _userRepository.IsEmailClaimedAsync(command.Email))
+            if (await _userRepository.IsEmailClaimedAsync(command.user.Email))
             {
                 throw new InvalidUserDataException("Email is already registered");
             }
 
-            var user = new User(command.Name, command.Email);
+            var user = new User(command.user.Name, command.user.Email);
             await _userRepository.RegisterAsync(user);
 
             _logger.LogDebug("Ending user registration");

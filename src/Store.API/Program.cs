@@ -17,6 +17,7 @@ public class Program
         builder.Services.ConfigureAuthorization(builder.Configuration);
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddServices();
+        builder.Services.AddControllers();
         builder.Services.RegisterHandlersFromApp();
 
         var app = builder.Build();
