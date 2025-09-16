@@ -1,9 +1,10 @@
 # TODOs
 
 - write e2e test to test authorization n authentication logic
-- add images for Customer & Item
+- add cart and order operations
+- try to optimize efcore
+- add images for User & Item
 - add OpenTelemetry
-- try AutoMapper/Manual mapping
 
 ---
 
