@@ -16,6 +16,7 @@ public class Program
         builder.Services.ConfigureAuthentication(builder.Configuration);
         builder.Services.ConfigureAuthorization(builder.Configuration);
         builder.Services.AddDbContext<AppDbContext>();
+        builder.Services.AddMinio(MinIO.ACCESS_KEY, MinIO.SECRET_KEY);
         builder.Services.AddServices();
         builder.Services.AddControllers();
         builder.Services.RegisterHandlersFromApp();

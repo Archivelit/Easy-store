@@ -6,7 +6,7 @@ public class ItemController : ControllerBase
 {
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
-    public async Task<ActionResult<ItemDto>> GetItemByIdAsync(
+    public async Task<IActionResult> GetItemByIdAsync(
         Guid id, 
         CancellationToken ct,
         [FromServices] IQueryHandler<GetItemByIdQuery, ItemDto> handler)
@@ -21,9 +21,9 @@ public class ItemController : ControllerBase
         return Ok(result);
     }
 
-    [Authorize("ItemOwner")]
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult> DeleteItemAsync(
+    [Authorize("ItemOwner")]
+    public async Task<IActionResult> DeleteItemAsync(
         Guid id, 
         CancellationToken ct,
         [FromServices] ICommandHandler<DeleteItemCommand> handler)
@@ -35,7 +35,7 @@ public class ItemController : ControllerBase
 
     [HttpPost]
     [Authorize("UserOrAdministrator")]
-    public async Task<ActionResult> CreateItemAsync(
+    public async Task<IActionResult> CreateItemAsync(
         [FromBody] CreateItemDto item,
         CancellationToken ct,
         [FromServices] ICommandHandler<CreateItemCommand, ItemDto> handler)
@@ -50,9 +50,9 @@ public class ItemController : ControllerBase
         return Ok(item);
     }
 
-    [HttpPost("{id:guid}/update")]
+    [HttpPatch("{id:guid}")]
     [Authorize("ItemOwner")]
-    public async Task<ActionResult<ItemDto>> UpdateItemAsync(
+    public async Task<IActionResult> UpdateItemAsync(
         [FromBody] UpdateItemDto item,
         CancellationToken ct,
         [FromServices] ICommandHandler<UpdateItemCommand, ItemDto> handler)

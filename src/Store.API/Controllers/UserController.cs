@@ -6,7 +6,7 @@ public class UserController : ControllerBase
 {
     [HttpPost]
     [AllowAnonymous]
-    public async Task<ActionResult<UserDto>> RegisterUser(
+    public async Task<IActionResult> RegisterUser(
         [FromBody] RegisterUserDto user,
         CancellationToken ct,
         [FromServices] ICommandHandler<RegisterUserCommand, UserDto> handler)
@@ -21,8 +21,8 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<UserDto>> UpdateUser(
+    [HttpPatch]
+    public async Task<IActionResult> UpdateUser(
         [FromBody] UserDto user,
         CancellationToken ct,
         [FromServices] ICommandHandler<UpdateUserCommand, UserDto> handler)
