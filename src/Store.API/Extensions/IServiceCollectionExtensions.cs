@@ -134,6 +134,30 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "Easy store API",
+                Description = "Easy api for e-commerce",
+                Contact = new OpenApiContact
+                {
+                    Name = "Archivelit",
+                    Url = new Uri("https://github.com/Archivelit")
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "MIT",
+                    Url = new Uri("https://opensource.org/license/mit")
+                }
+            });
+        });
+
+        return services;
+    }
     private static void RegisterUpdateUserServices(this IServiceCollection services)
     {
         services.AddTransient<IUserUpdateChainFactory, UserUpdateChainFactory>();

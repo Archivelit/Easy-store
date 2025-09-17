@@ -20,6 +20,8 @@ public class Program
         builder.Services.AddServices();
         builder.Services.AddControllers();
         builder.Services.RegisterHandlersFromApp();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwagger();
 
         var app = builder.Build();
 
@@ -28,6 +30,7 @@ public class Program
         app.UseForwardedHeaders();
         app.UseSerilogRequestLogging();
         app.UseRouting();
+        app.UseSwaggerInDev();
         app.UseAuthentication();
         app.UseAuthorization();
 
