@@ -4,15 +4,23 @@
 [Route("items")]
 public class ItemController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public ItemController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
     public async Task<IActionResult> GetItemByIdAsync(
         Guid id, 
-        CancellationToken ct,
-        [FromServices] IQueryHandler<GetItemByIdQuery, ItemDto> handler)
+        CancellationToken ct)
     {
-        var result = await handler.Handle(new GetItemByIdQuery(id), ct);
-        
+        var query = new GetItemByIdQuery(id);
+
+        var result = await _mediator.Send(query, ct);
+
         if (result == null)
         {
             return NotFound();
@@ -28,7 +36,9 @@ public class ItemController : ControllerBase
         CancellationToken ct,
         [FromServices] ICommandHandler<DeleteItemCommand> handler)
     {
-        await handler.Handle(new DeleteItemCommand(id), ct);
+        var command = new DeleteItemCommand(id);
+
+        await _mediator.Send(command, ct);
 
         return Ok();
     }
@@ -37,10 +47,11 @@ public class ItemController : ControllerBase
     [Authorize("UserOrAdministrator")]
     public async Task<IActionResult> CreateItemAsync(
         [FromBody] CreateItemDto item,
-        CancellationToken ct,
-        [FromServices] ICommandHandler<CreateItemCommand, ItemDto> handler)
+        CancellationToken ct)
     {
-        var result = await handler.Handle(new CreateItemCommand(item), ct);
+        var command = new CreateItemCommand(item);
+
+        var result = await _mediator.Send(command, ct);
 
         if (result is null)
         {
@@ -54,11 +65,12 @@ public class ItemController : ControllerBase
     [Authorize("ItemOwner")]
     public async Task<IActionResult> UpdateItemAsync(
         [FromBody] UpdateItemDto item,
-        CancellationToken ct,
-        [FromServices] ICommandHandler<UpdateItemCommand, ItemDto> handler)
+        CancellationToken ct)
     {
-        var result = await handler.Handle(new UpdateItemCommand(item), ct);
-        
+        var command = new UpdateItemCommand(item);
+
+        var result = await _mediator.Send(command, ct);
+
         if (result is null)
         {
             return NotFound(); 

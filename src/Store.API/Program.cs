@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Store.API;
 
 public class Program
@@ -15,11 +17,11 @@ public class Program
         builder.Services.ConfigureReverseProxy(builder.Configuration);
         builder.Services.ConfigureAuthentication(builder.Configuration);
         builder.Services.ConfigureAuthorization(builder.Configuration);
+        builder.Services.ConfigureMediatR();
         builder.Services.AddDbContext<AppDbContext>();
         builder.Services.AddMinio(MinIO.ACCESS_KEY, MinIO.SECRET_KEY);
         builder.Services.AddServices();
         builder.Services.AddControllers();
-        builder.Services.RegisterHandlersFromApp();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwagger();
 

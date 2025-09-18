@@ -1,7 +1,15 @@
 namespace Store.API.Extensions;
 
+#nullable disable
 public static class IServiceCollectionExtensions
 {
+    private static readonly Assembly _appAssembly;
+
+    static IServiceCollectionExtensions()
+    {
+        _appAssembly = Assembly.GetAssembly(typeof(RegisterUserCommandHandler));
+    }
+
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         Log.Debug("Setting up services");
@@ -26,41 +34,13 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
-#nullable disable
-    public static IServiceCollection RegisterHandlersFromApp(this IServiceCollection services)
+    public static IServiceCollection ConfigureMediatR(this IServiceCollection services)
     {
-        Log.Debug("Registering handlers");
-
-        var assembly = Assembly.GetAssembly(typeof(RegisterUserCommandHandler));
-        var types = assembly.GetTypes();
-
-        var handlerInterfaces = new[]
+        return services.AddMediatR(options =>
         {
-            typeof(IQueryHandler<,>),
-            typeof(ICommandHandler<>),
-            typeof(ICommandHandler<,>)
-        };
-
-        foreach (var type in types)
-        {
-            if (!type.IsClass || type.IsAbstract)
-                continue;
-
-            var interfaces = type.GetInterfaces()
-                .Where(i => i.IsGenericType &&
-                            handlerInterfaces.Any(h => h == i.GetGenericTypeDefinition()));
-            
-            foreach (var iface in interfaces)
-            {
-                services.AddScoped(iface, type);
-                Log.Debug("Adding scoped service {TypeName}, implements {InterfaceName}", type.Name, iface.Name);
-            }
-        }
-
-        Log.Debug("Handlers registered succesfuly");
-        return services;
+            options.RegisterServicesFromAssemblies(_appAssembly);
+        });
     }
-#nullable enable
 
     public static IServiceCollection ConfigureRedis(this IServiceCollection services, ConfigurationManager configuration)
     {
@@ -103,6 +83,7 @@ public static class IServiceCollectionExtensions
         //        };
         //    });
         #endregion
+        
         services.AddKeycloakWebApiAuthentication(configuration);
 
         return services;
@@ -136,7 +117,7 @@ public static class IServiceCollectionExtensions
 
     public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
-        services.AddSwaggerGen(options =>
+        return services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo
             {
@@ -155,8 +136,6 @@ public static class IServiceCollectionExtensions
                 }
             });
         });
-
-        return services;
     }
     private static void RegisterUpdateUserServices(this IServiceCollection services)
     {
