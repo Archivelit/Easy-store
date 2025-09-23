@@ -82,11 +82,12 @@ public class ItemController : ControllerBase
     [HttpGet("/image/{id:guid}")]
     [AllowAnonymous]
     public async Task<IActionResult> GetImage(
+        Guid id,
         CancellationToken ct)
     {
-        var command = new GetItemProfileImageQuery(id);
+        var query = new GetLinkToItemProfileImageQuery(id);
         
-        var result = await _mediator.Send();
+        var result = await _mediator.Send(query, ct);
         
         if (result is null)
         {

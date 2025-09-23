@@ -11,9 +11,9 @@ public sealed class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand
         _userRepository = userRepository;
     }
 
-    public async Task Handle(DeleteUserCommand command, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand command, CancellationToken ct)
     {
-        cancellationToken.ThrowIfCancellationRequested();
+        ct.ThrowIfCancellationRequested();
 
         try
         {

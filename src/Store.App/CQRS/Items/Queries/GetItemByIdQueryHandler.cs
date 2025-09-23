@@ -11,14 +11,12 @@ public sealed class GetItemByIdQueryHandler : IQueryHandler<GetItemByIdQuery, It
         _logger = logger;
     }
 
-    public async Task<ItemDto> Handle(GetItemByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ItemDto> Handle(GetItemByIdQuery request, CancellationToken ct)
     {
-        {
-            _logger.LogDebug("Item {ItemId} requested", request.Id);
-            
-            cancellationToken.ThrowIfCancellationRequested();
+        ct.ThrowIfCancellationRequested();
+        
+        _logger.LogDebug("Item {ItemId} requested", request.Id);
 
-            return new (await _repository.GetByIdAsync(request.Id));
-        }
+        return new (await _repository.GetByIdAsync(request.Id));
     }
 }

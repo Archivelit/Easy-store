@@ -1,4 +1,4 @@
-﻿namespace Store.API.Constants;
+﻿namespace Store.Core.Constants;
 
 public static class Roles
 {

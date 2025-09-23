@@ -1,6 +1,6 @@
 ﻿namespace Store.Infrastructure.Repositories;
 
-public class UserRepository(
+public sealed class UserRepository(
     ILogger<UserRepository> logger, 
     IUserDao userDao, 
     IDistributedCache cache
@@ -37,26 +37,22 @@ public class UserRepository(
 
     public async Task<User> GetByIdAsync(Guid id)
     {
-        _logger.LogDebug("Getting user {UserId}", id);
+        _logger.LogDebug("User {UserId} requested", id);
 
         var key = $"user:{id}";
+
         var userFromCache = await _cache.GetStringAsync(key);
         
-        UserEntity user;
+        if (userFromCache is not null)
+        {
+            return JsonSerializer.Deserialize<User>(userFromCache)!;
+        }
 
-        if (userFromCache is null)
-        {
-            user = await _userDao.GetByIdAsync(id) 
-                ?? throw new InvalidUserDataException("User not found");
+        var user = await _userDao.GetByIdAsync(id) 
+            ?? throw new InvalidUserDataException($"User {id} not found");
             
-            var json = JsonSerializer.Serialize(user);
-            
-            await _cache.SetStringAsync(key, json);
-        }
-        else
-        {
-            user = JsonSerializer.Deserialize<UserEntity>(userFromCache)!;
-        }
+        var json = JsonSerializer.Serialize(user);    
+        await _cache.SetStringAsync(key, json);
 
         return new(user);
     }

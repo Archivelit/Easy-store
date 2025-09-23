@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Items.Commands.Update;
 
-public class ItemUpdateFacade
+public sealed class ItemUpdateFacade
 {
     private readonly IItemUpdateChain _chain;
     private readonly IItemRepository _itemRepository;

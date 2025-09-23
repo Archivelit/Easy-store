@@ -1,6 +1,6 @@
 ﻿namespace Store.Infrastructure.Repositories;
 
-public class ItemRepository(
+public sealed class ItemRepository(
     ILogger<ItemRepository> logger, 
     IItemFactory itemFactory, 
     IItemDao itemDao, 
@@ -36,7 +36,7 @@ public class ItemRepository(
         
         if (itemFromCache is not null)
         {
-            return _itemFactory.Create(JsonSerializer.Deserialize<ItemEntity>(itemFromCache)!);
+            return _itemFactory.Create(JsonSerializer.Deserialize<Item>(itemFromCache)!);
         }
 
         var item = await _itemDao.GetByIdAsync(id)
@@ -54,8 +54,6 @@ public class ItemRepository(
 
         await _itemDao.RegisterAsync(_itemEntityFactory.Create(item));
         await _cache.SetStringAsync(key, JsonSerializer.Serialize(item));
-
-        _logger.LogInformation("Item {ItemId} successfully registered", item.Id);
     }
 
     public async Task UpdateAsync(IItem item)

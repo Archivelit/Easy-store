@@ -23,7 +23,7 @@ global using Microsoft.AspNetCore.HttpOverrides;
 global using System.Net;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Authorization;
-global using Store.API.Constants;
+global using Store.Core.Constants;
 global using System.Reflection;
 global using Keycloak.AuthServices.Authentication;
 global using Store.App.CQRS.Models.User.Commands;

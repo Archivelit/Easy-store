@@ -1,15 +1,32 @@
 namespace Store.App.CQRS.User.Queries;
 
-public sealed class GetUserProfileImageQueryHandler(
-    ILogger<GetUserByIdQueryHandler> logger,
-    
-    ) : IQueryHandler<GetUserProfileImageQuery,object>
+public sealed class GetLinkToUserProfileImageQueryHandler : IQueryHandler<GetLinkToUserProfileImageQuery,string>
 {
-    private readonly ILogger<GetUserProfileImageQuery> _logger = logger;
-    private readonly _minio = minio;
+    private readonly ILogger<GetLinkToUserProfileImageQueryHandler> _logger;
+    private readonly IMinioClient _minio;
 
-    public async Task<object> Handle
+    public GetLinkToUserProfileImageQueryHandler(
+        ILogger<GetLinkToUserProfileImageQueryHandler> logger,
+        IMinioClient minio)
     {
-        _logger.LogInfo("Item {ItemId} iamge requested", query.Id);
+        _logger = logger;
+        _minio = minio;        
+    }
+
+    public async Task<string> Handle(GetLinkToUserProfileImageQuery query, CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
+
+        _logger.LogInformation("Item {ItemId} iamge requested", query.Id);
+
+        var image = await _minio.PresignedGetObjectAsync(new PresignedGetObjectArgs()
+            .WithBucket(MinIO.USER_BUCKET)
+            .WithObject($"/images/query.Id.ToString()")
+            .WithExpiry(60 * 15) // 15 minutes
+        );
+
+        ArgumentNullException.ThrowIfNull(image);
+        
+        return image;
     }
 }

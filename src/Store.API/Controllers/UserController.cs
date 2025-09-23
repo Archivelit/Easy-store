@@ -1,4 +1,6 @@
-﻿namespace Store.API.Controllers;
+﻿using Store.App.CQRS.Models.User.Queries;
+
+namespace Store.API.Controllers;
 
 [ApiController]
 [Route("/users")]
@@ -49,11 +51,12 @@ public class UserController : ControllerBase
     [HttpGet("/image/{id:guid}")]
     [AllowAnonymous]
     public async Task<IActionResult> GetImage(
+        Guid id,
         CancellationToken ct)
     {
-        var command = new GetUserProfileImageQuery(id);
+        var query = new GetLinkToUserProfileImageQuery(id);
         
-        var result = await _mediator.Send();
+        var result = await _mediator.Send(query, ct);
         
         if (result is null)
         {
