@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Items.Commands;
 
-public class DeleteItemCommandHandler : ICommandHandler<DeleteItemCommand>
+public sealed class DeleteItemCommandHandler : ICommandHandler<DeleteItemCommand>
 {
     private readonly IItemRepository _itemRepository;
     private readonly ILogger<DeleteItemCommandHandler> _logger;

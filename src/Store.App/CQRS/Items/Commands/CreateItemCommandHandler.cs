@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Items.Commands;
 
-public class CreateItemCommandHandler : ICommandHandler<CreateItemCommand, ItemDto>
+public sealed class CreateItemCommandHandler : ICommandHandler<CreateItemCommand, ItemDto>
 {
     private readonly IItemRepository _repository;
     private readonly IValidator<Item> _validator;

@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Items.Commands.Update;
 
-public class UpdateItemCommandHandler : ICommandHandler<UpdateItemCommand, ItemDto>
+public sealed class UpdateItemCommandHandler : ICommandHandler<UpdateItemCommand, ItemDto>
 {
     
     private readonly ItemUpdateFacade _facade;

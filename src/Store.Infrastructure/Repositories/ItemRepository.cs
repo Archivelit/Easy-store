@@ -34,21 +34,16 @@ public class ItemRepository(
         var key = $"item:{id}";
         var itemFromCache = await _cache.GetStringAsync(key);
         
-        ItemEntity item;
+        if (itemFromCache is not null)
+        {
+            return _itemFactory.Create(JsonSerializer.Deserialize<ItemEntity>(itemFromCache)!);
+        }
+
+        var item = await _itemDao.GetByIdAsync(id)
+            ?? throw new InvalidItemDataException($"Item with id {id} not found.");
         
-        if (itemFromCache is null)
-        {
-            item = await _itemDao.GetByIdAsync(id)
-                   ?? throw new InvalidItemDataException($"Item with id {id} not found.");
-            
-            var json = JsonSerializer.Serialize(item);
-            
-            await _cache.SetStringAsync(key, json);
-        }
-        else
-        {
-            item = JsonSerializer.Deserialize<ItemEntity>(itemFromCache)!;
-        }
+        var json = JsonSerializer.Serialize(item);
+        await _cache.SetStringAsync(key, json);
 
         return _itemFactory.Create(item);
     }

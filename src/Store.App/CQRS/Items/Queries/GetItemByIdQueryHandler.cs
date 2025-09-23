@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Items.Queries;
 
-public class GetItemByIdQueryHandler : IQueryHandler<GetItemByIdQuery, ItemDto>
+public sealed class GetItemByIdQueryHandler : IQueryHandler<GetItemByIdQuery, ItemDto>
 {
     private readonly IItemRepository _repository;
     private readonly ILogger<GetItemByIdQueryHandler> _logger;

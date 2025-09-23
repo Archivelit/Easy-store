@@ -78,4 +78,21 @@ public class ItemController : ControllerBase
         
         return Ok(result);
     }
+
+    [HttpGet("/image/{id:guid}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetImage(
+        CancellationToken ct)
+    {
+        var command = new GetItemProfileImageQuery(id);
+        
+        var result = await _mediator.Send();
+        
+        if (result is null)
+        {
+            return BadRequest();
+        }
+
+        return Ok(result);
+    }
 }

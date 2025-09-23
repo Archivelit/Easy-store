@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Users.Commands.Update;
 
-public class UserUpdateFacade
+public sealed class UserUpdateFacade
 {
     private readonly IUserUpdateChain _chain;
     private readonly IUserRepository _userRepository;

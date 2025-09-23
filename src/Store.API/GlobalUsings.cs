@@ -35,3 +35,4 @@ global using Keycloak.AuthServices.Authorization;
 global using Minio;
 global using Microsoft.OpenApi.Models;
 global using MediatR;
+global using Microsoft.Extensions.DependencyInjection;

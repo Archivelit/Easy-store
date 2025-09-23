@@ -5,9 +5,4 @@
 - try to optimize efcore
 - add images for User & Item
 - add OpenTelemetry
-
----
-
-# Main tasks
-
 - "MeOrAdmin", "Me" and "OwnerOrAdmin" authorization policies

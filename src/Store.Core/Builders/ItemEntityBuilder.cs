@@ -1,5 +1,6 @@
 namespace Store.Core.Builders;
 
+#nullable disable
 public class ItemEntityBuilder
 {
     private Guid Id { get; set; }
@@ -24,13 +25,13 @@ public class ItemEntityBuilder
         .WithUserId(item.UserId)
         .WithCreatedAt(item.CreatedAt)
         .WithUpdatedAt(item.UpdatedAt);
-    
+
     public ItemEntityBuilder Reset()
     {
         InitDefault();
         return this;
     }
-    
+
     public ItemEntityBuilder WithTitle(string title)
     {
         Title = title;
@@ -42,13 +43,13 @@ public class ItemEntityBuilder
         Id = id;
         return this;
     }
-    
+
     public ItemEntityBuilder WithDescription(string? description)
     {
         Description = description;
         return this;
     }
-    
+
     public ItemEntityBuilder WithPrice(decimal price)
     {
         Price = price;
@@ -85,7 +86,7 @@ public class ItemEntityBuilder
         Price = 1m;
         UserId = Guid.NewGuid();
         QuantityInStock = 1;
-        
+
         return this;
     }
 

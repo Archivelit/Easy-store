@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Users.Commands.Update;
 
-public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, UserDto>
+public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, UserDto>
 {
     private readonly ILogger<RegisterUserCommandHandler> _logger;
     private readonly IUserRepository _userRepository;

@@ -1,6 +1,6 @@
 ﻿namespace Store.App.CQRS.Users.Queries;
 
-public class GetUserByIdQueryHandler (
+public sealed class GetUserByIdQueryHandler (
     ILogger<GetUserByIdQueryHandler> logger,
     IUserRepository userRepository
     ) : IQueryHandler<GetUserByIdQuery, UserDto>

@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Users.Commands.Update;
 
-public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
+public sealed class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
 {
     private readonly ILogger<DeleteUserCommandHandler> _logger;
     private readonly IUserRepository _userRepository;
