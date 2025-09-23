@@ -71,6 +71,6 @@ public class UserBuilder
 
     public User Build()
     {
-        return new(Id, Name, Email, SubscriptionType);
+        return new(Id, Name, Email, SubscriptionType, ProfileImageUrl);
     }
 }

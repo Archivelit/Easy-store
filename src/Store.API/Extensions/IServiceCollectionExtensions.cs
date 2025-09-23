@@ -55,13 +55,11 @@ public static class IServiceCollectionExtensions
         services.AddReverseProxy()
             .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
-        services.Configure<ForwardedHeadersOptions>(options =>
+        return services.Configure<ForwardedHeadersOptions>(options =>
         {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
         });
-
-        return services;
     }
 
     public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, ConfigurationManager configuration)
@@ -91,7 +89,7 @@ public static class IServiceCollectionExtensions
 
     public static IServiceCollection ConfigureAuthorization(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.AddAuthorization(options =>
+        return services.AddAuthorization(options =>
         {
             options.AddPolicy("Administrator", policy => 
                 policy.RequireRealmRoles(Roles.ADMINISTRATOR));
@@ -111,8 +109,6 @@ public static class IServiceCollectionExtensions
                 policy.Requirements.Add(new ItemOwnerRequirement()));
 
         }).AddKeycloakAuthorization(configuration);
-
-        return services;
     }
 
     public static IServiceCollection AddSwagger(this IServiceCollection services)

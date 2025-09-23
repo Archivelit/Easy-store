@@ -5,7 +5,8 @@ public record UpdateItemDto(
     string? Title,
     string? Description,
     decimal? Price,
-    int? QuantityInStock)
+    int? QuantityInStock,
+    string? ProfileImageUrl)
 {
     public UpdateItemDto(IItem item) : this(item.Id, item.Title, item.Description, item.Price, item.QuantityInStock, item.ProfileImageUrl) { }
 }

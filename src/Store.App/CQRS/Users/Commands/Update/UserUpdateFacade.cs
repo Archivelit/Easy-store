@@ -31,14 +31,14 @@ public sealed class UserUpdateFacade
         return new(updatedUser);
     }
 
-    private User GetNewData(UserBuilder builder, UserDto model)
+    private Core.Models.User GetNewData(UserBuilder builder, UserDto model)
     {
         _logger.LogDebug("Trying to extract data for update");
         
         builder = _chain.Update(builder, model);
         var user = builder.Build();
 
-        _logger.LogDebug("Data extracted succesfuly");
+        _logger.LogDebug("Data extracted successfully");
 
         return user;
     }

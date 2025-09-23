@@ -8,7 +8,7 @@ public class Program
 
         builder.Configuration.AddJsonFile("appsettings.json", optional: false);
         builder.Configuration.ConfigureLogger();
-        
+
         builder.Host.UseSerilog();
 
         builder.Services.ConfigureRedis(builder.Configuration);
