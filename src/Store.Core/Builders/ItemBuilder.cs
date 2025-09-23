@@ -11,10 +11,11 @@ public class ItemBuilder
     private int QuantityInStock { get; set; }
     private DateTime CreatedAt { get; set; }
     private DateTime? UpdatedAt { get; set; }
+    private string ProfileImageUrl { get; set; }
 
     public ItemBuilder() => InitDefault();
 
-    public Item Build() => new(Id, Title, Price, QuantityInStock, UserId, Description, CreatedAt, UpdatedAt);
+    public Item Build() => new(Id, Title, Price, QuantityInStock, UserId, Description,  ProfileImageUrl, CreatedAt, UpdatedAt);
 
     public ItemBuilder From(IItem item) =>
         WithId(item.Id)
@@ -23,6 +24,7 @@ public class ItemBuilder
         .WithPrice(item.Price)
         .WithQuantityInStock(item.QuantityInStock)
         .WithUserId(item.UserId)
+        .WithProfileImageUrl(item.ProfileImageUrl)
         .WithCreatedAt(item.CreatedAt)
         .WithUpdatedAt(item.UpdatedAt);
 
@@ -68,6 +70,12 @@ public class ItemBuilder
         return this;
     }
 
+    public ItemBuilder WithProfileImageUrl(string profileImageUrl)
+    {
+        ProfileImageUrl = profileImageUrl;
+        return this;
+    }
+
     public ItemBuilder WithUpdatedAt(DateTime? updatedAt)
     {
         UpdatedAt = updatedAt;
@@ -106,5 +114,6 @@ public class ItemBuilder
         QuantityInStock = 0;
         CreatedAt = DateTime.Now;
         UpdatedAt = null;
+        ProfileImageUrl = null;
     }
 }

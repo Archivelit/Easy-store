@@ -6,6 +6,7 @@ public class UserBuilder
     private string Name { get; set; }
     private string Email { get; set; }
     private Subscription SubscriptionType { get; set; }
+    private string ProfileImageUrl { get; set; }
 
     public UserBuilder() => InitDefault();
 
@@ -31,6 +32,7 @@ public class UserBuilder
         Name = user.Name;
         Email = user.Email;
         SubscriptionType = user.SubscriptionType;
+        ProfileImageUrl = user.ProfileImageUrl;
         return this;
     }
 

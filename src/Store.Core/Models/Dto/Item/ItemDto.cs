@@ -10,8 +10,9 @@ public record ItemDto : IItem
     public int QuantityInStock { get; init; }
     public DateTime CreatedAt { get; init; }
     public DateTime? UpdatedAt { get; init; }
+    public string? ProfileImageUrl { get; init; }
 
-    public ItemDto(Guid id, string title, string? description, decimal price, Guid customerId, int quantityInStock, DateTime createdAt, DateTime? updatedAt)
+    public ItemDto(Guid id, string title, string? description, decimal price, Guid customerId, int quantityInStock, string profileImageUrl, DateTime createdAt, DateTime? updatedAt)
     {
         Id = id;
         Title = title;
@@ -19,6 +20,7 @@ public record ItemDto : IItem
         Price = price;
         UserId = customerId;
         QuantityInStock = quantityInStock;
+        ProfileImageUrl = profileImageUrl;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }
@@ -31,6 +33,7 @@ public record ItemDto : IItem
         Price = item.Price;
         UserId = item.UserId;
         QuantityInStock = item.QuantityInStock;
+        ProfileImageUrl = item.ProfileImageUrl;
         CreatedAt = item.CreatedAt;
         UpdatedAt = item.UpdatedAt;
     }

@@ -8,8 +8,8 @@ public static class MinIO
     public const string ACCESS_KEY = "ROOTNAME";
     public const string SECRET_KEY = "CHANGEME123";
 
-    // bucket names
     public const string USER_BUCKET = "users";
     public const string ITEM_BUCKET = "items";
 
+    public const string DEFAULT_IMAGE_URL = "default";
 }
