@@ -1,6 +1,5 @@
 namespace Store.Core.Builders;
 
-#nullable disable
 public class ItemEntityBuilder
 {
     private Guid Id { get; set; }
@@ -11,11 +10,12 @@ public class ItemEntityBuilder
     private int QuantityInStock { get; set; }
     private DateTime CreatedAt { get; set; }
     private DateTime? UpdatedAt { get; set; }
-    private string ProfileImageUrl { get; set; }
 
+#nullable disable
     public ItemEntityBuilder() => InitDefault();
+#nullable enable
 
-    public ItemEntity Build() => new(Id, Title, Price, QuantityInStock, UserId, Description, ProfileImageUrl, CreatedAt, UpdatedAt);
+    public ItemEntity Build() => new(Id, Title, Price, QuantityInStock, UserId, Description, CreatedAt, UpdatedAt);
 
     public ItemEntityBuilder From(IItem item) =>
         WithId(item.Id)
@@ -24,7 +24,6 @@ public class ItemEntityBuilder
         .WithPrice(item.Price)
         .WithQuantityInStock(item.QuantityInStock)
         .WithUserId(item.UserId)
-        .WithProfileImageUrl(item.ProfileImageUrl)
         .WithCreatedAt(item.CreatedAt)
         .WithUpdatedAt(item.UpdatedAt);
 
@@ -67,12 +66,6 @@ public class ItemEntityBuilder
     public ItemEntityBuilder WithQuantityInStock(int quantityInStock)
     {
         QuantityInStock = quantityInStock;
-        return this;
-    }
-
-    public ItemEntityBuilder WithProfileImageUrl(string profileImageUrl)
-    {
-        ProfileImageUrl = profileImageUrl;
         return this;
     }
 

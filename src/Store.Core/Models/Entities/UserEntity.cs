@@ -16,20 +16,17 @@ public class UserEntity : IUser
 
     [Required]
     public Subscription SubscriptionType { get; private set; }
-    [Required]
-    public string ProfileImageUrl { get; private set; } = string.Empty;
 
     [JsonConstructor]
-    public UserEntity(Guid id, string name, string email, Subscription subscriptionType, string profileImageUrl)
+    public UserEntity(Guid id, string name, string email, Subscription subscriptionType)
     {
         Id = id;
         Name = name;
         Email = email;
         SubscriptionType = subscriptionType;
-        ProfileImageUrl = profileImageUrl;
     }
 
-    public UserEntity(IUser user) : this(user.Id, user.Name, user.Email, user.SubscriptionType, user.ProfileImageUrl) { }
+    public UserEntity(IUser user) : this(user.Id, user.Name, user.Email, user.SubscriptionType) { }
     
 #pragma warning disable CS8618
     public UserEntity() { }

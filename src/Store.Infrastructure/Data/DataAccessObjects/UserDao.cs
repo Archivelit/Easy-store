@@ -33,9 +33,10 @@ internal class UserDao(AppDbContext context) : IUserDao
             .FirstOrDefaultAsync(c => c.Id == id);
 
     public async Task UpdateAsync(UserEntity entity) =>
-        await context.Users.Where(u => u.Id == entity.Id)
-            .ExecuteUpdateAsync(c => c
-                .SetProperty(u => u.Email, entity.Email)
-                .SetProperty(u => u.SubscriptionType, entity.SubscriptionType)
-                .SetProperty(u => u.Name, entity.Name));
+        await context.Users
+        .Where(u => u.Id == entity.Id)
+        .ExecuteUpdateAsync(u => u
+            .SetProperty(u => u.Email, entity.Email)
+            .SetProperty(u => u.SubscriptionType, entity.SubscriptionType)
+            .SetProperty(u => u.Name, entity.Name));
 }

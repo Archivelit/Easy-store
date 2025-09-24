@@ -12,17 +12,18 @@ public class Item : IItem
     public DateTime? UpdatedAt { get; private set; } = null;
     public string ProfileImageUrl { get; private set; }
 
-    public Item(string title, decimal price, int quantityInStock, Guid userId, string? description = null, string? profileImageUrl = null) 
+#nullable disable
+    public Item(string title, decimal price, int quantityInStock, Guid userId, string? description = null) 
     {
         Description = description;
         Title = title;
         Price = price;
         QuantityInStock = quantityInStock;
         UserId = userId;
-        ProfileImageUrl = profileImageUrl ?? MinIO.DEFAULT_IMAGE_URL;
     }
+#nullable enable
 
-    public Item(IItem item) : this(item.Title, item.Price, item.QuantityInStock, item.UserId, item.Description, item.ProfileImageUrl) 
+    public Item(IItem item) : this(item.Title, item.Price, item.QuantityInStock, item.UserId, item.Description) 
     { 
         Id = item.Id;
         CreatedAt = item.CreatedAt;
@@ -30,8 +31,8 @@ public class Item : IItem
     }
 
     [JsonConstructor]
-    public Item(Guid id, string title, decimal price, int quantityInStock, Guid userId, string? description, string? profileImageUrl, DateTime createdAt, DateTime? updatedAt)
-        : this(title, price, quantityInStock, userId, description, profileImageUrl)
+    public Item(Guid id, string title, decimal price, int quantityInStock, Guid userId, string? description, DateTime createdAt, DateTime? updatedAt)
+        : this(title, price, quantityInStock, userId, description)
     {
         Id = id;
         CreatedAt = createdAt;

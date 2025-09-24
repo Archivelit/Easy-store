@@ -1,12 +1,12 @@
 namespace Store.Core.Builders;
 
+#nullable disable
 public class UserBuilder
 {
     private Guid Id { get; set; }
     private string Name { get; set; }
     private string Email { get; set; }
     private Subscription SubscriptionType { get; set; }
-    private string ProfileImageUrl { get; set; }
 
     public UserBuilder() => InitDefault();
 
@@ -32,7 +32,7 @@ public class UserBuilder
         Name = user.Name;
         Email = user.Email;
         SubscriptionType = user.SubscriptionType;
-        ProfileImageUrl = user.ProfileImageUrl;
+
         return this;
     }
 
@@ -71,6 +71,6 @@ public class UserBuilder
 
     public User Build()
     {
-        return new(Id, Name, Email, SubscriptionType, ProfileImageUrl);
+        return new(Id, Name, Email, SubscriptionType);
     }
 }

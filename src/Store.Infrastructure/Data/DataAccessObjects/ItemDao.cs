@@ -20,8 +20,8 @@ internal class ItemDao(AppDbContext context) : IItemDao
         await context.Items.Where(i => i.Id == item.Id).ExecuteDeleteAsync(); 
     }
 
-    public async Task UpdateAsync(ItemEntity item) 
-    { 
+    public async Task UpdateAsync(ItemEntity item)
+    {
         await context.Items.Where(i => i.Id == item.Id).ExecuteUpdateAsync(i => 
             i.SetProperty(p => p.Title, item.Title)
             .SetProperty(p => p.Description, item.Description)

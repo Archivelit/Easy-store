@@ -10,4 +10,3 @@ global using Store.Core.Models.Entities;
 global using Store.Core.Abstractions.Factories;
 global using System.Text.Json.Serialization; 
 global using MediatR;
-global using Store.Core.Constants;

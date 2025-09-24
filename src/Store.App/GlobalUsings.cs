@@ -18,6 +18,3 @@ global using Store.App.CQRS.Users.Commands.Update.UpdateChain;
 global using Store.Core.Exceptions.InvalidData;
 global using Store.App.CQRS.Models.User.Queries;
 global using Store.Core.Abstractions.Factories;
-global using Minio;
-global using Minio.DataModel.Args;
-global using Store.Core.Constants;

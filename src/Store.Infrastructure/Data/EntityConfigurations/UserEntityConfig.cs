@@ -11,7 +11,6 @@ internal class UserEntityConfig : IEntityTypeConfiguration<UserEntity>
         builder.Property(u => u.Name);
         builder.Property(u => u.Email);
         builder.Property(u => u.SubscriptionType);
-        builder.Property(u => u.ProfileImageUrl);
     }
 
 }

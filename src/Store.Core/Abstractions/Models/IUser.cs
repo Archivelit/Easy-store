@@ -6,5 +6,4 @@ public interface IUser
     string Name { get; }
     string Email { get; }
     Subscription SubscriptionType { get; }
-    string ProfileImageUrl { get; }
 }

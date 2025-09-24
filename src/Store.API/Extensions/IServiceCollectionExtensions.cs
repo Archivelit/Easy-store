@@ -50,6 +50,14 @@ public static class IServiceCollectionExtensions
         });
     }
 
+    public static IServiceCollection ConfigureDbContext(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        return services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+        });
+    }
+
     public static IServiceCollection ConfigureReverseProxy(this IServiceCollection services, ConfigurationManager configuration)
     {
         services.AddReverseProxy()

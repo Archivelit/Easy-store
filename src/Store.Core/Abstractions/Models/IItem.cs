@@ -10,5 +10,4 @@ public interface IItem
     int QuantityInStock { get; }
     DateTime CreatedAt { get; }
     DateTime? UpdatedAt { get; }
-    string ProfileImageUrl { get; }
 }

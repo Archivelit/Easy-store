@@ -6,7 +6,6 @@ public class User : IUser
     public string Name { get; init; }
     public string Email { get; init; }
     public Subscription SubscriptionType { get; init; } = Subscription.None;
-    public string ProfileImageUrl { get; init; } = MinIO.DEFAULT_IMAGE_URL;
 
     public User(string name, string email)
     {
@@ -15,13 +14,12 @@ public class User : IUser
     }
 
     [JsonConstructor]
-    public User(Guid id, string name, string email, Subscription subscriptionType, string profileImageUrl)
+    public User(Guid id, string name, string email, Subscription subscriptionType)
     : this (name, email)
     {
         Id = id;
         SubscriptionType = subscriptionType;
-        ProfileImageUrl = profileImageUrl;
     }
 
-    public User(IUser user) : this(user.Id, user.Name, user.Email, user.SubscriptionType, user.ProfileImageUrl) { }
+    public User(IUser user) : this(user.Id, user.Name, user.Email, user.SubscriptionType) { }
 }

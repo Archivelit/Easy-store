@@ -15,6 +15,5 @@ internal class ItemEntityConfig : IEntityTypeConfiguration<ItemEntity>
         builder.Property(i => i.UserId);
         builder.Property(i => i.CreatedAt);
         builder.Property(i => i.UpdatedAt);
-        builder.Property(i => i.ProfileImageUrl);
     }
 }

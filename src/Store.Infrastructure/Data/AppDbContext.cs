@@ -7,20 +7,12 @@ public class AppDbContext : DbContext
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<ItemEntity> Items { get; set; }
 
-    private readonly string? _connectionString;
-
-    public AppDbContext(IConfiguration configuration)
-    {
-        _connectionString = configuration.GetConnectionString("DefaultConnection");
-    }
-
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         Log.Debug("Configuring DbContext");
         optionsBuilder
-            .UseNpgsql(_connectionString)
             .EnableSensitiveDataLogging()
             .UseSeeding((context, _) =>
             {

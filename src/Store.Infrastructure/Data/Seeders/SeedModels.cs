@@ -15,8 +15,7 @@ public static class SeedModels
         userId: Guid.Parse("11111111-1111-1111-1111-111111111111"),
         description: "High-end gaming laptop with RTX 4090 and 32GB RAM",
         createdAt: ItemCreatedAt1,
-        updatedAt: null,
-        profileImageUrl: MinIO.DEFAULT_IMAGE_URL
+        updatedAt: null
     );
 
     public static ItemEntity Item2 { get; } = new(
@@ -27,21 +26,18 @@ public static class SeedModels
         userId: Guid.Parse("22222222-2222-2222-2222-222222222222"),
         description: "RGB mechanical keyboard with blue switches",
         createdAt: ItemCreatedAt2,
-        updatedAt: null,
-        profileImageUrl: MinIO.DEFAULT_IMAGE_URL
+        updatedAt: null
     );
     public static UserEntity User1 { get; } = new(
         Guid.Parse("11111111-1111-1111-1111-111111111111"),
         "Alice Johnson",
         "alice.johnson@example.com",
-        Subscription.StorePlus,
-        profileImageUrl: MinIO.DEFAULT_IMAGE_URL
+        Subscription.StorePlus
     );
     public static UserEntity User2 { get; } = new(
         Guid.Parse("22222222-2222-2222-2222-222222222222"),
         "Bob Smith",
         "bob.smith@example.com",
-        Subscription.None,
-        profileImageUrl: MinIO.DEFAULT_IMAGE_URL
+        Subscription.None
     );
 }

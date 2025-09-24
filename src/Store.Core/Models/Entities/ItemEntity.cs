@@ -20,22 +20,19 @@ public class ItemEntity : IItem
     public int QuantityInStock { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; } = null;
-    [Required]
-    public string ProfileImageUrl { get; private set; }
 
-    public ItemEntity(string title, decimal price, int quantityInStock, Guid userId, string profileImageUrl, string? description = null)
+    public ItemEntity(string title, decimal price, int quantityInStock, Guid userId, string? description = null)
     {
         Title = title;
         Price = price;
         QuantityInStock = quantityInStock;
         UserId = userId;
         Description = description;
-        ProfileImageUrl = profileImageUrl;
     }
 
     [JsonConstructor]
-    public ItemEntity(Guid id, string title, decimal price, int quantityInStock, Guid userId, string? description,string profileImageUrl ,DateTime createdAt, DateTime? updatedAt)
-    : this(title, price, quantityInStock, userId, profileImageUrl, description)
+    public ItemEntity(Guid id, string title, decimal price, int quantityInStock, Guid userId, string? description, DateTime createdAt, DateTime? updatedAt)
+    : this(title, price, quantityInStock, userId, description)
     {
         Id = id;
         CreatedAt = createdAt;

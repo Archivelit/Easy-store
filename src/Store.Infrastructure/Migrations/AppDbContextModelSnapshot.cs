@@ -22,7 +22,7 @@ namespace Store.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Store.Core.Models.Entities.ItemEntity", b =>
+            modelBuilder.Entity("Store.Infrastructure.Entities.ItemEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,10 +37,6 @@ namespace Store.Infrastructure.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
-
-                    b.Property<string>("ProfileImageUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<int>("QuantityInStock")
                         .HasColumnType("integer");
@@ -61,7 +57,7 @@ namespace Store.Infrastructure.Migrations
                     b.ToTable("Items", (string)null);
                 });
 
-            modelBuilder.Entity("Store.Core.Models.Entities.UserEntity", b =>
+            modelBuilder.Entity("Store.Infrastructure.Entities.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,10 +72,6 @@ namespace Store.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<string>("ProfileImageUrl")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<int>("SubscriptionType")
                         .HasColumnType("integer");
