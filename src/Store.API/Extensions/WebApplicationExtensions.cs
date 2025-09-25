@@ -2,6 +2,9 @@
 
 public static class WebApplicationExtensions
 {
+    /// <summary>
+    /// Adds Swagger middleware to the request pipeline in development environment
+    /// </summary>
     public static WebApplication UseSwaggerInDev(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())

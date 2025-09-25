@@ -1,5 +1,8 @@
 namespace Store.App.CQRS.Items.Commands.Update.UpdateChain;
 
+/// <summary>
+/// This element of the chain refreshes the UpdatedAt property to the current UTC time. 
+/// </summary>
 public class RefreshUpdatedAt : ItemUpdateChainBase
 {
     public RefreshUpdatedAt(ILogger<RefreshUpdatedAt> logger) : base(logger) { }

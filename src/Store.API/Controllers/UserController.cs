@@ -1,6 +1,4 @@
-﻿using Store.App.CQRS.Models.User.Queries;
-
-namespace Store.API.Controllers;
+﻿namespace Store.API.Controllers;
 
 [ApiController]
 [Route("/users")]
@@ -13,6 +11,13 @@ public class UserController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Register a new user in the system
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Registered user model
+    /// </returns>
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> RegisterUser(
@@ -31,6 +36,13 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Update user data
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Updated user model
+    /// </returns>
     [HttpPatch]
     public async Task<IActionResult> UpdateUser(
         [FromBody] UserDto user,

@@ -11,6 +11,13 @@ public class ItemController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Return item with specified id
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Registered item model
+    /// </returns>>
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
     public async Task<IActionResult> GetItemByIdAsync(
@@ -29,6 +36,9 @@ public class ItemController : ControllerBase
         return Ok(result);
     }
 
+    /// <summary>
+    /// Delete item with specified id
+    /// </summary>
     [HttpDelete("{id:guid}")]
     [Authorize("ItemOwner")]
     public async Task<IActionResult> DeleteItemAsync(
@@ -43,24 +53,13 @@ public class ItemController : ControllerBase
         return Ok();
     }
 
-    [HttpPost]
-    [Authorize("UserOrAdministrator")]
-    public async Task<IActionResult> CreateItemAsync(
-        [FromBody] CreateItemDto item,
-        CancellationToken ct)
-    {
-        var command = new CreateItemCommand(item);
-
-        var result = await _mediator.Send(command, ct);
-
-        if (result is null)
-        {
-            return BadRequest();
-        }
-
-        return Ok(item);
-    }
-
+    /// <summary>
+    /// Update item with specified id.
+    /// </summary>
+    /// 
+    /// <returns>
+    /// Updated item model
+    /// </returns>
     [HttpPatch("{id:guid}")]
     [Authorize("ItemOwner")]
     public async Task<IActionResult> UpdateItemAsync(

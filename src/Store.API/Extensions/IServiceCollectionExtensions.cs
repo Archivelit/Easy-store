@@ -10,6 +10,10 @@ public static class IServiceCollectionExtensions
         _appAssembly = Assembly.GetAssembly(typeof(RegisterUserCommandHandler));
     }
 
+    /// <summary>
+    /// Adds all application services to the DI container.
+    /// <para> CQRS Handler are registered via MediatR. </para>
+    /// </summary>>
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         Log.Debug("Setting up services");
@@ -34,6 +38,9 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Registers MediatR and all CQRS Handlers from application assembly.
+    /// </summary>
     public static IServiceCollection ConfigureMediatR(this IServiceCollection services)
     {
         return services.AddMediatR(options =>
@@ -42,6 +49,9 @@ public static class IServiceCollectionExtensions
         });
     }
 
+    /// <summary>
+    /// Adding redis cache to the DI container.
+    /// </summary>
     public static IServiceCollection ConfigureRedis(this IServiceCollection services, ConfigurationManager configuration)
     {
         return services.AddStackExchangeRedisCache(options =>
@@ -50,6 +60,9 @@ public static class IServiceCollectionExtensions
         });
     }
 
+    /// <summary>
+    /// Adding DbContext to the DI container with PostgreSQL provider.
+    /// </summary>
     public static IServiceCollection ConfigureDbContext(this IServiceCollection services, ConfigurationManager configuration)
     {
         return services.AddDbContext<AppDbContext>(options =>
@@ -58,6 +71,9 @@ public static class IServiceCollectionExtensions
         });
     }
 
+    /// <summary>
+    /// Configuring YARP reverse proxy.
+    /// </summary>
     public static IServiceCollection ConfigureReverseProxy(this IServiceCollection services, ConfigurationManager configuration)
     {
         services.AddReverseProxy()
@@ -70,6 +86,9 @@ public static class IServiceCollectionExtensions
         });
     }
 
+    /// <summary>
+    /// Configuring authentication with Keycloak.
+    /// </summary>
     public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, ConfigurationManager configuration)
     {
         #region JWT Bearer configuration
@@ -95,6 +114,9 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Configuring authentication with Keycloak and adds authorization policies.
+    /// </summary>
     public static IServiceCollection ConfigureAuthorization(this IServiceCollection services, ConfigurationManager configuration)
     {
         return services.AddAuthorization(options =>
@@ -119,6 +141,9 @@ public static class IServiceCollectionExtensions
         }).AddKeycloakAuthorization(configuration);
     }
 
+    /// <summary>
+    /// Adding Swagger Documentation generator.
+    /// </summary>
     public static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         return services.AddSwaggerGen(options =>
@@ -141,6 +166,10 @@ public static class IServiceCollectionExtensions
             });
         });
     }
+    
+    /// <summary>
+    /// Register services for updating user data via Chain of Responsibility pattern.
+    /// </summary>
     private static void RegisterUpdateUserServices(this IServiceCollection services)
     {
         services.AddTransient<IUserUpdateChainFactory, UserUpdateChainFactory>();
@@ -153,6 +182,9 @@ public static class IServiceCollectionExtensions
         services.AddScoped<UserUpdateFacade>();
     }
 
+    /// <summary>
+    /// Register services for updating item data via Chain of Responsibility pattern.
+    /// </summary>
     private static void RegisterUpdateItemServices(this IServiceCollection services)
     {
         services.AddTransient<IItemUpdateChainFactory, ItemUpdateChainFactory>();
@@ -166,6 +198,9 @@ public static class IServiceCollectionExtensions
         services.AddScoped<ItemUpdateFacade>();
     }
 
+    /// <summary>
+    /// Registers authorization handlers for policies.
+    /// </summary>
     private static void RegisterAuthorizationHandlers(this IServiceCollection services)
     {
         services.AddScoped<IAuthorizationHandler, ItemOwnerHandler>();

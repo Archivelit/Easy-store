@@ -2,6 +2,9 @@
 
 public static class IConfigurationManagerExtensions
 {
+    /// <summary>
+    /// Configure Serilog logger from appsettings.json
+    /// </summary>
     public static void ConfigureLogger(this ConfigurationManager configuration)
     {
         Log.Logger = new LoggerConfiguration()
