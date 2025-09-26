@@ -4,11 +4,13 @@ public class UpdateUserCommandHandlerTests : IClassFixture<StoreApiFixture>
 {
     private readonly StoreApiFixture _fixture;
     private readonly IServiceScope _scope;
+    private readonly IMediator _mediator;
     
     public UpdateUserCommandHandlerTests(StoreApiFixture fixture)
     {
         _fixture = fixture;
         _scope = _fixture.Services.CreateScope();
+		_mediator = _scope.GetRequiredService<IMediator>();
     }
 
     [Fact]
@@ -16,11 +18,10 @@ public class UpdateUserCommandHandlerTests : IClassFixture<StoreApiFixture>
     {
         // Arrange
         var expectedUser = new UserDto(SeedModels.User2) with { Name = "John Doe" };
-        var handler = _scope.ServiceProvider.GetRequiredService<ICommandHandler<UpdateUserCommand, UserDto>>();
         var command = new UpdateUserCommand(expectedUser);
         
         // Act
-        var user = await handler.Handle(command, CancellationToken.None);
+        var user = await _mediator.Send(command, CancellationToken.None);
 
         // Assert
         user.Should().BeEquivalentTo(expectedUser);

@@ -4,11 +4,13 @@ public class DeleteItemCommandHandlerTests : IClassFixture<StoreApiFixture>
 {
 	private readonly StoreApiFixture _fixture;
 	private readonly IServiceScope _scope;
-	
+	private readonly IMediator _mediator;
+
 	public DeleteItemCommandHandlerTests(StoreApiFixture fixture)
 	{
 		_fixture = fixture;
 		_scope = fixture.Services.CreateScope();
+		_mediator = _scope.GetRequiredService<IMediator>();
 	}
 
 	[Fact]
@@ -16,11 +18,10 @@ public class DeleteItemCommandHandlerTests : IClassFixture<StoreApiFixture>
 	{
 		// Arrange
         var command = new DeleteItemCommand(SeedModels.Item1.Id);
-		var handler = _scope.ServiceProvider.GetRequiredService<ICommandHandler<DeleteItemCommand>>();
 		var db = _scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
 		// Act
-        await handler.Handle(command, CancellationToken.None);
+        await _mediator.Send(command, CancellationToken.None);
 
 		// Assert
 		var item = db.Items.FirstOrDefault(i => i.Id == SeedModels.Item1.Id);

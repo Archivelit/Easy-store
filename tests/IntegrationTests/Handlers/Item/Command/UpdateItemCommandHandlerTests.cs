@@ -4,11 +4,13 @@ public class UpdateItemCommandHandlerTests : IClassFixture<StoreApiFixture>
 {
 	private readonly StoreApiFixture _fixture;
 	private readonly IServiceScope _scope;
+	private readonly IMediator _mediator;
 	
 	public UpdateItemCommandHandlerTests(StoreApiFixture fixture)
 	{
 		_fixture = fixture;
 		_scope = fixture.Services.CreateScope();
+		_mediator = _scope.GetRequiredService<IMediator>();
 	}
 
 	[Fact]
@@ -18,10 +20,9 @@ public class UpdateItemCommandHandlerTests : IClassFixture<StoreApiFixture>
         var expectedItem = new ItemDto(SeedModels.Item1) with { QuantityInStock = 15 };
 		var dto = new UpdateItemDto(expectedItem);
         var command = new UpdateItemCommand(dto);
-		var handler = _scope.ServiceProvider.GetRequiredService<ICommandHandler<UpdateItemCommand, ItemDto>>();
 
 		// Act
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await _mediator.Send(command, CancellationToken.None);
 
 		// Assert
 		result.Should().BeEquivalentTo(expectedItem, options => options
