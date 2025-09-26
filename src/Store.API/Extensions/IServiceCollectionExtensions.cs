@@ -121,19 +121,19 @@ public static class IServiceCollectionExtensions
     {
         return services.AddAuthorization(options =>
         {
-            options.AddPolicy("Administrator", policy => 
+            options.AddPolicy("Administrator", policy =>
                 policy.RequireRealmRoles(Roles.ADMINISTRATOR));
-            
-            options.AddPolicy("User", policy => 
+
+            options.AddPolicy("User", policy =>
                 policy.RequireRealmRoles(Roles.USER));
-            
+
             options.AddPolicy("UserOrAdministrator", policy =>
                 policy
                     .RequireRealmRoles(Roles.ADMINISTRATOR)
                     .RequireRealmRoles(Roles.USER));
 
-            /*options.AddPolicy("Me", policy =>
-                policy policy.Requirements.Add());*/
+            //  options.AddPolicy("Me", policy =>
+            //      policy.Requirements.Add());
 
             options.AddPolicy("ItemOwner", policy =>
                 policy.Requirements.Add(new ItemOwnerRequirement()));

@@ -26,17 +26,16 @@ public class GetUserByIdQueryHandlerTests : IClassFixture<StoreApiFixture>
         result.Should().BeEquivalentTo(SeedModels.User1);
     }
 
-    // TODO: fix this test
     [Fact]
-    public async Task GetUserByIdAsync_WithWrongId_ShouldThrow()
+    public async Task GetUserByIdAsync_ShouldThrow_WithWrongId()
     {
         // Arrange
         var query = new GetUserByIdQuery(SeedModels.User1.Id);
 
         // Act
-        var result = await _mediator.Send(query, CancellationToken.None); 
+        var act = async () => await _mediator.Send(query, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(SeedModels.User1);
+        await act.Should().ThrowAsync<InvalidUserDataException>();
     }
 }

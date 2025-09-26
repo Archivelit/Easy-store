@@ -17,14 +17,27 @@ public class DeleteItemCommandHandlerTests : IClassFixture<StoreApiFixture>
 	public async Task DeleteItemAsync_ShouldWork()
 	{
 		// Arrange
-        var command = new DeleteItemCommand(SeedModels.Item1.Id);
+		var command = new DeleteItemCommand(SeedModels.Item1.Id);
 		var db = _scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
 		// Act
-        await _mediator.Send(command, CancellationToken.None);
+		await _mediator.Send(command, CancellationToken.None);
 
 		// Assert
 		var item = db.Items.FirstOrDefault(i => i.Id == SeedModels.Item1.Id);
-        item.Should().BeNull();
+		item.Should().BeNull();
+	}
+
+	[Fact]
+	public async Task DeleteItemAsync_ShouldThrowException_WhenItemDoesNotExist()
+	{
+		// Arrange
+		var command = new DeleteItemCommand(Guid.NewGuid());
+
+		// Act
+		var act = async () => await _mediator.Send(command, CancellationToken.None);
+
+		// Assert
+		await act.Should().ThrowAsync<InvalidItemDataException>();
 	}
 }

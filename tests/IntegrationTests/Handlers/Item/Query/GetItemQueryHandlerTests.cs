@@ -26,17 +26,16 @@ public class GetItemQueryHandlerTests : IClassFixture<StoreApiFixture>
 		result.Should().BeEquivalentTo(new ItemDto(SeedModels.Item2));
 	}
 
-    // TODO: fix this test
 	[Fact]
-	public async Task GetItemByIdAsync_WithWrongId_ShouldThrow()
+	public async Task GetItemByIdAsync_ShouldThrow_WithWrongId()
 	{
         // Arrange
         var query = new GetItemByIdQuery(Guid.Parse(""));
         
 		// Act
-        var result = await _mediator.Send(query, CancellationToken.None);
+        var atc = async () => await _mediator.Send(query, CancellationToken.None);
 
 		// Assert
-		result.Should().BeEquivalentTo(new ItemDto(SeedModels.Item2));
+		await atc.Should().ThrowAsync<InvalidItemDataException>();
 	}
 }

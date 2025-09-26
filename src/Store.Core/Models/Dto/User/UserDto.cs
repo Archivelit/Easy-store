@@ -2,7 +2,6 @@ namespace Store.Core.Models.Dto.User;
 
 public record UserDto : IUser
 {
-    
     public Guid Id { get; init; }
     [Required] public string Name { get; init; }
     [Required] public string Email { get; init; }
