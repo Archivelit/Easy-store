@@ -2,6 +2,9 @@
 
 namespace Store.Infrastructure.Data.Seeders;
 
+/// <summary>
+/// Data seeding class. Contains seeding models.
+/// </summary>
 public static class SeedModels
 {
     private static readonly DateTime ItemCreatedAt1 = new DateTime(2025, 09, 07, 20, 01, 54, DateTimeKind.Utc);

@@ -1,5 +1,8 @@
 ﻿namespace Store.Infrastructure.Data.Seeders;
 
+/// <summary>
+/// Data seeding class. Aimed on seeding items in database.
+/// </summary>
 public sealed class UserSeeder
 {
     public void SeedUsers(AppDbContext context)

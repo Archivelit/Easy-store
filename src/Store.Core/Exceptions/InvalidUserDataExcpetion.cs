@@ -1,4 +1,4 @@
-﻿namespace Store.Core.Exceptions.InvalidData;
+﻿namespace Store.Core.Exceptions;
 
 public class InvalidUserDataException : Exception
 {

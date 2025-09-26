@@ -15,6 +15,6 @@ global using Store.Core.Utils.Validators.User;
 global using Store.Core.Enums.Subscriptions;
 global using Store.App.CQRS.Models.User.Commands;
 global using Store.App.CQRS.Users.Commands.Update.UpdateChain;
-global using Store.Core.Exceptions.InvalidData;
+global using Store.Core.Exceptions;
 global using Store.App.CQRS.Models.User.Queries;
 global using Store.Core.Abstractions.Factories;

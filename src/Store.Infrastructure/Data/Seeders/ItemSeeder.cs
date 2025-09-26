@@ -1,5 +1,8 @@
 ﻿namespace Store.Infrastructure.Data.Seeders;
 
+/// <summary>
+/// Data seeding class. Aimed on seeding items in database.
+/// </summary>
 public sealed class ItemSeeder
 {
     public void SeedItems(AppDbContext context)
@@ -20,18 +23,16 @@ public sealed class ItemSeeder
 
     private void AddItemsIfNotExists(AppDbContext context)
     {
-        var item1 = context.Items.FirstOrDefault(i => i.Id.Equals(Guid.Parse("11111111-1111-1111-1111-111111111111")) &&
-            i.Title == "Gaming Laptop");
-
-        if (item1 == null)
+        if (!context.Items.Any(i => 
+            i.Id.Equals(Guid.Parse("11111111-1111-1111-1111-111111111111")) 
+            && i.Title == "Gaming Laptop");)
         {
             AddItem(context, SeedModels.Item1);
         }
 
-        var item2 = context.Items.FirstOrDefault(i => i.Id.Equals(Guid.Parse("22222222-2222-2222-2222-222222222222")) &&
-            i.Title == "Mechanical Keyboard");
-
-        if (item2 == null)
+        if (context.Items.Any(i => 
+            i.Id.Equals(Guid.Parse("22222222-2222-2222-2222-222222222222")) 
+            && i.Title == "Mechanical Keyboard");)
         {
             AddItem(context, SeedModels.Item2);
         }

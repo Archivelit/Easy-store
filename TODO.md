@@ -8,5 +8,4 @@
 - cover handlers and dao with tests
 - add Bogus
 - make app concurency safe
-- add xml documentations
 - optimize update process

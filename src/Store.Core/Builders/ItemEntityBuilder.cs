@@ -17,6 +17,9 @@ public class ItemEntityBuilder
 
     public ItemEntity Build() => new(Id, Title, Price, QuantityInStock, UserId, Description, CreatedAt, UpdatedAt);
 
+    /// <summary>
+    /// Set the builder based on item in param.
+    /// </summary>
     public ItemEntityBuilder From(IItem item) =>
         WithId(item.Id)
         .WithTitle(item.Title)
@@ -27,6 +30,9 @@ public class ItemEntityBuilder
         .WithCreatedAt(item.CreatedAt)
         .WithUpdatedAt(item.UpdatedAt);
 
+    /// <summary>
+    /// Reset the builder properties.
+    /// </summary>
     public ItemEntityBuilder Reset()
     {
         InitDefault();
@@ -81,6 +87,9 @@ public class ItemEntityBuilder
         return this;
     }
 
+    /// <summary>
+    /// "Seed" the builder fields with some parameters. Not recomended to use in core logic, made for tests only.
+    /// </summary>
     public ItemEntityBuilder WithDefault()
     {
         Title = "Untitled";
@@ -91,6 +100,9 @@ public class ItemEntityBuilder
         return this;
     }
 
+    /// <summary>
+    /// Initialize builders defaults. Used to reset builder properties.
+    /// </summary>
     private void InitDefault()
     {
         Id = Guid.NewGuid();
