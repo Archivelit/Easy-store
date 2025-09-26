@@ -193,7 +193,6 @@ public static class IServiceCollectionExtensions
         services.AddTransient<UpdateDescription>();
         services.AddTransient<UpdatePrice>();
         services.AddTransient<UpdateQuantity>();
-        services.AddTransient<RefreshUpdatedAt>();
 
         services.AddScoped<ItemUpdateFacade>();
     }
