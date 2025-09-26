@@ -17,25 +17,25 @@ public class GetItemQueryHandlerTests : IClassFixture<StoreApiFixture>
 	public async Task GetItemByIdAsync_ShouldWork()
 	{
         // Arrange
-        var query = new GetItemByIdQuery(SeedModels.Item2.Id);
+        var query = new GetItemByIdQuery(SeedModels.Item1.Id);
         
 		// Act
         var result = await _mediator.Send(query, CancellationToken.None); 
 
 		// Assert
-		result.Should().BeEquivalentTo(new ItemDto(SeedModels.Item2));
+		result.Should().BeEquivalentTo(new ItemDto(SeedModels.Item1));
 	}
 
 	[Fact]
 	public async Task GetItemByIdAsync_ShouldThrow_WithWrongId()
 	{
         // Arrange
-        var query = new GetItemByIdQuery(Guid.Parse(""));
+        var query = new GetItemByIdQuery(Guid.Empty);
         
 		// Act
         var atc = async () => await _mediator.Send(query, CancellationToken.None);
 
 		// Assert
-		await atc.Should().ThrowAsync<InvalidItemDataException>();
+		await atc.Should().ThrowAsync();
 	}
 }

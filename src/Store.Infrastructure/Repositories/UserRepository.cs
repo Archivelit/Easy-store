@@ -48,7 +48,7 @@ public sealed class UserRepository(
             return JsonSerializer.Deserialize<User>(userFromCache)!;
         }
 
-        var user = await _userDao.GetByIdAsync(id) 
+        var user = await _userDao.GetByIdAsync(id)
             ?? throw new InvalidUserDataException($"User {id} not found");
             
         var json = JsonSerializer.Serialize(user);    

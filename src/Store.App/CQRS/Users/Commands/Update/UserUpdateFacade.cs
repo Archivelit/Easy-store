@@ -13,7 +13,16 @@ public sealed class UserUpdateFacade
         _logger = logger;
     }
 
-    public async Task<UserDto> UpdateUserAsync(UserDto user)
+    /// <summary>
+    /// Updates user in the system with provided data. <br/>
+    /// The model is based on the existing item in the database. 
+    /// Whole logic of changing model is incapsulated in the chain. 
+    /// See more in <see cref="UserUpdateChainFactory"/>
+    /// </summary>
+    /// <returns>
+    /// Updated user model
+    /// </returns>
+    public async Task<UserDto> UpdateUserAsync(UpdateUserDto user)
     {
         _logger.LogDebug("Updating user {UserId} in {method}", user.Id, nameof(UpdateUserAsync));
 
@@ -22,7 +31,7 @@ public sealed class UserUpdateFacade
         var builder = new UserBuilder();
         builder.From(userFromDb);
 
-        var updatedUser = GetNewData(builder, user);
+        var updatedUser = await GetNewData(builder, user);
         
         await _userRepository.UpdateAsync(updatedUser);
 
@@ -31,11 +40,11 @@ public sealed class UserUpdateFacade
         return new(updatedUser);
     }
 
-    private Core.Models.User GetNewData(UserBuilder builder, UserDto model)
+    private async Task<User> GetNewData(UserBuilder builder, UpdateUserDto model)
     {
         _logger.LogDebug("Trying to extract data for update");
         
-        builder = _chain.Update(builder, model);
+        builder = await _chain.Update(builder, model);
         var user = builder.Build();
 
         _logger.LogDebug("Data extracted successfully");

@@ -43,7 +43,7 @@ public class UserController : ControllerBase
     /// </returns>
     [HttpPatch]
     public async Task<IActionResult> UpdateUser(
-        [FromBody] UserDto user,
+        [FromBody] UpdateUserDto user,
         CancellationToken ct)
     {
         var command = new UpdateUserCommand(user);

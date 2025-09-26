@@ -1,7 +1,8 @@
-using Store.Core.Models.Dto.Item;
-
 namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 
+/// <summary>
+/// Base class for user update chain. Inherit from this class to create new chain link and add to <see cref="UserUpdateChainFactory.Create"/> method to add own logic.
+/// </summary>
 public class UpdateUserBase : IUserUpdateChain
 {
     protected IUserUpdateChain? _next;
@@ -18,10 +19,10 @@ public class UpdateUserBase : IUserUpdateChain
         return next;
     }
 
-    public virtual UserBuilder Update(UserBuilder builder, UserDto user)
+    public virtual async Task<UserBuilder> Update(UserBuilder builder, UpdateUserDto user)
     {
         if (_next != null)
-            return _next.Update(builder, user);
+            return await _next.Update(builder, user);
         return builder;
     }
 }

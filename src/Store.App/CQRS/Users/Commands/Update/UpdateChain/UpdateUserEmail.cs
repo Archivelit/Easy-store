@@ -2,9 +2,14 @@ namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 
 public class UpdateUserEmail : UpdateUserBase
 {
-    public UpdateUserEmail(ILogger<UpdateUserEmail> logger) : base(logger) { }
+    private readonly IUserRepository _repository;
 
-    public override UserBuilder Update(UserBuilder builder, UserDto model)
+    public UpdateUserEmail(ILogger<UpdateUserEmail> logger, IUserRepository repository) : base(logger) 
+    {
+        _repository = repository;
+    }
+
+    public override async Task<UserBuilder> Update(UserBuilder builder, UpdateUserDto model)
     {
         if (model.Email != null)
         {
@@ -12,10 +17,16 @@ public class UpdateUserEmail : UpdateUserBase
             {
                 options.ThrowOnFailures();
             });
+
+            if (await _repository.IsEmailClaimedAsync(model.Email))
+            {
+                throw new InvalidUserDataException($"Email {model.Email} already in use");
+            }
+
             builder.WithEmail(model.Email);
             _logger.LogDebug("User {UserId} updated email to {NewUserEmail}", model.Id, model.Email);
         }
 
-        return base.Update(builder, model);
+        return await base.Update(builder, model);
     }
 }

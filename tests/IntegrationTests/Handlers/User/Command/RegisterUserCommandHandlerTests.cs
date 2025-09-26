@@ -17,7 +17,7 @@ public class RegisterUserCommandHandlerTests : IClassFixture<StoreApiFixture>
 	public async Task RegisterUserAsync_ShouldWork()
 	{
 		// Arrange
-		var command = new RegisterUserCommand(new RegisterUserDto("FooBuzz@example.com", "Foo"));
+		var command = new RegisterUserCommand(new RegisterUserDto("Foo", "FooBuzz@example.com"));
 		var db = _scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
 		// Act
@@ -32,7 +32,7 @@ public class RegisterUserCommandHandlerTests : IClassFixture<StoreApiFixture>
 	public async Task RegisterUserAsync_ShouldThrowException_WhenEmailAlreadyExists()
 	{
 		// Arrange
-		var command = new RegisterUserCommand(new RegisterUserDto(SeedModels.User1.Email, "Foo"));
+		var command = new RegisterUserCommand(new RegisterUserDto("Foo", SeedModels.User1.Email));
 
 		// Act
 		var act = async () => await _mediator.Send(command, CancellationToken.None);

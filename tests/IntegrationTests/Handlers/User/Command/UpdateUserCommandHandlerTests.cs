@@ -40,7 +40,7 @@ public class UpdateUserCommandHandlerTests : IClassFixture<StoreApiFixture>
         var result = await _mediator.Send(command, CancellationToken.None);
 
         // Assert
-        result.Should().BeEquivalentTo(expectedUser, options => options);
+        result.Should().BeEquivalentTo(expectedUser);
     }
 
     [Fact]

@@ -20,7 +20,8 @@ internal class UserDao(AppDbContext context) : IUserDao
 
     public async Task DeleteAsync(UserEntity entity) =>
         await context.Users
-            .Where(u => u.Id == entity.Id).ExecuteDeleteAsync();
+            .Where(u => u.Id == entity.Id)
+            .ExecuteDeleteAsync();
 
     public async Task<bool> IsExistsAsync(Guid id) =>
         await context.Users
