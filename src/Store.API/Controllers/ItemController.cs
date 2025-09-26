@@ -14,7 +14,6 @@ public class ItemController : ControllerBase
     /// <summary>
     /// Return item with specified id
     /// </summary>
-    /// 
     /// <returns>
     /// Registered item model
     /// </returns>>
@@ -55,8 +54,7 @@ public class ItemController : ControllerBase
 
     /// <summary>
     /// Update item with specified id.
-    /// </summary>
-    /// 
+    /// </summary>s
     /// <returns>
     /// Updated item model
     /// </returns>

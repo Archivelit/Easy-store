@@ -28,6 +28,7 @@ public class UserEntity : IUser
 
     public UserEntity(IUser user) : this(user.Id, user.Name, user.Email, user.SubscriptionType) { }
     
+    // For ef core only
 #pragma warning disable CS8618
     public UserEntity() { }
 }

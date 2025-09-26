@@ -39,6 +39,7 @@ public class ItemEntity : IItem
         UpdatedAt = updatedAt;
     }
 
+    // For ef core only
 #pragma warning disable CS8618
     public ItemEntity() { }
 }

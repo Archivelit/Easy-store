@@ -14,7 +14,6 @@ public class UserController : ControllerBase
     /// <summary>
     /// Register a new user in the system
     /// </summary>
-    /// 
     /// <returns>
     /// Registered user model
     /// </returns>
@@ -39,7 +38,6 @@ public class UserController : ControllerBase
     /// <summary>
     /// Update user data
     /// </summary>
-    /// 
     /// <returns>
     /// Updated user model
     /// </returns>
