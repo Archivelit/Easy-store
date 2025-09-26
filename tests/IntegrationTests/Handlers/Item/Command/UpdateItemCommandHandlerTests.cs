@@ -10,7 +10,7 @@ public class UpdateItemCommandHandlerTests : IClassFixture<StoreApiFixture>
 	{
 		_fixture = fixture;
 		_scope = fixture.Services.CreateScope();
-		_mediator = _scope.GetRequiredService<IMediator>();
+		_mediator = _scope.ServiceProvider.GetRequiredService<IMediator>();
 	}
 
 	[Fact]

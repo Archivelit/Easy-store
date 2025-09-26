@@ -10,7 +10,7 @@ public class GetItemQueryHandlerTests : IClassFixture<StoreApiFixture>
 	{
 		_fixture = fixture;
 		_scope = fixture.Services.CreateScope();
-		_mediator = _scope.GetRequiredService<IMediator>();
+		_mediator = _scope.ServiceProvider.GetRequiredService<IMediator>();
 	}
 
 	[Fact]
@@ -26,6 +26,7 @@ public class GetItemQueryHandlerTests : IClassFixture<StoreApiFixture>
 		result.Should().BeEquivalentTo(new ItemDto(SeedModels.Item2));
 	}
 
+    // TODO: fix this test
 	[Fact]
 	public async Task GetItemByIdAsync_WithWrongId_ShouldThrow()
 	{

@@ -23,16 +23,16 @@ public sealed class ItemSeeder
 
     private void AddItemsIfNotExists(AppDbContext context)
     {
-        if (!context.Items.Any(i => 
-            i.Id.Equals(Guid.Parse("11111111-1111-1111-1111-111111111111")) 
-            && i.Title == "Gaming Laptop");)
+        if (!context.Items.Any(i =>
+            i.Id.Equals(Guid.Parse("11111111-1111-1111-1111-111111111111"))
+            && i.Title == "Gaming Laptop"))
         {
             AddItem(context, SeedModels.Item1);
         }
 
         if (context.Items.Any(i => 
             i.Id.Equals(Guid.Parse("22222222-2222-2222-2222-222222222222")) 
-            && i.Title == "Mechanical Keyboard");)
+            && i.Title == "Mechanical Keyboard"))
         {
             AddItem(context, SeedModels.Item2);
         }

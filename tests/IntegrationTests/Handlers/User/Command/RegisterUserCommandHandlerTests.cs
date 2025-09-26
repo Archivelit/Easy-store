@@ -10,7 +10,7 @@ public class RegisterUserCommandHandlerTests : IClassFixture<StoreApiFixture>
 	{
 		_fixture = fixture;
 		_scope = fixture.Services.CreateScope();
-		_mediator = _scope.GetRequiredService<IMediator>();
+		_mediator = _scope.ServiceProvider.GetRequiredService<IMediator>();
 	}
 
 	[Fact]
@@ -21,7 +21,7 @@ public class RegisterUserCommandHandlerTests : IClassFixture<StoreApiFixture>
 		var db = _scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
 		// Act
-		var registeredUser = await _meditaor.Send(command, CancellationToken.None);
+		var registeredUser = await _mediator.Send(command, CancellationToken.None);
 
 		// Assert
 		var user = db.Users.FirstOrDefault(i => i.Email == "FooBuzz@example.com");

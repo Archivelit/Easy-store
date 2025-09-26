@@ -16,3 +16,4 @@ global using Store.Core.Models.Dto.User;
 global using Store.App.CQRS.Models.Item.Commands;
 global using Store.Infrastructure.Data;
 global using Store.App.CQRS.Models.User.Commands;
+global using MediatR;

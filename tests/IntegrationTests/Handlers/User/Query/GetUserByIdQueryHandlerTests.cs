@@ -10,7 +10,7 @@ public class GetUserByIdQueryHandlerTests : IClassFixture<StoreApiFixture>
     {
         _fixture = fixture;
         _scope = _fixture.Services.CreateScope();
-        _mediator = _scope.GetRequiredService<IMediator>();
+        _mediator = _scope.ServiceProvider.GetRequiredService<IMediator>();
     }
 
     [Fact]
@@ -26,6 +26,7 @@ public class GetUserByIdQueryHandlerTests : IClassFixture<StoreApiFixture>
         result.Should().BeEquivalentTo(SeedModels.User1);
     }
 
+    // TODO: fix this test
     [Fact]
     public async Task GetUserByIdAsync_WithWrongId_ShouldThrow()
     {
