@@ -33,7 +33,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        Log.Debug("Middleware setted up successfully");
+        Log.Debug("Middleware set upped successfully");
 
         app.MapReverseProxy();
         app.MapControllers();
