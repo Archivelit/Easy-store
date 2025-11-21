@@ -1,0 +1,13 @@
+﻿<Solution>
+  <Folder Name="/src/">
+	<Project Path="src/Store.API/Store.API.csproj"/>
+	<Project Path="src/Store.App/Store.App.csproj"/>
+	<Project Path="src/Store.Core/Store.Core.csproj"/>
+	<Project Path="src/Store.Infrastructure/Store.Infrastructure.csproj"/>
+  </Folder>
+  <Folder Name="/tests/">
+	<Project Path="tests/IntegrationTests/IntegrationTests.csproj"/>
+	<Project Path="tests/UnitTests/UnitTests.csproj"/>
+  </Folder>
+  <Project Path="docker-compose.dcproj" />
+</Solution>
