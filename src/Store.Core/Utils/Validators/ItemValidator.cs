@@ -90,7 +90,7 @@ public class DescriptionValidator : AbstractValidator<string?>
             .WithMessage("Description cannot be longer 2000 characters");
 
         RuleFor(x => x)
-            .Must(x => x.Any(char.IsLetter))
+            .Must(x => x!.Any(char.IsLetter))
             .When(x => x != null)
             .WithMessage("Title must contain atleast 1 letter");
     }

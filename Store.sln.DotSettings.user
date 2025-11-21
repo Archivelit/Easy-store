@@ -11,7 +11,6 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AMemoryDistributedCache_002Ecs_002Fl_003AC_0021_003FUsers_003FA_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FSourcesCache_003Fe3a55b2dde8158f3914698a7c2caf847e11c9e045f3f2262d5ef48552c3b5_003FMemoryDistributedCache_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003APostgreSqlBuilder_002Ecs_002Fl_003AC_0021_003FUsers_003FA_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FSourcesCache_003Fe6a1cde8d37ee52b65f71ea374879d57b743596d6a66e8f86b02ad3a1d59944_003FPostgreSqlBuilder_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	
-	
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\Users\A\.nuget\packages\testcontainers.postgresql\4.6.0\lib\net9.0\Testcontainers.PostgreSql.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
