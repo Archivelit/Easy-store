@@ -11,10 +11,15 @@ public class ItemEntityBuilder
     private DateTime CreatedAt { get; set; }
     private DateTime? UpdatedAt { get; set; }
 
+#nullable disable
     public ItemEntityBuilder() => InitDefault();
+#nullable enable
 
     public ItemEntity Build() => new(Id, Title, Price, QuantityInStock, UserId, Description, CreatedAt, UpdatedAt);
 
+    /// <summary>
+    /// Set the builder based on item in param.
+    /// </summary>
     public ItemEntityBuilder From(IItem item) =>
         WithId(item.Id)
         .WithTitle(item.Title)
@@ -24,13 +29,16 @@ public class ItemEntityBuilder
         .WithUserId(item.UserId)
         .WithCreatedAt(item.CreatedAt)
         .WithUpdatedAt(item.UpdatedAt);
-    
+
+    /// <summary>
+    /// Reset the builder properties.
+    /// </summary>
     public ItemEntityBuilder Reset()
     {
         InitDefault();
         return this;
     }
-    
+
     public ItemEntityBuilder WithTitle(string title)
     {
         Title = title;
@@ -42,13 +50,13 @@ public class ItemEntityBuilder
         Id = id;
         return this;
     }
-    
+
     public ItemEntityBuilder WithDescription(string? description)
     {
         Description = description;
         return this;
     }
-    
+
     public ItemEntityBuilder WithPrice(decimal price)
     {
         Price = price;
@@ -79,16 +87,22 @@ public class ItemEntityBuilder
         return this;
     }
 
+    /// <summary>
+    /// "Seed" the builder fields with some parameters. Not recomended to use in core logic, made for tests only.
+    /// </summary>
     public ItemEntityBuilder WithDefault()
     {
         Title = "Untitled";
         Price = 1m;
         UserId = Guid.NewGuid();
         QuantityInStock = 1;
-        
+
         return this;
     }
 
+    /// <summary>
+    /// Initialize builders defaults. Used to reset builder properties.
+    /// </summary>
     private void InitDefault()
     {
         Id = Guid.NewGuid();

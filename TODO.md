@@ -2,12 +2,9 @@
 
 - write e2e test to test authorization n authentication logic
 - add cart and order operations
-- try to optimize efcore
-- add images for User & Item
 - add OpenTelemetry
-
----
-
-# Main tasks
-
 - "MeOrAdmin", "Me" and "OwnerOrAdmin" authorization policies
+- cover handlers and dao with tests
+- add Bogus
+- make app concurency safe
+- optimize update process

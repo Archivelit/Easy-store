@@ -17,13 +17,16 @@ internal class ItemDao(AppDbContext context) : IItemDao
 
     public async Task DeleteAsync(ItemEntity item) 
     {
-        context.Remove(item); 
-        await context.SaveChangesAsync(); 
+        await context.Items.Where(i => i.Id == item.Id).ExecuteDeleteAsync(); 
     }
 
-    public async Task UpdateAsync(ItemEntity item) 
-    { 
-        context.Update(item);
-        await context.SaveChangesAsync();
+    public async Task UpdateAsync(ItemEntity item)
+    {
+        await context.Items.Where(i => i.Id == item.Id).ExecuteUpdateAsync(i => 
+            i.SetProperty(p => p.Title, item.Title)
+            .SetProperty(p => p.Description, item.Description)
+            .SetProperty(p => p.Price, item.Price)
+            .SetProperty(p => p.QuantityInStock, item.QuantityInStock)
+            .SetProperty(p => p.UpdatedAt, DateTime.UtcNow));
     } 
 }

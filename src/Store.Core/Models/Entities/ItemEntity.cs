@@ -8,17 +8,18 @@ public class ItemEntity : IItem
     [Required]
     [MaxLength(100)]
     public string Title { get; private set; }
-    
     [MaxLength(1000)]
     public string? Description { get; private set; }
-    
+
+    [Required]
     [Column(TypeName = "decimal(10,2)")]
     public decimal Price { get; private set; }
+    [Required]
     public Guid UserId { get; private set; }
+    [Required]
     public int QuantityInStock { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; } = null;
-
 
     public ItemEntity(string title, decimal price, int quantityInStock, Guid userId, string? description = null)
     {
@@ -30,7 +31,7 @@ public class ItemEntity : IItem
     }
 
     [JsonConstructor]
-    public ItemEntity(Guid id, string title, decimal price, int quantityInStock, Guid userId,string? description, DateTime createdAt, DateTime? updatedAt)
+    public ItemEntity(Guid id, string title, decimal price, int quantityInStock, Guid userId, string? description, DateTime createdAt, DateTime? updatedAt)
     : this(title, price, quantityInStock, userId, description)
     {
         Id = id;
@@ -38,6 +39,7 @@ public class ItemEntity : IItem
         UpdatedAt = updatedAt;
     }
 
+    // For ef core only
 #pragma warning disable CS8618
     public ItemEntity() { }
 }

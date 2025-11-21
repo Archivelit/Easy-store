@@ -1,5 +1,8 @@
 namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 
+/// <summary>
+/// Factory for creating user update chain. Update the <see cref="Create"/> method to update the chain logic.
+/// </summary>
 public class UserUpdateChainFactory : IUserUpdateChainFactory
 {
     private readonly IServiceProvider _serviceProvider;
@@ -11,6 +14,13 @@ public class UserUpdateChainFactory : IUserUpdateChainFactory
         _logger = logger;
     }
 
+    /// <summary>
+    /// Method for creating user update chain. 
+    /// Update this method to update the chain logic.
+    /// </summary>
+    /// <returns>
+    /// User update chain
+    /// </returns>
     public IUserUpdateChain Create()
     {
         _logger.LogDebug("Creating user update chain");
@@ -19,7 +29,9 @@ public class UserUpdateChainFactory : IUserUpdateChainFactory
         var nameHandler = _serviceProvider.GetRequiredService<UpdateUserName>();
         var subscriptionHandler = _serviceProvider.GetRequiredService<UpdateUserSubscription>();
 
-        emailHandler.SetNext(nameHandler).SetNext(subscriptionHandler);
+        emailHandler
+            .SetNext(nameHandler)
+            .SetNext(subscriptionHandler);
 
         _logger.LogDebug("User update chain created");
 

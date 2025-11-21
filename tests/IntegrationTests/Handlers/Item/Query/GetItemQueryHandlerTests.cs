@@ -4,24 +4,38 @@ public class GetItemQueryHandlerTests : IClassFixture<StoreApiFixture>
 {
 	private readonly StoreApiFixture _fixture;
 	private readonly IServiceScope _scope;
-	
+	private readonly IMediator _mediator;
+
 	public GetItemQueryHandlerTests(StoreApiFixture fixture)
 	{
 		_fixture = fixture;
 		_scope = fixture.Services.CreateScope();
+		_mediator = _scope.ServiceProvider.GetRequiredService<IMediator>();
 	}
 
 	[Fact]
 	public async Task GetItemByIdAsync_ShouldWork()
 	{
         // Arrange
-        var query = new GetItemByIdQuery(SeedModels.Item2.Id);
-		var handler = _scope.ServiceProvider.GetRequiredService<IQueryHandler<GetItemByIdQuery, ItemDto>>();
+        var query = new GetItemByIdQuery(SeedModels.Item1.Id);
         
 		// Act
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await _mediator.Send(query, CancellationToken.None); 
 
 		// Assert
-		result.Should().BeEquivalentTo(new ItemDto(SeedModels.Item2));
+		result.Should().BeEquivalentTo(new ItemDto(SeedModels.Item1));
+	}
+
+	[Fact]
+	public async Task GetItemByIdAsync_ShouldThrow_WithWrongId()
+	{
+        // Arrange
+        var query = new GetItemByIdQuery(Guid.Empty);
+        
+		// Act
+        var atc = async () => await _mediator.Send(query, CancellationToken.None);
+
+		// Assert
+		await atc.Should().ThrowAsync();
 	}
 }

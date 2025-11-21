@@ -10,7 +10,9 @@ public class Item : IItem
     public int QuantityInStock { get; private set; }
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? UpdatedAt { get; private set; } = null;
+    public string ProfileImageUrl { get; private set; }
 
+#nullable disable
     public Item(string title, decimal price, int quantityInStock, Guid userId, string? description = null) 
     {
         Description = description;
@@ -18,6 +20,14 @@ public class Item : IItem
         Price = price;
         QuantityInStock = quantityInStock;
         UserId = userId;
+    }
+#nullable enable
+
+    public Item(IItem item) : this(item.Title, item.Price, item.QuantityInStock, item.UserId, item.Description) 
+    { 
+        Id = item.Id;
+        CreatedAt = item.CreatedAt;
+        UpdatedAt = item.UpdatedAt;
     }
 
     [JsonConstructor]

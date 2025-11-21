@@ -1,7 +1,6 @@
 ﻿global using Xunit;
 global using Testcontainers.PostgreSql;
 global using Testcontainers.Redis;
-global using Store.Core.Abstractions.CQRS;
 global using Store.App.CQRS.Models.Item.Queries;
 global using Store.Core.Models.Dto.Item;
 global using Microsoft.Extensions.DependencyInjection;
@@ -16,3 +15,5 @@ global using Store.Core.Models.Dto.User;
 global using Store.App.CQRS.Models.Item.Commands;
 global using Store.Infrastructure.Data;
 global using Store.App.CQRS.Models.User.Commands;
+global using MediatR;
+global using Store.Core.Exceptions;

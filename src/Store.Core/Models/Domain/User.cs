@@ -6,7 +6,7 @@ public class User : IUser
     public string Name { get; init; }
     public string Email { get; init; }
     public Subscription SubscriptionType { get; init; } = Subscription.None;
-    
+
     public User(string name, string email)
     {
         Name = name;

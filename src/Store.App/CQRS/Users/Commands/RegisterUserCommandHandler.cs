@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Users.Commands.Update;
 
-public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, UserDto>
+public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, UserDto>
 {
     private readonly ILogger<RegisterUserCommandHandler> _logger;
     private readonly IUserRepository _userRepository;
@@ -29,7 +29,7 @@ public class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, U
                 throw new InvalidUserDataException("Email is already registered");
             }
 
-            var user = new User(command.user.Name, command.user.Email);
+            var user = new Core.Models.User(command.user.Name, command.user.Email);
             await _userRepository.RegisterAsync(user);
 
             _logger.LogDebug("Ending user registration");

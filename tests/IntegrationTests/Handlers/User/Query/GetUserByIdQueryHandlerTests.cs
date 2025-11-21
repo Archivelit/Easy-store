@@ -4,10 +4,15 @@ public class GetUserByIdQueryHandlerTests : IClassFixture<StoreApiFixture>
 {
     private readonly StoreApiFixture _fixture;
     private readonly IServiceScope _scope;
-    public GetUserByIdQueryHandlerTests(StoreApiFixture fixture)
+    private readonly IMediator _mediator;
+    private readonly ITestOutputHelper _outputHelper;
+
+    public GetUserByIdQueryHandlerTests(StoreApiFixture fixture, ITestOutputHelper outputHelper)
     {
         _fixture = fixture;
         _scope = _fixture.Services.CreateScope();
+        _mediator = _scope.ServiceProvider.GetRequiredService<IMediator>();
+        _outputHelper = outputHelper;
     }
 
     [Fact]
@@ -15,12 +20,24 @@ public class GetUserByIdQueryHandlerTests : IClassFixture<StoreApiFixture>
     {
         // Arrange
         var query = new GetUserByIdQuery(SeedModels.User1.Id);
-        var handler = _scope.ServiceProvider.GetRequiredService<IQueryHandler<GetUserByIdQuery, UserDto>>();
 
         // Act
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await _mediator.Send(query, CancellationToken.None); 
 
         // Assert
         result.Should().BeEquivalentTo(SeedModels.User1);
+    }
+
+    [Fact]
+    public async Task GetUserByIdAsync_ShouldThrow_WhenUserDoesNotExist()
+    {
+        // Arrange
+        var query = new GetUserByIdQuery(Guid.Empty);
+
+        // Act
+        var act = async () => await _mediator.Send(query, CancellationToken.None);
+
+        // Assert
+        await act.Should().ThrowAsync();
     }
 }

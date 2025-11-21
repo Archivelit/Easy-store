@@ -4,7 +4,7 @@ public class UpdateUserName : UpdateUserBase
 {
     public UpdateUserName(ILogger<UpdateUserName> logger) : base(logger) { }
 
-    public override UserBuilder Update(UserBuilder builder, UserDto model)
+    public override async Task<UserBuilder> Update(UserBuilder builder, UpdateUserDto model)
     {
         if (model.Name != null)
         {
@@ -15,6 +15,6 @@ public class UpdateUserName : UpdateUserBase
             builder.WithName(model.Name);
             _logger.LogDebug("User {UserId} updated name to {NewUserName}", model.Id, model.Name);
         }
-        return base.Update(builder, model);
+        return await base.Update(builder, model);
     }
 }

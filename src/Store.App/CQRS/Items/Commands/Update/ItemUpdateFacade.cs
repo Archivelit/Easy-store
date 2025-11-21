@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Items.Commands.Update;
 
-public class ItemUpdateFacade
+public sealed class ItemUpdateFacade
 {
     private readonly IItemUpdateChain _chain;
     private readonly IItemRepository _itemRepository;
@@ -13,6 +13,15 @@ public class ItemUpdateFacade
         _logger = logger;
     }
 
+    /// <summary>
+    /// Updates item in the system with provided data. <br/>
+    /// The model is based on the existing item in the database. 
+    /// Whole logic of changing model is incapsulated in the chain. 
+    /// See more in <see cref="ItemUpdateChainFactory"/>
+    /// </summary>
+    /// <returns>
+    /// Updated item model
+    /// </returns>
     public async Task<ItemDto> UpdateItemAsync(UpdateItemDto item)
     {
         try
@@ -39,6 +48,12 @@ public class ItemUpdateFacade
         }
     }
 
+    /// <summary>
+    /// Gets new item based on db model with new data from dto
+    /// </summary>
+    /// <param name="builder">Item builder</param>
+    /// <param name="itemDto">Data for update</param>
+    /// <returns>Item based on db model with new data</returns>
     private Item GetNewItem(ItemBuilder builder, UpdateItemDto itemDto)
     {
         builder = _chain.Update(builder, itemDto);

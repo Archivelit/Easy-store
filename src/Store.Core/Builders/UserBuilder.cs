@@ -1,5 +1,6 @@
 namespace Store.Core.Builders;
 
+#nullable disable
 public class UserBuilder
 {
     private Guid Id { get; set; }
@@ -9,28 +10,21 @@ public class UserBuilder
 
     public UserBuilder() => InitDefault();
 
-    public UserBuilder Reset()
-    {
-        InitDefault();
-        return this;
-    }
+    /// <summary>
+    /// Reset the builder properties.
+    /// </summary>
+    public UserBuilder Reset() => InitDefault();
 
-    private UserBuilder InitDefault()
-    {
-        Id = Guid.NewGuid();
-        Name = string.Empty;
-        Email = string.Empty;
-        SubscriptionType = Subscription.None;
-
-        return this;
-    }
-
+    /// <summary>
+    /// Set the builder based on item in param.
+    /// </summary>
     public UserBuilder From(IUser user)
     {
         Id = user.Id;
         Name = user.Name;
         Email = user.Email;
         SubscriptionType = user.SubscriptionType;
+
         return this;
     }
 
@@ -58,6 +52,9 @@ public class UserBuilder
         return this;
     }
     
+    /// <summary>
+    /// "Seed" the builder fields with some parameters. Not recomended to use in core logic, made for tests only.
+    /// </summary>
     public UserBuilder WithDefault()
     {
         return this
@@ -71,4 +68,18 @@ public class UserBuilder
     {
         return new(Id, Name, Email, SubscriptionType);
     }
+
+    /// <summary>
+    /// Initialize builders defaults. Used to reset builder properties.
+    /// </summary>
+    private UserBuilder InitDefault()
+    {
+        Id = Guid.NewGuid();
+        Name = string.Empty;
+        Email = string.Empty;
+        SubscriptionType = Subscription.None;
+
+        return this;
+    }
+
 }

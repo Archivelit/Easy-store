@@ -9,4 +9,4 @@ global using System.ComponentModel.DataAnnotations.Schema;
 global using Store.Core.Models.Entities;
 global using Store.Core.Abstractions.Factories;
 global using System.Text.Json.Serialization; 
-global using Microsoft.AspNetCore.Mvc;
+global using MediatR;

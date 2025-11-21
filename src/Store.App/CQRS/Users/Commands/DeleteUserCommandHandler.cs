@@ -1,6 +1,6 @@
 namespace Store.App.CQRS.Users.Commands.Update;
 
-public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
+public sealed class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
 {
     private readonly ILogger<DeleteUserCommandHandler> _logger;
     private readonly IUserRepository _userRepository;
@@ -11,9 +11,9 @@ public class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
         _userRepository = userRepository;
     }
 
-    public async Task Handle(DeleteUserCommand command, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand command, CancellationToken ct)
     {
-        cancellationToken.ThrowIfCancellationRequested();
+        ct.ThrowIfCancellationRequested();
 
         try
         {

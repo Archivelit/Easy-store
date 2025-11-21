@@ -1,6 +1,6 @@
 ﻿namespace Store.Infrastructure.Repositories;
 
-public class ItemRepository(
+public sealed class ItemRepository(
     ILogger<ItemRepository> logger, 
     IItemFactory itemFactory, 
     IItemDao itemDao, 
@@ -34,21 +34,16 @@ public class ItemRepository(
         var key = $"item:{id}";
         var itemFromCache = await _cache.GetStringAsync(key);
         
-        ItemEntity item;
+        if (itemFromCache is not null)
+        {
+            return _itemFactory.Create(JsonSerializer.Deserialize<Item>(itemFromCache)!);
+        }
+
+        var item = await _itemDao.GetByIdAsync(id)
+            ?? throw new InvalidItemDataException($"Item with id {id} not found.");
         
-        if (itemFromCache is null)
-        {
-            item = await _itemDao.GetByIdAsync(id)
-                   ?? throw new InvalidItemDataException($"Item with id {id} not found.");
-            
-            var json = JsonSerializer.Serialize(item);
-            
-            await _cache.SetStringAsync(key, json);
-        }
-        else
-        {
-            item = JsonSerializer.Deserialize<ItemEntity>(itemFromCache)!;
-        }
+        var json = JsonSerializer.Serialize(item);
+        await _cache.SetStringAsync(key, json);
 
         return _itemFactory.Create(item);
     }
@@ -59,8 +54,6 @@ public class ItemRepository(
 
         await _itemDao.RegisterAsync(_itemEntityFactory.Create(item));
         await _cache.SetStringAsync(key, JsonSerializer.Serialize(item));
-
-        _logger.LogInformation("Item {ItemId} successfully registered", item.Id);
     }
 
     public async Task UpdateAsync(IItem item)

@@ -10,7 +10,7 @@ global using Microsoft.Extensions.Caching.Distributed;
 global using Microsoft.Extensions.Logging;
 global using Store.Core.Abstractions.Factories;
 global using Store.Core.Abstractions.Repositories;
-global using Store.Core.Exceptions.InvalidData;
+global using Store.Core.Exceptions;
 global using Store.Infrastructure.Extensions;
 global using System.Text.Json;
 global using Store.Infrastructure.Data.Seeders;

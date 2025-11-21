@@ -4,14 +4,28 @@
 [Route("/users")]
 public class UserController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public UserController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+    /// <summary>
+    /// Register a new user in the system
+    /// </summary>
+    /// <returns>
+    /// Registered user model
+    /// </returns>
     [HttpPost]
     [AllowAnonymous]
-    public async Task<ActionResult<UserDto>> RegisterUser(
+    public async Task<IActionResult> RegisterUser(
         [FromBody] RegisterUserDto user,
-        CancellationToken ct,
-        [FromServices] ICommandHandler<RegisterUserCommand, UserDto> handler)
+        CancellationToken ct)
     {
-        var result = await handler.Handle(new(user), ct);
+        var command = new RegisterUserCommand(user);
+        
+        var result = await _mediator.Send(command, ct);
 
         if (result is null)
         {
@@ -21,13 +35,20 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<UserDto>> UpdateUser(
-        [FromBody] UserDto user,
-        CancellationToken ct,
-        [FromServices] ICommandHandler<UpdateUserCommand, UserDto> handler)
+    /// <summary>
+    /// Update user data
+    /// </summary>
+    /// <returns>
+    /// Updated user model
+    /// </returns>
+    [HttpPatch]
+    public async Task<IActionResult> UpdateUser(
+        [FromBody] UpdateUserDto user,
+        CancellationToken ct)
     {
-        var result = await handler.Handle(new(user), ct);
+        var command = new UpdateUserCommand(user);
+
+        var result = await _mediator.Send(command, ct);
 
         if (result is null)
         {

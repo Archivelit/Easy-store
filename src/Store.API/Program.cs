@@ -8,17 +8,19 @@ public class Program
 
         builder.Configuration.AddJsonFile("appsettings.json", optional: false);
         builder.Configuration.ConfigureLogger();
-        
+
         builder.Host.UseSerilog();
 
         builder.Services.ConfigureRedis(builder.Configuration);
         builder.Services.ConfigureReverseProxy(builder.Configuration);
         builder.Services.ConfigureAuthentication(builder.Configuration);
         builder.Services.ConfigureAuthorization(builder.Configuration);
-        builder.Services.AddDbContext<AppDbContext>();
+        builder.Services.ConfigureMediatR();
+        builder.Services.ConfigureDbContext(builder.Configuration);
         builder.Services.AddServices();
         builder.Services.AddControllers();
-        builder.Services.RegisterHandlersFromApp();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwagger();
 
         var app = builder.Build();
 
@@ -27,6 +29,7 @@ public class Program
         app.UseForwardedHeaders();
         app.UseSerilogRequestLogging();
         app.UseRouting();
+        app.UseSwaggerInDev();
         app.UseAuthentication();
         app.UseAuthorization();
 

@@ -1,7 +1,19 @@
 namespace Store.API.Extensions;
 
+#nullable disable
 public static class IServiceCollectionExtensions
 {
+    private static readonly Assembly _appAssembly;
+
+    static IServiceCollectionExtensions()
+    {
+        _appAssembly = Assembly.GetAssembly(typeof(RegisterUserCommandHandler));
+    }
+
+    /// <summary>
+    /// Adds all application services to the DI container.
+    /// <para> CQRS Handler are registered via MediatR. </para>
+    /// </summary>>
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         Log.Debug("Setting up services");
@@ -26,42 +38,20 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
-#nullable disable
-    public static IServiceCollection RegisterHandlersFromApp(this IServiceCollection services)
+    /// <summary>
+    /// Registers MediatR and all CQRS Handlers from application assembly.
+    /// </summary>
+    public static IServiceCollection ConfigureMediatR(this IServiceCollection services)
     {
-        Log.Debug("Registering handlers");
-
-        var assembly = Assembly.GetAssembly(typeof(RegisterUserCommandHandler));
-        var types = assembly.GetTypes();
-
-        var handlerInterfaces = new[]
+        return services.AddMediatR(options =>
         {
-            typeof(IQueryHandler<,>),
-            typeof(ICommandHandler<>),
-            typeof(ICommandHandler<,>)
-        };
-
-        foreach (var type in types)
-        {
-            if (!type.IsClass || type.IsAbstract)
-                continue;
-
-            var interfaces = type.GetInterfaces()
-                .Where(i => i.IsGenericType &&
-                            handlerInterfaces.Any(h => h == i.GetGenericTypeDefinition()));
-            
-            foreach (var iface in interfaces)
-            {
-                services.AddScoped(iface, type);
-                Log.Debug("Adding scoped service {TypeName}, implements {InterfaceName}", type.Name, iface.Name);
-            }
-        }
-
-        Log.Debug("Handlers registered succesfuly");
-        return services;
+            options.RegisterServicesFromAssemblies(_appAssembly);
+        });
     }
-#nullable enable
 
+    /// <summary>
+    /// Adding redis cache to the DI container.
+    /// </summary>
     public static IServiceCollection ConfigureRedis(this IServiceCollection services, ConfigurationManager configuration)
     {
         return services.AddStackExchangeRedisCache(options =>
@@ -70,20 +60,35 @@ public static class IServiceCollectionExtensions
         });
     }
 
+    /// <summary>
+    /// Adding DbContext to the DI container with PostgreSQL provider.
+    /// </summary>
+    public static IServiceCollection ConfigureDbContext(this IServiceCollection services, ConfigurationManager configuration)
+    {
+        return services.AddDbContext<AppDbContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+        });
+    }
+
+    /// <summary>
+    /// Configuring YARP reverse proxy.
+    /// </summary>
     public static IServiceCollection ConfigureReverseProxy(this IServiceCollection services, ConfigurationManager configuration)
     {
         services.AddReverseProxy()
             .LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
-        services.Configure<ForwardedHeadersOptions>(options =>
+        return services.Configure<ForwardedHeadersOptions>(options =>
         {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             options.KnownProxies.Add(IPAddress.Parse("127.0.0.1"));
         });
-
-        return services;
     }
 
+    /// <summary>
+    /// Configuring authentication with Keycloak.
+    /// </summary>
     public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, ConfigurationManager configuration)
     {
         #region JWT Bearer configuration
@@ -103,37 +108,68 @@ public static class IServiceCollectionExtensions
         //        };
         //    });
         #endregion
+        
         services.AddKeycloakWebApiAuthentication(configuration);
 
         return services;
     }
 
+    /// <summary>
+    /// Configuring authentication with Keycloak and adds authorization policies.
+    /// </summary>
     public static IServiceCollection ConfigureAuthorization(this IServiceCollection services, ConfigurationManager configuration)
     {
-        services.AddAuthorization(options =>
+        return services.AddAuthorization(options =>
         {
-            options.AddPolicy("Administrator", policy => 
+            options.AddPolicy("Administrator", policy =>
                 policy.RequireRealmRoles(Roles.ADMINISTRATOR));
-            
-            options.AddPolicy("User", policy => 
+
+            options.AddPolicy("User", policy =>
                 policy.RequireRealmRoles(Roles.USER));
-            
+
             options.AddPolicy("UserOrAdministrator", policy =>
                 policy
                     .RequireRealmRoles(Roles.ADMINISTRATOR)
                     .RequireRealmRoles(Roles.USER));
 
-            /*options.AddPolicy("Me", policy =>
-                policy policy.Requirements.Add());*/
+            //  options.AddPolicy("Me", policy =>
+            //      policy.Requirements.Add());
 
             options.AddPolicy("ItemOwner", policy =>
                 policy.Requirements.Add(new ItemOwnerRequirement()));
 
         }).AddKeycloakAuthorization(configuration);
-
-        return services;
     }
 
+    /// <summary>
+    /// Adding Swagger Documentation generator.
+    /// </summary>
+    public static IServiceCollection AddSwagger(this IServiceCollection services)
+    {
+        return services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "Easy store API",
+                Description = "Easy api for e-commerce",
+                Contact = new OpenApiContact
+                {
+                    Name = "Archivelit",
+                    Url = new Uri("https://github.com/Archivelit")
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "MIT",
+                    Url = new Uri("https://opensource.org/license/mit")
+                }
+            });
+        });
+    }
+    
+    /// <summary>
+    /// Register services for updating user data via Chain of Responsibility pattern.
+    /// </summary>
     private static void RegisterUpdateUserServices(this IServiceCollection services)
     {
         services.AddTransient<IUserUpdateChainFactory, UserUpdateChainFactory>();
@@ -146,6 +182,9 @@ public static class IServiceCollectionExtensions
         services.AddScoped<UserUpdateFacade>();
     }
 
+    /// <summary>
+    /// Register services for updating item data via Chain of Responsibility pattern.
+    /// </summary>
     private static void RegisterUpdateItemServices(this IServiceCollection services)
     {
         services.AddTransient<IItemUpdateChainFactory, ItemUpdateChainFactory>();
@@ -154,11 +193,13 @@ public static class IServiceCollectionExtensions
         services.AddTransient<UpdateDescription>();
         services.AddTransient<UpdatePrice>();
         services.AddTransient<UpdateQuantity>();
-        services.AddTransient<RefreshUpdatedAt>();
 
         services.AddScoped<ItemUpdateFacade>();
     }
 
+    /// <summary>
+    /// Registers authorization handlers for policies.
+    /// </summary>
     private static void RegisterAuthorizationHandlers(this IServiceCollection services)
     {
         services.AddScoped<IAuthorizationHandler, ItemOwnerHandler>();

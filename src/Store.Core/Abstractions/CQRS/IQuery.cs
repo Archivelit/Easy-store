@@ -1,3 +1,3 @@
 namespace Store.Core.Abstractions.CQRS;
 
-public interface IQuery<TResult>;
+public interface IQuery<TResult> : IRequest<TResult>;
