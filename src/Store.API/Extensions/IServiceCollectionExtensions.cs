@@ -7,7 +7,7 @@ public static class IServiceCollectionExtensions
 
     static IServiceCollectionExtensions()
     {
-        _appAssembly = Assembly.GetAssembly(typeof(RegisterUserCommandHandler));
+        _appAssembly = Assembly.GetAssembly(typeof(IAppAssemblyMarker));
     }
 
     /// <summary>

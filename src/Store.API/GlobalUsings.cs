@@ -34,4 +34,4 @@ global using Store.Core.Models.Dto.Item;
 global using Keycloak.AuthServices.Authorization;
 global using Microsoft.OpenApi.Models;
 global using MediatR;
-global using Microsoft.Extensions.DependencyInjection;
+global using Store.App;
