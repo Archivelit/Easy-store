@@ -28,9 +28,7 @@ public class UserController : ControllerBase
         var result = await _mediator.Send(command, ct);
 
         if (result is null)
-        {
             return BadRequest();
-        }
 
         return Ok(result);
     }
@@ -51,9 +49,7 @@ public class UserController : ControllerBase
         var result = await _mediator.Send(command, ct);
 
         if (result is null)
-        {
             return BadRequest();
-        }
 
         return Ok(result);
     }

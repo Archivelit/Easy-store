@@ -1,4 +1,6 @@
-﻿namespace Store.API.Controllers;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+
+namespace Store.API.Controllers;
 
 [ApiController]
 [Route("items")]
@@ -20,17 +22,15 @@ public class ItemController : ControllerBase
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
     public async Task<IActionResult> GetItemByIdAsync(
-        Guid id, 
+        [FromRoute] Guid id, 
         CancellationToken ct)
     {
         var query = new GetItemByIdQuery(id);
 
         var result = await _mediator.Send(query, ct);
 
-        if (result == null)
-        {
+        if (result is null)
             return NotFound();
-        }
 
         return Ok(result);
     }
@@ -41,9 +41,8 @@ public class ItemController : ControllerBase
     [HttpDelete("{id:guid}")]
     [Authorize("ItemOwner")]
     public async Task<IActionResult> DeleteItemAsync(
-        Guid id, 
-        CancellationToken ct,
-        [FromServices] ICommandHandler<DeleteItemCommand> handler)
+        [FromRoute] Guid id, 
+        CancellationToken ct)
     {
         var command = new DeleteItemCommand(id);
 
@@ -69,9 +68,7 @@ public class ItemController : ControllerBase
         var result = await _mediator.Send(command, ct);
 
         if (result is null)
-        {
             return NotFound(); 
-        }
         
         return Ok(result);
     }

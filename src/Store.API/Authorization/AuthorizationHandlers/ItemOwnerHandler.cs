@@ -9,10 +9,8 @@ public class ItemOwnerHandler : AuthorizationHandler<ItemOwnerRequirement, Item>
     {
         var userId = context.User.FindFirst("sub")?.Value;
 
-        if (userId != null && resource.UserId.ToString() == userId)
-        {
+        if (userId is not null && resource.UserId.ToString() == userId)
             context.Succeed(requirement);
-        }
 
         return Task.CompletedTask;
     }
