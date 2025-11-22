@@ -47,13 +47,8 @@ public class EmailValidator : AbstractValidator<string>
             .WithMessage("Email is required");
 
         RuleFor(x => x)
-            .Must(BeValidEmail)
+            .EmailAddress()
             .When(e => !string.IsNullOrEmpty(e))
             .WithMessage("Invalid email address format");
-    }
-
-    private bool BeValidEmail(string email)
-    {
-        return MailAddress.TryCreate(email, out var addr) && addr.Address == email;
     }
 }
