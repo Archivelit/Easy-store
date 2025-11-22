@@ -8,7 +8,7 @@ public class UpdateTitle : ItemUpdateChainBase
     {
         if (itemDto.Title != null)
         {
-            _logger.LogDebug("Updating title of {ItemId}", itemDto.Id);
+            _logger.LogInformation("Updating title of {ItemId}", itemDto.Id);
             new TitleValidator().Validate(itemDto.Title, options =>
             {
                 options.ThrowOnFailures();

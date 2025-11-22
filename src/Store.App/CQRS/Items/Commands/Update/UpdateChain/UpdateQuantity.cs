@@ -8,7 +8,7 @@ public class UpdateQuantity : ItemUpdateChainBase
     {
         if (itemDto.QuantityInStock != null)
         {
-            _logger.LogDebug("Updating quantity of {ItemId}", itemDto.QuantityInStock);
+            _logger.LogInformation("Updating quantity of {ItemId}", itemDto.QuantityInStock);
             new QuantityValidator().Validate((int)itemDto.QuantityInStock, options =>
             {
                 options.ThrowOnFailures();

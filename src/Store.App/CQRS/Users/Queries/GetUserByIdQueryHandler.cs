@@ -8,7 +8,6 @@ public sealed class GetUserByIdQueryHandler (
     {
         ct.ThrowIfCancellationRequested();
 
-        var user = await userRepository.GetByIdAsync(query.Id);
-        return new(user);
+        return new(await userRepository.GetByIdAsync(query.Id));
     }
 }
