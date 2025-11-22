@@ -19,9 +19,9 @@ public interface IItemDao
     /// <param name="item">
     /// Complete item entity model. Must be based on model in database for correct update.
     /// </param>
-    Task<int> UpdateAsync(ItemEntity item);
+    Task UpdateAsync(ItemEntity item);
     /// <summary>
     /// Delete item model from database.
     /// </summary>
-    Task<int> DeleteAsync(ItemEntity item);
+    Task DeleteAsync(ItemEntity item);
 }
