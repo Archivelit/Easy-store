@@ -36,6 +36,8 @@ public sealed class ItemRepository(
         
         if (itemFromCache is not null)
         {
+            _logger.LogDebug("Item {ItemId} returned from cache", id);
+
             return _itemFactory.Create(JsonSerializer.Deserialize<Item>(itemFromCache)!);
         }
 

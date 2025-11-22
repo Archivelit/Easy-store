@@ -2,9 +2,9 @@ namespace Store.Infrastructure.Data.DataAccessObjects;
 
 internal class ItemDao(AppDbContext context) : IItemDao
 {
-    public async Task<ItemEntity?> GetByIdAsync(Guid id)
+    public Task<ItemEntity?> GetByIdAsync(Guid id)
     {
-        return await context.Items
+        return context.Items
             .AsNoTracking()
             .FirstOrDefaultAsync(i => i.Id == id);
     }
@@ -15,14 +15,14 @@ internal class ItemDao(AppDbContext context) : IItemDao
         await context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(ItemEntity item) 
+    public Task<int> DeleteAsync(ItemEntity item) 
     {
-        await context.Items.Where(i => i.Id == item.Id).ExecuteDeleteAsync(); 
+        return context.Items.Where(i => i.Id == item.Id).ExecuteDeleteAsync(); 
     }
 
-    public async Task UpdateAsync(ItemEntity item)
+    public Task<int> UpdateAsync(ItemEntity item)
     {
-        await context.Items.Where(i => i.Id == item.Id).ExecuteUpdateAsync(i => 
+        return context.Items.Where(i => i.Id == item.Id).ExecuteUpdateAsync(i => 
             i.SetProperty(p => p.Title, item.Title)
             .SetProperty(p => p.Description, item.Description)
             .SetProperty(p => p.Price, item.Price)
