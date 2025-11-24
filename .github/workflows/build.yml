@@ -1,0 +1,34 @@
+# This workflow will build a project and run tests
+
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@5
+      with:
+        dotnet-version: 9.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+    
+  tests:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Run tests
+      run: dotnet test --configuration Release
+    
