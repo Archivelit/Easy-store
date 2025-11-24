@@ -20,9 +20,9 @@ jobs:
       with:
         dotnet-version: 9.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./Easy-store.slnx
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build ./Easy-store.slnx --no-restore --configuration Release
     
   tests:
     needs: build
@@ -35,7 +35,7 @@ jobs:
         with:
           dotnet-version: 9.0.x
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./Easy-store.slnx
       - name: Run tests
-        run: dotnet test --configuration Release
+        run: dotnet test ./Easy-store.slnx --configuration Release
     
