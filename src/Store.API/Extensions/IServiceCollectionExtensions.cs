@@ -1,5 +1,3 @@
-using StackExchange.Redis;
-
 namespace Store.API.Extensions;
 
 #nullable disable
