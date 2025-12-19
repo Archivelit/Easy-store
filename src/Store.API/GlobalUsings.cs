@@ -34,3 +34,5 @@ global using Keycloak.AuthServices.Authorization;
 global using MediatR;
 global using Store.App;
 global using Microsoft.OpenApi;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.IdentityModel.Tokens;
