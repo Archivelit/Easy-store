@@ -30,7 +30,7 @@ public class Program
         app.UseSerilogRequestLogging();
         app.UseRouting();
         app.UseSwaggerInDev();
-        //app.UseAuthentication();
+        app.UseAuthentication();
         //app.UseAuthorization();
 
         Log.Debug("Middleware set upped successfully");
