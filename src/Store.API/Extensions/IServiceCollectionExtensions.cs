@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Store.API.Extensions;
 
 #nullable disable
@@ -92,24 +94,37 @@ public static class IServiceCollectionExtensions
     public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, ConfigurationManager configuration)
     {
         #region JWT Bearer configuration
-        //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        //    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-        //    {
-        //        options.Authority = configuration["Keycloak:Authority"];
-        //        options.Audience = configuration["Keycloak:Audience"];
-        //        options.RequireHttpsMetadata = false; // only for dev environment
-        //        options.TokenValidationParameters = new TokenValidationParameters
-        //        {
-        //            ValidIssuer = configuration["Keycloak:ValidIssuer"],
-        //            ValidateAudience = false,
-        //            ValidateLifetime = false, // only for dev environment
-        //            ValidateIssuerSigningKey = false, // only for dev environment
-        //            ValidateIssuer = false // only for dev environment
-        //        };
-        //    });
-        #endregion
-        
-        services.AddKeycloakWebApiAuthentication(configuration);
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = configuration["Auth:ValidIssuer"],
+                    ValidAudience = configuration["Auth:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(configuration["Auth:IssuerSigningKey"])),
+
+#if DEBUG
+                    ValidateLifetime = true,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = false,
+                    ValidateIssuer = false,
+
+#else
+
+                    ValidateLifetime = true, 
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true, 
+                    ValidateIssuer = true ,
+
+#endif
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+#endregion
+
+        //services.AddKeycloakWebApiAuthentication(configuration);
 
         return services;
     }
