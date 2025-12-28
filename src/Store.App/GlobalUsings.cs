@@ -18,3 +18,5 @@ global using Store.App.CQRS.Users.Commands.Update.UpdateChain;
 global using Store.Core.Exceptions;
 global using Store.App.CQRS.Models.User.Queries;
 global using Store.Core.Abstractions.Factories;
+global using Store.Core.Abstractions;
+global using Store.Core.Models.Domain;

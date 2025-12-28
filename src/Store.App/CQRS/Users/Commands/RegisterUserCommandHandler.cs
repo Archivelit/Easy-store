@@ -1,26 +1,35 @@
+using Store.Core.Enums;
+
 namespace Store.App.CQRS.Users.Commands.Update;
 
 public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, UserDto>
 {
     private readonly ILogger<RegisterUserCommandHandler> _logger;
     private readonly IUserRepository _userRepository;
+    private readonly IValidator<string> _passwordValidator;
+    private readonly IValidator<string> _emailValidator;
+    private readonly IPasswordHasher _passwordHasher;
 
-    public RegisterUserCommandHandler(IUserRepository userRepository, ILogger<RegisterUserCommandHandler> logger)
+    public RegisterUserCommandHandler(IUserRepository userRepository, ILogger<RegisterUserCommandHandler> logger, 
+        [FromKeyedServices("PasswordValidator")] IValidator<string> passwordValidator, 
+        [FromKeyedServices("EmailValidator")]IValidator<string> emailValidator, IPasswordHasher passwordHasher)
     {
         _userRepository = userRepository;
         _logger = logger;
+        _passwordValidator = passwordValidator;
+        _emailValidator = emailValidator;
+        _passwordHasher = passwordHasher;
     }
 
     public async Task<UserDto> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        new EmailValidator().Validate(command.user.Email, options => 
-        {
-            options.ThrowOnFailures();
-        });
+        _emailValidator.ValidateAndThrow(command.user.Email);
 
-        _logger.LogDebug("Starting user registration");
+        _passwordValidator.ValidateAndThrow(command.user.Password);
+
+        _logger.LogDebug("Registering users");
 
         try
         {
@@ -29,10 +38,15 @@ public sealed class RegisterUserCommandHandler : ICommandHandler<RegisterUserCom
                 throw new InvalidUserDataException("Email is already registered");
             }
 
-            var user = new User(command.user.Name, command.user.Email);
-            await _userRepository.RegisterAsync(user);
+            var hashedPassword = _passwordHasher.Hash(command.user.Password);
+            var userId = Guid.NewGuid();
 
-            _logger.LogDebug("Ending user registration");
+            var credentials = new UserCredentials(userId, Role.User, hashedPassword);
+            var user = new User(userId, command.user.Name, command.user.Email, Subscription.None);
+            
+            await _userRepository.RegisterAsync(user, credentials);
+
+            _logger.LogDebug("User registered");
 
             return new(user);
         }

@@ -11,7 +11,7 @@ public interface IUserRepository
     /// <summary>
     /// Save user to cache and database. 
     /// </summary>
-    Task RegisterAsync(User user);
+    Task RegisterAsync(User user, UserCredentials credentials);
     /// <summary>
     /// Delete user from cache and database. Throw <see cref="InvalidUserDataException"> if user not registered in database.
     /// </summary>

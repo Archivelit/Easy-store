@@ -12,6 +12,7 @@ public static class IServiceCollectionExtensions
         _appAssembly = Assembly.GetAssembly(typeof(IAppAssemblyMarker));
     }
 
+    #region Dependency Injection for Application Services
     /// <summary>
     /// Adds all application services to the DI container.
     /// <para> CQRS Handler are registered via MediatR. </para>
@@ -28,17 +29,65 @@ public static class IServiceCollectionExtensions
         services.RegisterUpdateUserServices();
         services.RegisterUpdateItemServices();
         services.RegisterAuthorizationHandlers();
+        services.RegisterValidators();
 
-        services.AddTransient<IValidator<User>, UserValidator>();
-        services.AddTransient<IValidator<Item>, ItemValidator>();
-
-        services.AddTransient<IItemFactory, ItemDomainFactory>();
-        services.AddTransient<IItemEntityFactory, ItemEntityFactory>();
+        services.AddSingleton<IItemFactory, ItemDomainFactory>();
+        services.AddSingleton<IItemEntityFactory, ItemEntityFactory>();
 
         Log.Debug("Services setted up succesfuly");
 
         return services;
     }
+
+    private static void RegisterValidators(this IServiceCollection services)
+    {
+        services.AddKeyedSingleton<IValidator<string>, EmailValidator>(KeyedServicesKeys.EmailValidator);
+        services.AddKeyedSingleton<IValidator<string>, NameValidator>(KeyedServicesKeys.NameValidator);
+        services.AddKeyedSingleton<IValidator<string>, PasswordValidator>(KeyedServicesKeys.PasswordValidator);
+
+        services.AddSingleton<IValidator<User>, UserValidator>();
+
+        services.AddSingleton<IValidator<Item>, ItemValidator>();
+    }
+
+    /// <summary>
+    /// Register services for updating user data via Chain of Responsibility pattern.
+    /// </summary>
+    private static void RegisterUpdateUserServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IUserUpdateChainFactory, UserUpdateChainFactory>();
+
+        services.AddSingleton<UserUpdateChainFactory>();
+        services.AddSingleton<UpdateUserEmail>();
+        services.AddSingleton<UpdateUserName>();
+        services.AddSingleton<UpdateUserSubscription>();
+
+        services.AddScoped<UserUpdateFacade>();
+    }
+
+    /// <summary>
+    /// Register services for updating item data via Chain of Responsibility pattern.
+    /// </summary>
+    private static void RegisterUpdateItemServices(this IServiceCollection services)
+    {
+        services.AddSingleton<IItemUpdateChainFactory, ItemUpdateChainFactory>();
+
+        services.AddSingleton<UpdateTitle>();
+        services.AddSingleton<UpdateDescription>();
+        services.AddSingleton<UpdatePrice>();
+        services.AddSingleton<UpdateQuantity>();
+
+        services.AddScoped<ItemUpdateFacade>();
+    }
+
+    /// <summary>
+    /// Registers authorization handlers for policies.
+    /// </summary>
+    private static void RegisterAuthorizationHandlers(this IServiceCollection services)
+    {
+        services.AddScoped<IAuthorizationHandler, ItemOwnerHandler>();
+    }
+#endregion
 
     /// <summary>
     /// Registers MediatR and all CQRS Handlers from application assembly.
@@ -180,43 +229,5 @@ public static class IServiceCollectionExtensions
                 }
             });
         });
-    }
-    
-    /// <summary>
-    /// Register services for updating user data via Chain of Responsibility pattern.
-    /// </summary>
-    private static void RegisterUpdateUserServices(this IServiceCollection services)
-    {
-        services.AddTransient<IUserUpdateChainFactory, UserUpdateChainFactory>();
-
-        services.AddTransient<UserUpdateChainFactory>();
-        services.AddTransient<UpdateUserEmail>();
-        services.AddTransient<UpdateUserName>();
-        services.AddTransient<UpdateUserSubscription>();
-
-        services.AddScoped<UserUpdateFacade>();
-    }
-
-    /// <summary>
-    /// Register services for updating item data via Chain of Responsibility pattern.
-    /// </summary>
-    private static void RegisterUpdateItemServices(this IServiceCollection services)
-    {
-        services.AddTransient<IItemUpdateChainFactory, ItemUpdateChainFactory>();
-
-        services.AddTransient<UpdateTitle>();
-        services.AddTransient<UpdateDescription>();
-        services.AddTransient<UpdatePrice>();
-        services.AddTransient<UpdateQuantity>();
-
-        services.AddScoped<ItemUpdateFacade>();
-    }
-
-    /// <summary>
-    /// Registers authorization handlers for policies.
-    /// </summary>
-    private static void RegisterAuthorizationHandlers(this IServiceCollection services)
-    {
-        services.AddScoped<IAuthorizationHandler, ItemOwnerHandler>();
     }
 }

@@ -2,8 +2,15 @@
 
 [ApiController]
 [Route("auth")]
-public class AuthController
+public class AuthController : ControllerBase
 {
+    private readonly IMediator _mediator;
+    
+    public AuthController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login()
@@ -13,13 +20,24 @@ public class AuthController
         // Implementation for token retrieval would go here
     }
 
+    /// <summary>
+    /// Register a new user in the system
+    /// </summary>
+    /// <returns>
+    /// Registered user model
+    /// </returns>
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<IActionResult> Register()
+    public async Task<IActionResult> Register(RegisterUserDto userDto, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var command = new RegisterUserCommand(userDto);
 
-        // Implementation for user registration would go here
+        var registeredUser = await _mediator.Send(command, ct);
+
+        if (registeredUser is null)
+            return BadRequest();
+
+        return Ok(registeredUser);
     }
 
     [Authorize]

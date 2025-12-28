@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
-
-namespace Store.API.Controllers;
+﻿namespace Store.API.Controllers;
 
 [ApiController]
 [Route("items")]
