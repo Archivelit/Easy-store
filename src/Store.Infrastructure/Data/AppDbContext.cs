@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore.Design;
+using System.Threading.Tasks.Dataflow;
 
 namespace Store.Infrastructure.Data;
 
@@ -6,6 +7,7 @@ public class AppDbContext : DbContext
 {
     public DbSet<UserEntity> Users { get; set; }
     public DbSet<ItemEntity> Items { get; set; }
+    public DbSet<UserCredentialsEntity> UserCredentials { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -15,11 +17,12 @@ public class AppDbContext : DbContext
         optionsBuilder
             .EnableSensitiveDataLogging()
             .UseSeeding((context, _) =>
-            {
+            {   
                 Log.Logger.Debug("Seeding database started");
 
                 if (context is AppDbContext appContext)
                 {
+                    // TODO: Add user credentials seeding
                     new UserSeeder().SeedUsers(appContext);
                     new ItemSeeder().SeedItems(appContext);
                 }
@@ -32,6 +35,7 @@ public class AppDbContext : DbContext
 
                 if (context is AppDbContext appContext)
                 {
+                    // TODO: Add user credentials seeding
                     await new UserSeeder().SeedUsersAsync(appContext, ct);
                     await new ItemSeeder().SeedItemsAsync(appContext, ct);
                 }

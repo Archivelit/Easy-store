@@ -14,3 +14,6 @@ global using Store.Core.Exceptions;
 global using Store.Infrastructure.Extensions;
 global using System.Text.Json;
 global using Store.Infrastructure.Data.Seeders;
+global using Store.Core.Abstractions;
+global using BCrypt.Net;
+global using Store.Core.Models.Domain;

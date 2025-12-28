@@ -1,14 +1,17 @@
-﻿namespace Store.Infrastructure.Repositories;
+﻿
+namespace Store.Infrastructure.Repositories;
 
 public sealed class UserRepository(
     ILogger<UserRepository> logger, 
     IUserDao userDao, 
-    IDistributedCache cache
+    IDistributedCache cache,
+    IUserCredentialsDao userCredentialsDao
     ) : IUserRepository
 {
     private readonly ILogger<UserRepository> _logger = logger;
     private readonly IUserDao _userDao = userDao;
     private readonly IDistributedCache _cache = cache;
+    private readonly IUserCredentialsDao _userCredentialsDao = userCredentialsDao;
 
     public async Task DeleteAsync(Guid id)
     {
@@ -79,15 +82,21 @@ public sealed class UserRepository(
         return await _userDao.IsExistsAsync(id);
     }
 
-    public async Task RegisterAsync(User user)
+    public async Task RegisterAsync(User user, UserCredentials credentials)
     {
         _logger.LogDebug("Registering user {UserId}", user.Id);
 
         var key = $"user:{user.Id}";
 
         var userEntity = new UserEntity(user);
+        var credentialsEntity = new UserCredentialsEntity(credentials);
 
+        // TODO: Add transaction support
+        // Try to merge into one DB query if possible
+        // Add credentials caching if needed
         await _userDao.RegisterAsync(userEntity);
+        await _userCredentialsDao.RegisterAsync(credentialsEntity);
+        
         await _cache.SetStringAsync(key, JsonSerializer.Serialize(userEntity));
 
         _logger.LogInformation("User {UserId} registered succesfuly", user.Id);
