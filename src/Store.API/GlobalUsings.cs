@@ -36,3 +36,6 @@ global using Microsoft.OpenApi;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
 global using Store.Core.Models.Dto.Auth;
+global using Store.Core.Abstractions;
+global using Store.Infrastructure.Services;
+global using System.Text;

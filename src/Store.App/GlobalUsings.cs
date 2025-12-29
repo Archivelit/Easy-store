@@ -20,3 +20,4 @@ global using Store.App.CQRS.Models.User.Queries;
 global using Store.Core.Abstractions.Factories;
 global using Store.Core.Abstractions;
 global using Store.Core.Models.Domain;
+global using Store.Core.Constants;

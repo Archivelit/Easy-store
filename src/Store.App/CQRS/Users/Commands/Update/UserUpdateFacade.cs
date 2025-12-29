@@ -31,8 +31,13 @@ public sealed class UserUpdateFacade
         var builder = new UserBuilder();
         builder.From(userFromDb);
 
+        if (user.Email is not null)
+        {
+            await _userRepository.IsEmailClaimedAsync(user.Email);
+        }
+
         var updatedUser = await GetNewData(builder, user);
-        
+
         await _userRepository.UpdateAsync(updatedUser);
 
         _logger.LogDebug("End updating user {UserId}", user.Id);
@@ -44,7 +49,7 @@ public sealed class UserUpdateFacade
     {
         _logger.LogDebug("Trying to extract data for update");
         
-        builder = await _chain.Update(builder, model);
+        builder = _chain.Update(builder, model);
         var user = builder.Build();
 
         _logger.LogDebug("Data extracted successfully");

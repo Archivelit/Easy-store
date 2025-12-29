@@ -19,10 +19,10 @@ public class UpdateUserBase : IUserUpdateChain
         return next;
     }
 
-    public virtual async Task<UserBuilder> Update(UserBuilder builder, UpdateUserDto user)
+    public virtual UserBuilder Update(UserBuilder builder, UpdateUserDto user)
     {
         if (_next != null)
-            return await _next.Update(builder, user);
+            return _next.Update(builder, user);
         return builder;
     }
 }

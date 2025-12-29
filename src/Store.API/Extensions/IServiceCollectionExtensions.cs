@@ -1,15 +1,12 @@
-using System.Text;
-
 namespace Store.API.Extensions;
 
-#nullable disable
 public static class IServiceCollectionExtensions
 {
     private static readonly Assembly _appAssembly;
 
     static IServiceCollectionExtensions()
     {
-        _appAssembly = Assembly.GetAssembly(typeof(IAppAssemblyMarker));
+        _appAssembly = Assembly.GetAssembly(typeof(IAppAssemblyMarker))!;
     }
 
     #region Dependency Injection for Application Services
@@ -24,7 +21,10 @@ public static class IServiceCollectionExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IItemRepository, ItemRepository>();
         services.AddScoped<IUserDao, UserDao>();
+        services.AddScoped<IUserCredentialsDao, UserCredentialsDao>();
         services.AddScoped<IItemDao, ItemDao>();
+
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
         services.RegisterUpdateUserServices();
         services.RegisterUpdateItemServices();
@@ -46,6 +46,15 @@ public static class IServiceCollectionExtensions
         services.AddKeyedSingleton<IValidator<string>, PasswordValidator>(KeyedServicesKeys.PasswordValidator);
 
         services.AddSingleton<IValidator<User>, UserValidator>();
+
+        services.AddKeyedSingleton<IValidator<string>, ItemTitleValidator>(KeyedServicesKeys.ItemTitleValidator);
+        services.AddKeyedSingleton<IValidator<string?>, ItemDescriptionValidator>(KeyedServicesKeys.ItemDescriptionValidator);
+        services.AddKeyedSingleton<IValidator<decimal>, ItemPriceValidator>(KeyedServicesKeys.ItemPriceValidator);
+        services.AddKeyedSingleton<IValidator<int>, ItemQuantityValidator>(KeyedServicesKeys.ItemQuantityValidator);
+        services.AddKeyedSingleton<IValidator<Guid>, ItemIdValidator>(KeyedServicesKeys.ItemIdValidator);
+        services.AddKeyedSingleton<IValidator<Guid>, UserIdValidator>(KeyedServicesKeys.UserIdValiadator);
+        services.AddKeyedSingleton<IValidator<DateTime>, CreatedAtValidator>(KeyedServicesKeys.CreatedAtValidator);
+        services.AddKeyedSingleton<IValidator<Item>, UpdatedAtValidator>(KeyedServicesKeys.UpdatedAtValidator);
 
         services.AddSingleton<IValidator<Item>, ItemValidator>();
     }
@@ -138,7 +147,7 @@ public static class IServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Configuring authentication with Keycloak.
+    /// Configuring authentication with JwtBearer.
     /// </summary>
     public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, ConfigurationManager configuration)
     {

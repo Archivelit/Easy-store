@@ -2,46 +2,71 @@
 
 public class ItemValidator : AbstractValidator<Item>
 {
-    public ItemValidator()
+    private readonly IValidator<string> _titleValidator;
+    private readonly IValidator<string?> _descriptionValidator;
+    private readonly IValidator<decimal> _priceValidator;
+    private readonly IValidator<int> _quantityValidator;
+    private readonly IValidator<Guid> _itemIdValidator;
+    private readonly IValidator<Guid> _userIdValidator;
+    private readonly IValidator<DateTime> _createdAtValidator;
+    private readonly IValidator<Item> _updatedAtValidator;
+
+    public ItemValidator([FromKeyedServices(KeyedServicesKeys.ItemTitleValidator)] IValidator<string> titleValidator, 
+        [FromKeyedServices(KeyedServicesKeys.ItemDescriptionValidator)]IValidator<string?> descriptionValidator, 
+        [FromKeyedServices(KeyedServicesKeys.ItemPriceValidator)] IValidator<decimal> priceValidator, 
+        [FromKeyedServices(KeyedServicesKeys.ItemQuantityValidator)] IValidator<int> quantityValidator,
+        [FromKeyedServices(KeyedServicesKeys.ItemIdValidator)] IValidator<Guid> itemIdValidator,
+        [FromKeyedServices(KeyedServicesKeys.UserIdValiadator)] IValidator<Guid> userIdValidator,
+        [FromKeyedServices(KeyedServicesKeys.CreatedAtValidator)] IValidator<DateTime> createdAtValidator,
+        [FromKeyedServices(KeyedServicesKeys.UpdatedAtValidator)] IValidator<Item> updatedAtValidator)
     {
+        _titleValidator = titleValidator;
+        _descriptionValidator = descriptionValidator;
+        _priceValidator = priceValidator;
+        _quantityValidator = quantityValidator;
+        _itemIdValidator = itemIdValidator;
+        _userIdValidator = userIdValidator;
+        _createdAtValidator = createdAtValidator;
+        _updatedAtValidator = updatedAtValidator;
+
         RuleSet("Title", () =>
         {
-            RuleFor(i => i.Title).SetValidator(new TitleValidator());
+            RuleFor(i => i.Title).SetValidator(_titleValidator);
         });
 
         RuleSet("Description", () =>
         {
-            RuleFor(i => i.Description).SetValidator(new DescriptionValidator());
+            RuleFor(i => i.Description).SetValidator(_descriptionValidator);
         });
 
         RuleSet("Price", () =>
         {
-            RuleFor(i => i.Price).SetValidator(new PriceValidator());
+            RuleFor(i => i.Price).SetValidator(_priceValidator);
         });
 
         RuleSet("Quantity", () =>
         {
-            RuleFor(i => i.QuantityInStock).SetValidator(new QuantityValidator());
+            RuleFor(i => i.QuantityInStock).SetValidator(_quantityValidator);
         });
 
         RuleSet("UserId", () =>
         {
-            RuleFor(i => i.UserId).SetValidator(new UserIdValidator());
+            RuleFor(i => i.UserId).SetValidator(_userIdValidator);
         });
 
         RuleSet("Id", () =>
         {
-            RuleFor(i => i.Id).SetValidator(new ItemIdValidator());
+            RuleFor(i => i.Id).SetValidator(_itemIdValidator);
         });
 
         RuleSet("CreatedAt", () =>
         {
-            RuleFor(i => i).SetValidator(new CreatedAtValidator());
+            RuleFor(i => i.CreatedAt).SetValidator(_createdAtValidator);
         });
 
         RuleSet("UpdatedAt", () =>
         {
-            RuleFor(i => i).SetValidator(new UpdatedAtValidator());
+            RuleFor(i => i).SetValidator(_updatedAtValidator);
         });
     }
 }
@@ -62,9 +87,9 @@ public class UserIdValidator : AbstractValidator<Guid>
     }
 }
 
-public class TitleValidator : AbstractValidator<string>
+public class ItemTitleValidator : AbstractValidator<string>
 {
-    public TitleValidator()
+    public ItemTitleValidator()
     {
         RuleFor(x => x)
             .NotEmpty()
@@ -80,9 +105,9 @@ public class TitleValidator : AbstractValidator<string>
     }
 }
 
-public class DescriptionValidator : AbstractValidator<string?>
+public class ItemDescriptionValidator : AbstractValidator<string?>
 {
-    public DescriptionValidator()
+    public ItemDescriptionValidator()
     {
         RuleFor(x => x)
             .Length(1, 2000)
@@ -96,9 +121,9 @@ public class DescriptionValidator : AbstractValidator<string?>
     }
 }
 
-public class PriceValidator : AbstractValidator<decimal>
+public class ItemPriceValidator : AbstractValidator<decimal>
 {
-    public PriceValidator()
+    public ItemPriceValidator()
     {
         RuleFor(x => x)
             .GreaterThan(0)
@@ -106,9 +131,9 @@ public class PriceValidator : AbstractValidator<decimal>
     }
 }
 
-public class QuantityValidator : AbstractValidator<int>
+public class ItemQuantityValidator : AbstractValidator<int>
 {
-    public QuantityValidator()
+    public ItemQuantityValidator()
     {
         RuleFor(x => x)
             .GreaterThanOrEqualTo(0)
@@ -116,11 +141,13 @@ public class QuantityValidator : AbstractValidator<int>
     }
 }
 
-public class CreatedAtValidator : AbstractValidator<Item>
+public class CreatedAtValidator : AbstractValidator<DateTime>
 {
     public CreatedAtValidator()
     {
-        RuleFor(x => x);
+        RuleFor(d => d)
+            .LessThan(d => DateTime.Now)
+            .GreaterThan(d => DateTime.MinValue);
     }
 }
 
@@ -128,6 +155,9 @@ public class UpdatedAtValidator : AbstractValidator<Item>
 {
     public UpdatedAtValidator()
     {
-        RuleFor(x => x);
+        RuleFor(d => d.UpdatedAt)
+            .LessThanOrEqualTo(d => DateTime.Now)
+            .GreaterThan(d => d.CreatedAt)
+            .When(d => d != null);
     }
 }

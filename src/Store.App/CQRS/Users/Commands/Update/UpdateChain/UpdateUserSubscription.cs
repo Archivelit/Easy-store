@@ -4,7 +4,7 @@ public class UpdateUserSubscription : UpdateUserBase
 {
     public UpdateUserSubscription(ILogger<UpdateUserSubscription> logger) : base(logger)  { }
 
-    public override async Task<UserBuilder> Update(UserBuilder builder, UpdateUserDto model)
+    public override UserBuilder Update(UserBuilder builder, UpdateUserDto model)
     {
         if (model.SubscriptionType is not null)
         {
@@ -12,6 +12,6 @@ public class UpdateUserSubscription : UpdateUserBase
 
             _logger.LogDebug("User {UserId} updated email to {NewUserSubscription}", model.Id, model.SubscriptionType);
         }
-        return await base.Update(builder, model);
+        return base.Update(builder, model);
     }
 }

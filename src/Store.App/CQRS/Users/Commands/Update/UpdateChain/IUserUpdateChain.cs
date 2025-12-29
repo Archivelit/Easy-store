@@ -7,5 +7,5 @@ public interface IUserUpdateChain
     /// Used for setting order of the elements in the <see cref="UserUpdateChainFactory.Create"/> method.
     /// </summary>
     IUserUpdateChain SetNext(IUserUpdateChain next);
-    Task<UserBuilder> Update(UserBuilder builder, UpdateUserDto model);
+    UserBuilder Update(UserBuilder builder, UpdateUserDto model);
 }

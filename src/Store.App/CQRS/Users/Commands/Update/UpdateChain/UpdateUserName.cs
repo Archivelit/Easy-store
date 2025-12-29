@@ -2,19 +2,24 @@ namespace Store.App.CQRS.Users.Commands.Update.UpdateChain;
 
 public class UpdateUserName : UpdateUserBase
 {
-    public UpdateUserName(ILogger<UpdateUserName> logger) : base(logger) { }
+    private readonly IValidator<string> _userNameValidator;
 
-    public override async Task<UserBuilder> Update(UserBuilder builder, UpdateUserDto model)
+    public UpdateUserName(ILogger<UpdateUserName> logger, 
+        [FromKeyedServices(KeyedServicesKeys.NameValidator)]IValidator<string> userNameValidator) : base(logger)
+    {
+        _userNameValidator = userNameValidator;
+    }
+
+    public override UserBuilder Update(UserBuilder builder, UpdateUserDto model)
     {
         if (model.Name != null)
         {
-            new NameValidator().Validate(model.Name, options =>
-            {
-                options.ThrowOnFailures();
-            });
+            _userNameValidator.ValidateAndThrow(model.Name);
+            
             builder.WithName(model.Name);
+            
             _logger.LogDebug("User {UserId} updated name to {NewUserName}", model.Id, model.Name);
         }
-        return await base.Update(builder, model);
+        return base.Update(builder, model);
     }
 }
